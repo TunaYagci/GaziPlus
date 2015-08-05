@@ -1,0 +1,218 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment2_motherLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hp2m.newsupportlibrary22.Fragment2"
+
+    >
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:id="@+id/holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/fragment2_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_horizontal"
+            android:text="Öğrenci Girişi"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:textColor="#ff000000" />
+
+
+        <EditText
+            android:id="@+id/ogrenci_numarasi"
+            android:layout_width="250sp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/parola"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/parola"
+            android:layout_below="@+id/topLine"
+            android:background="@drawable/edit_text_custom_notlar"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="Öğrenci numarası"
+            android:inputType="number"
+            android:maxLength="9"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textColor="#ff000000"
+            android:textColorHint="#D9DADC" />
+
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/parola"
+            android:layout_alignStart="@+id/parola"
+            android:layout_below="@+id/parola_status"
+            android:layout_marginTop="24dp"
+            android:checked="true"
+            android:text="Beni Hatırla" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/checkBox"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/button_custom_notlar"
+            android:text="GİRİŞ YAP"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/topLine"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/fragment2_title"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginBottom="16dp"
+            android:alpha="0.9"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/line1" />
+
+        <ImageView
+            android:id="@+id/bottomLine"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/loginButton"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="16dp"
+            android:alpha="0.9"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/line1" />
+
+        <TextView
+            android:id="@+id/ogrenci_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ogrenci_numarasi"
+            android:layout_alignStart="@+id/ogrenci_numarasi"
+            android:layout_below="@+id/ogrenci_numarasi"
+            android:layout_toLeftOf="@+id/clearOgrNo"
+            android:layout_toStartOf="@+id/clearOgrNo"
+            android:text="Numarayı eksik girdiniz"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+            android:textColor="#ff172a"
+            android:textStyle="italic"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/parola_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/parola"
+            android:layout_alignLeft="@+id/parola"
+            android:layout_alignRight="@+id/parola"
+            android:layout_alignStart="@+id/parola"
+            android:layout_below="@+id/parola"
+            android:text="Parola boş bırakılamaz"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+            android:textColor="#ff172a"
+            android:textStyle="italic"
+            android:visibility="gone" />
+
+
+        <ProgressBar
+            android:id="@+id/loadingBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="200dp"
+            android:indeterminate="true"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/login_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="Kullanıcı girişi hatalı"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/error_color"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/clearOgrNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ogrenci_numarasi"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/topLine"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/clear_logo" />
+
+        <ImageButton
+            android:id="@+id/clearParola"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/parola"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/parola"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/clear_logo" />
+
+
+        <EditText
+            android:id="@+id/parola"
+            android:layout_width="250sp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/ogrenci_status"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/clearParola"
+            android:background="@drawable/edit_text_custom_notlar"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="Parola"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textColor="#ff000000"
+            android:textColorHint="#D9DADC" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/not_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top">
+
+    </android.support.v7.widget.RecyclerView>
+
+</FrameLayout>

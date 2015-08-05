@@ -1,0 +1,129 @@
+/*if (mode == "update") {
+                ArrayList<Integer> updateList = new ArrayList<>();
+                //checking db if this element is new or not
+                for (int i = 0; i < NET_MAX_DUYURU; i++) {
+                    if (db2.fetchMeMyDuyuru(i + 1).get(0) == duyuruHeaderElements.get(i).text().substring(17))
+                        break;
+                    else {
+                        updateList.add(i);
+                    }
+                }
+                if(updateList.size()==0) {
+                    Toast.makeText(fragment.getActivity(), "Duyurular güncel", Toast.LENGTH_SHORT).show();
+                    return null;
+                }
+                else {
+                    Log.i("tuna", "gonna update " + updateList.size() + " duyuru");
+                    LOADED_ITEM_COUNT = updateList.size();
+                    for (int i = 0; i < updateList.size(); i++) {
+                        Log.i("tuna", "inner side parsing 1");
+                        headerList.add(duyuruHeaderElements.get(i).text().substring(17));
+                        //String a = "";
+                        //String b = "";
+                        String link = duyuruHeaderElements.get(i).attr("abs:href");
+                        newsLinkList.add(link);
+                        Document insideDocs = Jsoup.connect(link).timeout(0).get();
+                        Elements duyuruElements = insideDocs.select("div.post-content p");
+                        StringBuilder builder = new StringBuilder();
+                        for (int i2 = 0; i2 < duyuruElements.size(); i2++) {
+                            Log.i("tuna", "inner side parsing 2");
+                            if (!duyuruElements.get(i2).text().isEmpty()) {
+                                //a += duyuruElements.get(i2).text();
+                                //a += "\n\n";
+                                builder.append(duyuruElements.get(i2).text());
+                                builder.append("\n\n");
+                            }
+                        }
+                        icerikList.add(builder.toString());
+                        builder = new StringBuilder();
+                        Log.i("tuna", "gonna parse links");
+                        Elements duyuruLinkElements = insideDocs.select("div.post-content a[href]");
+                        Log.i("tuna", "link parsing ended");
+                        for (int i3 = 0; i3 < duyuruLinkElements.size(); i3++) {
+                            Log.i("tuna", "inner side parsing 3");
+                            //b += duyuruLinkElements.get(i3).attr("abs:href");
+                            //b += "\n";
+                            //b += duyuruLinkElements.get(i3).text();
+                            builder.append(duyuruLinkElements.get(i3).attr("abs:href"));
+                            builder.append("\n");
+                            builder.append(duyuruLinkElements.get(i3).text());
+
+                        }
+                        if (duyuruLinkElements.size() == 0) {
+                            //b = "none";
+                            builder.append("none");
+                        }
+                        //icerikLinkList.add(b);
+                        icerikLinkList.add(builder.toString());
+                    }
+
+
+                }
+            }
+
+
+
+
+
+
+                   /*else if (mode == "old" || mode == "firstTime") {
+                            // if we are updating, loading history, or first time entering..
+                            // below code is for loading history
+                            // for updating, check if how many new elements isn't in database
+                            // load them with threads in asynctask
+                            //final int DB_MAX_DUYURU = db2.getDuyuruSayisi();
+                            // final int NET_MAX_DUYURU = duyuruHeaderElements.size() - 4;
+                            //final int MIN_ITEM_TO_LOAD = 4;
+                            int x;
+                            if (NET_MAX_DUYURU > DB_MAX_DUYURU + MIN_ITEM_TO_LOAD) // check if website has enough element to fetch
+                                x = DB_MAX_DUYURU + MIN_ITEM_TO_LOAD;
+                            else
+                                x = NET_MAX_DUYURU; // website only have x duyuru left, not MIN_ITEM_TO_LOAD
+                            LOADED_ITEM_COUNT = x - DB_MAX_DUYURU;
+                            Log.i("tuna", "DB_MAX_DUYURU = " + DB_MAX_DUYURU);
+                            Log.i("tuna", "NET_MAX_DUYURU = " + NET_MAX_DUYURU);
+                            Log.i("tuna", "LOADED_ITEM_COUNT = " + LOADED_ITEM_COUNT);
+
+                            for (int i = DB_MAX_DUYURU; i < x; i++) {
+                                Log.i("tuna", "inner side parsing 1");
+                                headerList.add(duyuruHeaderElements.get(i).text().substring(17));
+                                //String a = "";
+                                //String b = "";
+                                String link = duyuruHeaderElements.get(i).attr("abs:href");
+                                newsLinkList.add(link);
+                                Document insideDocs = Jsoup.connect(link).timeout(0).get();
+                                Elements duyuruElements = insideDocs.select("div.post-content p");
+                                StringBuilder builder = new StringBuilder();
+                                for (int i2 = 0; i2 < duyuruElements.size(); i2++) {
+                                    Log.i("tuna", "inner side parsing 2");
+                                    if (!duyuruElements.get(i2).text().isEmpty()) {
+                                        //a += duyuruElements.get(i2).text();
+                                        //a += "\n\n";
+                                        builder.append(duyuruElements.get(i2).text());
+                                        builder.append("\n\n");
+                                    }
+                                }
+                                icerikList.add(builder.toString());
+                                builder = new StringBuilder();
+                                Log.i("tuna", "gonna parse links");
+                                Elements duyuruLinkElements = insideDocs.select("div.post-content a[href]");
+                                Log.i("tuna", "link parsing ended");
+                                for (int i3 = 0; i3 < duyuruLinkElements.size(); i3++) {
+                                    Log.i("tuna", "inner side parsing 3");
+                                    //b += duyuruLinkElements.get(i3).attr("abs:href");
+                                    //b += "\n";
+                                    //b += duyuruLinkElements.get(i3).text();
+                                    builder.append(duyuruLinkElements.get(i3).attr("abs:href"));
+                                    builder.append("\n");
+                                    builder.append(duyuruLinkElements.get(i3).text());
+
+                                }
+                                if (duyuruLinkElements.size() == 0) {
+                                    //b = "none";
+                                    builder.append("none");
+                                }
+                                //icerikLinkList.add(b);
+                                icerikLinkList.add(builder.toString());
+                            }
+                        }
+            */

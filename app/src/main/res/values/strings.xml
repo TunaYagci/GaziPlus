@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Project Gazi+</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="gunler">
+        <item>"Pazartesi"</item>
+        <item>"Salı"</item>
+        <item>"Çarşamba"</item>
+        <item>"Perşembe"</item>
+        <item>"Cuma"</item>
+    </string-array>
+    <string name="title_activity_duyuru_detailed">DuyuruDetailedActivity</string>
+</resources>

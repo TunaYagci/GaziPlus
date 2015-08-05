@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <view xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/view"
+        class="android.support.v7.widget.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/duyuruCardsMargin"
+        android:elevation="2dp"
+        card_view:cardElevation="2dp">
+
+
+        <ImageView
+            android:id="@+id/bolum_image"
+            android:layout_width="wrap_content"
+            android:layout_height="240dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/lowres2" />
+
+
+        <TextView
+            android:id="@+id/bolum_text"
+            style="@style/Base.TextAppearance.AppCompat.Headline"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="8dp"
+            android:alpha="0.8"
+            android:background="#000000"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="CENGAZİ"
+            android:textSize="@dimen/abc_text_size_headline_material"
+
+            />
+    </view>
+</LinearLayout>

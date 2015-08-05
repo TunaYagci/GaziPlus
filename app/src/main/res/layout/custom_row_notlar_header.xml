@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/kampus_notlar_4" />
+
+    <ImageView
+        android:id="@+id/sahip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="98dp"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/arrow_right" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/sahip"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_toEndOf="@+id/sahip"
+        android:layout_toRightOf="@+id/sahip"
+        android:text="Sadık Tuna Yağcı"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1" />
+
+    <TextView
+        android:id="@+id/ogrNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/name"
+        android:layout_alignLeft="@+id/name"
+        android:layout_alignRight="@+id/name"
+        android:layout_alignStart="@+id/name"
+        android:layout_below="@+id/name"
+        android:gravity="center_horizontal"
+        android:text="141180068"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/genelOrtText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ogrNo"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:text="Genel Ort"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1" />
+
+    <TextView
+        android:id="@+id/genelOrtNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/genelOrtText"
+        android:layout_alignLeft="@+id/genelOrtText"
+        android:layout_alignRight="@+id/genelOrtText"
+        android:layout_alignStart="@+id/genelOrtText"
+        android:layout_below="@+id/genelOrtText"
+        android:gravity="center_horizontal"
+        android:text="3.18"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="@color/login_success_text_color" />
+
+</RelativeLayout>

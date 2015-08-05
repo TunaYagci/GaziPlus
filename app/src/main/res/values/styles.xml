@@ -1,0 +1,58 @@
+<resources>
+
+    <style name="Base.Theme.HMKCodeApp" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/my_primary</item>
+
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/my_primary_dark</item>
+
+        <!--   theme UI controls like checkboxes and text fields e.g. FloatActionButton -->
+        <item name="colorAccent">@color/my_accent</item>
+
+        <!-- Title Text Color -->
+        <item name="android:textColorPrimary">@color/my_primary_text</item>
+
+        <!-- color of the menu overflow icon (three vertical dots) -->
+        <item name="android:textColorSecondary">@color/my_secondary_text</item>
+
+
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <!--
+         Base application theme, dependent on API level. This theme is replaced
+         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+     -->
+    <style name="AppBaseTheme" parent="Base.Theme.HMKCodeApp">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+
+    <style name="tabStayla" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/tab_indicator_color</item>
+        <item name="tabSelectedTextColor">@color/tab_selected_text_color</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="android:textColorPrimary">@color/my_secondary_text</item>
+    </style>
+
+    <style name="raisedButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/raised_button_text_color</item>
+        <item name="android:background">@color/tab_selected_background_color</item>
+    </style>
+
+    <style name="duyuruCard" parent="CardView">
+        <item name="android:background">@color/duyuruCardColor</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,33 @@
+So everything is about using "style" file
+
+Lets say that we wanna customize the Toolbar, we just create style under styles.xml and apply it
+to Toolbar like "app:theme="@style/blablabla" It's that easy.
+
+About colors, don't try to create color patterns, that's horribly hard.
+Use:
+- https://www.google.com/design/spec/style/color.html#color-color-palette
+- coolors.co
+Those links are pretty useful, just apply them.
+
+And about text sizes, dont't try to guess the text sizes. Google showed the way that it should be.
+Just search for design patterns. I saw that Toolbar text sizes was on Google, or
+slidenerd's first "Material Design" videos
+
+
+---------------------------------------------------------
+** 24dp thing **
+So on Kitkat and Lolipop, we have to adjust padding for Toolbar.
+
+on values-19/styles.xml, annd values-21/styles.xml
+<item name="android:windowTranslucentStatus">true</item> for status bar to get colored
+
+on values-19/dimens.xml, annd values-21/dimens.xm
+    <dimen name="defaultPadding">24dp</dimen> for;
+     android:paddingTop="@dimen/defaultPadding" on TOOLBAR
+
+I think Google uses this way too, this makes things equal with older devices
+24 dp is something special
+---------------------------------------------------------
+
+
+

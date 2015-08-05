@@ -1,0 +1,6 @@
+1) Netteki duyurularý çek
+2) db'deki verilerle duyurularý karþýlaþtýr
+3) ilk eþitlikte döngüyü break et çünkü eski verileri tutmuyor falan olabiliriz, yani bize güncel
+olanlar lazým
+4) güncellenecek net_item'lerin index'lerini bi listeye atalým
+5) sonra bunlarý indirelim

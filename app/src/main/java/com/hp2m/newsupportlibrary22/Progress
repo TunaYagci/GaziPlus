@@ -1,0 +1,24 @@
+# July 19.2AM '15
+- Duyuru ekranýnda resim altýna haberler gelecek.
+----------------------------------------------------------
+mf-bm.gazi.edu.tr
+Duyurular için:
+div.news:contains(Duyurular) ul.unstyled li
+
+Duyuru içi linklere gitmek için:
+div.news:contains(Duyurular) ul.unstyled li a[href]
+sonra bunu
+elements.attr("abs:href");
+
+** Mesela
+Elements elements = doc.select("div.news:contains(Duyurular) ul.unstyled li a[href]");
+            String link1 = elements.get(1).attr("abs:href");
+gelen link --> http://mf-bm.gazi.edu.tr/posts/view/title/yaz-ogretimi-134032
+**
+
+yaptýktan sonra gelen link içerisinde
+div.post-content p
+not: p boþ olabiliyor. hani string=="" ise falan almayalým
+daha sonrasý için:
+div.post-content a
+----------------------------------------------------------

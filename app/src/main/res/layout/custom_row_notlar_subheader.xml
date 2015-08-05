@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/donem_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/donemAdi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/my_secondary_text"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="Large Text"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+</LinearLayout>
