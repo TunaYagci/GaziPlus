@@ -15,4 +15,5 @@
         <item>"Cuma"</item>
     </string-array>
     <string name="title_activity_duyuru_detailed">DuyuruDetailedActivity</string>
+    <string name="title_activity_notlar_detailed">NotlarDetailed</string>
 </resources>

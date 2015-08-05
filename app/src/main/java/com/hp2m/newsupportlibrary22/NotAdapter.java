@@ -1,16 +1,19 @@
 package com.hp2m.newsupportlibrary22;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,6 +21,8 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -67,13 +72,22 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof NotItemViewHolder) {
             // ((NotItemViewHolder) holder).topLayout.setVisibility(View.GONE);
             ((NotItemViewHolder) holder).bottomLayout.setVisibility(View.GONE);
-            NotInformation current = data.get(position);
+            final NotInformation current = data.get(position);
             ((NotItemViewHolder) holder).topAndBottomHolder.setOnClickListener(new DersClickListener());
             ((NotItemViewHolder) holder).dersKodu.setText(current.dersKodu);
             ((NotItemViewHolder) holder).dersAdi.setText(current.dersAdi);
             ((NotItemViewHolder) holder).vizeNotu.setText(current.vizeNotu);
             ((NotItemViewHolder) holder).finalNotu.setText(current.finalNotu);
             ((NotItemViewHolder) holder).butNotu.setText(current.butNotu);
+            ((NotItemViewHolder) holder).seeDetailedButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, NotlarDetailed.class);
+                    i.putExtra("dersKodu", current.dersKodu);
+                    Log.i("tuna", "bundle put " + current.dersKodu);
+                    context.startActivity(i);
+                }
+            });
             //Log.i("tuna", (((NotItemViewHolder) holder).topLayout.getVisibility()==View.VISIBLE) + " binding notItemViewHolder");
         } else if (holder instanceof NotHeaderViewHolder) {
             NotInformation current = data.get(position);
@@ -91,26 +105,56 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     .playOn(((NotHeaderViewHolder) holder).genelOrtNumber);
 
 
-            /*OkHttpClient picassoClient = new OkHttpClient();
+            Picasso picasso = new Picasso.Builder(context)
+                    .downloader(new OkHttpDownloader(new OkHttpClient()))
+                    .listener(new Picasso.Listener() {
+                        @Override
+                        public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                            Log.i("tuna", "Picasso exception= " + exception.toString());
+                            Log.i("tuna", "Picasso uri= " + uri.toString());
+                            exception.printStackTrace();
+                        }
+                    })
+                    .build();
 
-            picassoClient.interceptors().add(new Interceptor() {
+            Log.i("tuna", "gonna use picasso");
+            SharedPreferences sharedPreferences = context.getSharedPreferences("avatar", Context.MODE_PRIVATE);
+            picasso.with(((NotHeaderViewHolder) holder).sahip.getContext())
+                    .load(current.imageLink)
+                    .placeholder(R.drawable.arrow_right)
+                    .error(R.drawable.error_notlar_avatar)
+                    .transform(new CircleTransform())
+                    .into(((NotHeaderViewHolder) holder).sahip);
+            if (!sharedPreferences.getBoolean("IsAvatarDownloadedFor" + current.ogrNo, false)) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("IsAvatarDownloadedFor" + current.ogrNo, true);
+                editor.apply();
+            }
+            Log.i("tuna", "picasso used");
+        }
+
+
+
+
+           /*picassoClient.interceptors().add(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     Request newRequest = chain.request().newBuilder()
                             .build();
                     return chain.proceed(newRequest);
                 }
-            });
+            });*/
 
-            Picasso picasso = new Picasso.Builder(((NotHeaderViewHolder) holder).sahip.getContext()).downloader(new OkHttpDownloader(picassoClient)).build();
+        //Picasso picasso = new Picasso.Builder(context).downloader(new OkHttpDownloader(picassoClient)).build();
+        //Picasso picass2 = new Picasso.Builder(context).downloader(new OkHttpDownloader(MAX_CACHE_SIZE)).build();
 
-            picasso.with(((NotHeaderViewHolder) holder).sahip.getContext())
+            /*picasso.with(((NotHeaderViewHolder) holder).sahip.getContext())
                     .load(current.imageLink)
                     .transform(new CircleTransform())
-                    .into(((NotHeaderViewHolder) holder).sahip);
-*/
+                    .into(((NotHeaderViewHolder) holder).sahip);*/
 
-            Log.i("tuna", "gonna use picasso");
+
+            /*Log.i("tuna", "gonna use picasso");
             SharedPreferences sharedPreferences = context.getSharedPreferences("avatar", Context.MODE_PRIVATE);
             Picasso.with(((NotHeaderViewHolder) holder).sahip.getContext())
                     .load(current.imageLink)
@@ -124,10 +168,15 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 editor.apply();
             }
             Log.i("tuna", "picasso used");
-        } else if (holder instanceof NotSubHeaderViewHolder) {
+        } */
+
+
+        else if (holder instanceof NotSubHeaderViewHolder) {
             NotInformation current = data.get(position);
             ((NotSubHeaderViewHolder) holder).donemAdi.setText(current.donemAdi);
         }
+
+
     }
 
     @Override
@@ -162,6 +211,7 @@ class NotItemViewHolder extends RecyclerView.ViewHolder {
     LinearLayout topLayout, donemLayout, topAndBottomHolder;
     RelativeLayout bottomLayout;
     TextView donemAdi, dersKodu, dersAdi, vizeNotu, finalNotu, butNotu; //basariNotu, kredi, sinifOrt;
+    ImageButton seeDetailedButton;
 
     public NotItemViewHolder(View itemView) {
         super(itemView);
@@ -175,6 +225,7 @@ class NotItemViewHolder extends RecyclerView.ViewHolder {
         vizeNotu = (TextView) itemView.findViewById(R.id.vizeNotu);
         finalNotu = (TextView) itemView.findViewById(R.id.finalNotu);
         butNotu = (TextView) itemView.findViewById(R.id.butNotu);
+        seeDetailedButton = (ImageButton) itemView.findViewById(R.id.seeDetailedButton);
     }
 }
 

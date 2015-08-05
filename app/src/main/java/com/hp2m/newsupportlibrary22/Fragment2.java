@@ -350,6 +350,10 @@ public class Fragment2 extends Fragment {
             // first, add header
             current.name = event.idList.get(0);
             current.ogrNo = event.idList.get(1);
+            SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("currentOgrNo", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor2 = sharedPreferences.edit();
+            editor2.putString("currentOgrNo", event.idList.get(1));
+            editor2.commit();
             current.imageLink = event.idList.get(2);
             current.genelOrtNumber = event.genelOrt;
             // 0=name 1=ogrNo 2=imageLink
@@ -358,7 +362,7 @@ public class Fragment2 extends Fragment {
             // then add items. Adapter will notice who is sub-header by itself
             // String dersKodu, dersAdi, vizeNotu, finalNotu, butNotu, basariNotu, kredi, sinifOrt; // ITEMS
 
-
+            NotlarDB db = new NotlarDB(this.getActivity());
             for (int i = 0; i < notList.size(); i++) {
                 if (notList.get(i).startsWith("2") && notList.get(i).endsWith("ý")) {
                     current = new NotInformation();
@@ -369,18 +373,24 @@ public class Fragment2 extends Fragment {
                     String[] parsedNot = parseUpcomingNot(notList.get(i));
                     current = new NotInformation();
                     // ders kodlarý ayný hizada olsun diye, max ders kodu sayýsý 7
-                    for (int i2 = parsedNot[0].length(); i2 < 7; i2++) {
-                        if (parsedNot[0].length() < 7)
+                    for (int i2 = parsedNot[0].length(); i2 < 8; i2++) {
+                        if (parsedNot[0].length() == 7) {
                             parsedNot[0] += " ";
+                            break;
+                        }
+                        parsedNot[0] += "  ";
                     }
+                    current.ogrNo = event.idList.get(1);
                     current.dersKodu = parsedNot[0];
                     current.dersAdi = parsedNot[1];
                     current.vizeNotu = parsedNot[2];
                     current.finalNotu = parsedNot[3];
                     current.butNotu = parsedNot[4];
-                    //  current.basariNotu = parsedNot[5];
-                    //  current.kredi = parsedNot[6];
-                    //  current.sinifOrt = parsedNot[7];
+                    current.basariNotu = parsedNot[5];
+                    current.kredi = parsedNot[6];
+                    current.sinifOrt = parsedNot[7];
+                    // db'ye ekle. Baþka öðrencinin notlarý varsa onlarý silecek.
+                    db.addorUpdateNot(current);
                     data.add(current);
                 }
             }

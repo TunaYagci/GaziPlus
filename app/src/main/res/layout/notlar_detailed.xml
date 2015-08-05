@@ -1,0 +1,218 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailedNotLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hp2m.newsupportlibrary22.NotlarDetailed">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:id="@+id/vize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/finalNotJava"
+                android:layout_alignStart="@+id/finalNotJava"
+                android:layout_below="@+id/divider2"
+                android:layout_marginTop="45dp"
+                android:text="Vize"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/finalNotJava"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/but"
+                android:layout_alignStart="@+id/but"
+                android:layout_below="@+id/vize"
+                android:layout_marginTop="27dp"
+                android:text="Final"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/finalNotJava"
+                android:layout_marginLeft="64dp"
+                android:layout_marginTop="30dp"
+                android:text="Büt"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/vizeNotu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/vize"
+                android:layout_centerHorizontal="true"
+                android:text="54"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/finalNotu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/vizeNotu"
+                android:layout_alignStart="@+id/vizeNotu"
+                android:layout_alignTop="@+id/finalNotJava"
+                android:text="75"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/butNotu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/vizeNotu"
+                android:layout_alignStart="@+id/vizeNotu"
+                android:layout_alignTop="@+id/but"
+                android:text="-"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/dersKodu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/toolbar"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="27dp"
+                android:text="BM102"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/dersAdi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/dersKodu"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Bilgisayar Programlama II"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/harfNotuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/divider"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="45dp"
+                android:text="Harf Notu"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/krediText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/harfNotuText"
+                android:layout_alignLeft="@+id/butNotu"
+                android:layout_alignStart="@+id/butNotu"
+                android:text="Kredi"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/sinifOrtText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/krediText"
+                android:layout_alignEnd="@+id/dersAdi"
+                android:layout_alignRight="@+id/dersAdi"
+                android:layout_marginRight="16dp"
+                android:text="Sınıf Ort"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/krediNot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/krediText"
+                android:layout_alignLeft="@+id/krediText"
+                android:layout_alignRight="@+id/krediText"
+                android:layout_alignStart="@+id/krediText"
+                android:layout_below="@+id/krediText"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:text="3"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/sinifOrtNot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/krediNot"
+                android:layout_alignEnd="@+id/sinifOrtText"
+                android:layout_alignLeft="@+id/sinifOrtText"
+                android:layout_alignRight="@+id/sinifOrtText"
+                android:layout_alignStart="@+id/sinifOrtText"
+                android:gravity="center_horizontal"
+                android:text="54.75"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <TextView
+                android:id="@+id/harfNotNot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/harfNotuText"
+                android:layout_alignLeft="@+id/harfNotuText"
+                android:layout_alignRight="@+id/harfNotuText"
+                android:layout_alignStart="@+id/harfNotuText"
+                android:layout_alignTop="@+id/krediNot"
+                android:gravity="center_horizontal"
+                android:text="BA"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textColor="@color/material_blue_grey_800" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/but"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="45dp"
+                android:background="@android:color/darker_gray" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/dersAdi"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="45dp"
+                android:background="@android:color/darker_gray" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
