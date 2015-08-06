@@ -175,7 +175,9 @@ public class Fragment1 extends Fragment {
         //if (doesTableExist(db.getReadableDatabase(), db.TABLE_DUYURU)) {
         if (doesDatabaseExist(getActivity(), db.getDatabaseName())) { // LATER ON CHANGE THIS, thats very SLOWW
             ArrayList<Integer> oldList = new ArrayList<>();
-            ArrayList<String> duyuruList = new ArrayList<>();
+            ArrayList<Integer> firstTimeList = new ArrayList<>();
+            ArrayList<Integer> newList = new ArrayList<>();
+            ArrayList<String> duyuruList;
             Log.i("tuna", "we are on getData Fragment1");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String currentTime = sdf.format(new Date());
@@ -188,11 +190,61 @@ public class Fragment1 extends Fragment {
             for (int i = 1; i < db.getDuyuruSayisi(); i++) { // ADDING NEW DUYURU IF THERE IS
                 duyuruList = new ArrayList<>();
                 duyuruList.addAll(db.fetchMeMyDuyuru(i)); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
-                if (duyuruList.get(5) == "old") {
+                if (duyuruList.get(5).equals("firstTime")) {
+                    Log.i("tuna", "this is a firstTime post = " + duyuruList.get(0));
+                    firstTimeList.add(i);
+                    continue;
+                } else if (duyuruList.get(5).equals("old")) {
+                    Log.i("tuna", "this is an old post = " + duyuruList.get(0));
                     oldList.add(i);
                     continue;
                 }
+                // so what we add here is basically the "new" items
+                Log.i("tuna", "this is a new post = " + duyuruList.get(0));
+                newList.add(i);
+                /*current = new DuyuruInformation();
+                current.header = duyuruList.get(0);
+                current.body = duyuruList.get(1);
+                current.dateDiff = getTimeDifference(
+                        duyuruList.get(2),
+                        currentTime
+                );
+                data.add(current);*/
+            }
+            for (int i = newList.size() - 1; i >= 0; i--) { // ADDING OLD DUYURU IF THERE IS
+                duyuruList = new ArrayList<>();
+                duyuruList.addAll(db.fetchMeMyDuyuru(newList.get(i))); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
                 current = new DuyuruInformation();
+                Log.i("tuna", "a new post is pulling " + duyuruList.get(0));
+                current.header = duyuruList.get(0);
+                current.body = duyuruList.get(1);
+                current.dateDiff = getTimeDifference(
+                        duyuruList.get(2),
+                        currentTime
+                );
+                data.add(current);
+            }
+
+            for (int i = 0; i < firstTimeList.size(); i++) { // ADDING OLD DUYURU IF THERE IS
+                duyuruList = new ArrayList<>();
+                duyuruList.addAll(db.fetchMeMyDuyuru(firstTimeList.get(i))); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
+                current = new DuyuruInformation();
+                Log.i("tuna", "a firstTime post is pulling " + duyuruList.get(0));
+                current.header = duyuruList.get(0);
+                current.body = duyuruList.get(1);
+                current.dateDiff = getTimeDifference(
+                        duyuruList.get(2),
+                        currentTime
+                );
+                data.add(current);
+            }
+
+
+            for (int i = 0; i < oldList.size(); i++) { // ADDING OLD DUYURU IF THERE IS
+                duyuruList = new ArrayList<>();
+                duyuruList.addAll(db.fetchMeMyDuyuru(oldList.get(i))); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
+                current = new DuyuruInformation();
+                Log.i("tuna", "an old post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
                 current.body = duyuruList.get(1);
                 current.dateDiff = getTimeDifference(
@@ -202,18 +254,6 @@ public class Fragment1 extends Fragment {
                 data.add(current);
             }
             dataSize = data.size();
-            for (int i = 0; i < oldList.size(); i++) { // ADDING OLD DUYURU IF THERE IS
-                duyuruList = new ArrayList<>();
-                duyuruList.addAll(db.fetchMeMyDuyuru(i)); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
-                current = new DuyuruInformation();
-                current.header = duyuruList.get(0);
-                current.body = duyuruList.get(1);
-                current.dateDiff = getTimeDifference(
-                        duyuruList.get(2),
-                        currentTime
-                );
-                data.add(current);
-            }
             if (!dataHolder.alreadyShownFragment1) {
                 Log.i("tuna", "update method fired");
                 duyuruGuncelle();
@@ -303,7 +343,9 @@ public class Fragment1 extends Fragment {
 
     public void onEvent(DuyuruDownloadComplated event) {
         ArrayList<Integer> oldList = new ArrayList<>();
-        ArrayList<String> duyuruList = new ArrayList<>();
+        ArrayList<String> duyuruList;
+        ArrayList<Integer> firstTimeList = new ArrayList<>();
+        ArrayList<Integer> newList = new ArrayList<>();
         Log.i("tuna", "we are on Event Fragment1");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String currentTime = sdf.format(new Date());
@@ -316,11 +358,32 @@ public class Fragment1 extends Fragment {
         for (int i = 1; i < db.getDuyuruSayisi(); i++) { // ADDING NEW DUYURU IF THERE IS
             duyuruList = new ArrayList<>();
             duyuruList.addAll(db.fetchMeMyDuyuru(i)); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
-            if (duyuruList.get(5) == "old") {
+            if (duyuruList.get(5).equals("firstTime")) {
+                Log.i("tuna", "this is a firstTime post = " + duyuruList.get(0));
+                firstTimeList.add(i);
+                continue;
+            } else if (duyuruList.get(5).equals("old")) {
+                Log.i("tuna", "this is an old post = " + duyuruList.get(0));
                 oldList.add(i);
                 continue;
             }
+            // so what we add here is basically the "new" items
+            Log.i("tuna", "this is a new post = " + duyuruList.get(0));
+            newList.add(i);
+                /*current = new DuyuruInformation();
+                current.header = duyuruList.get(0);
+                current.body = duyuruList.get(1);
+                current.dateDiff = getTimeDifference(
+                        duyuruList.get(2),
+                        currentTime
+                );
+                data.add(current);*/
+        }
+        for (int i = newList.size() - 1; i >= 0; i--) { // ADDING OLD DUYURU IF THERE IS
+            duyuruList = new ArrayList<>();
+            duyuruList.addAll(db.fetchMeMyDuyuru(newList.get(i))); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
             current = new DuyuruInformation();
+            Log.i("tuna", "a new post is pulling " + duyuruList.get(0));
             current.header = duyuruList.get(0);
             current.body = duyuruList.get(1);
             current.dateDiff = getTimeDifference(
@@ -330,10 +393,26 @@ public class Fragment1 extends Fragment {
             data.add(current);
         }
 
+        for (int i = 0; i < firstTimeList.size(); i++) { // ADDING OLD DUYURU IF THERE IS
+            duyuruList = new ArrayList<>();
+            duyuruList.addAll(db.fetchMeMyDuyuru(firstTimeList.get(i))); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
+            current = new DuyuruInformation();
+            Log.i("tuna", "a firstTime post is pulling " + duyuruList.get(0));
+            current.header = duyuruList.get(0);
+            current.body = duyuruList.get(1);
+            current.dateDiff = getTimeDifference(
+                    duyuruList.get(2),
+                    currentTime
+            );
+            data.add(current);
+        }
+
+
         for (int i = 0; i < oldList.size(); i++) { // ADDING OLD DUYURU IF THERE IS
             duyuruList = new ArrayList<>();
-            duyuruList.addAll(db.fetchMeMyDuyuru(i)); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
+            duyuruList.addAll(db.fetchMeMyDuyuru(oldList.get(i))); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
             current = new DuyuruInformation();
+            Log.i("tuna", "an old post is pulling " + duyuruList.get(0));
             current.header = duyuruList.get(0);
             current.body = duyuruList.get(1);
             current.dateDiff = getTimeDifference(
@@ -343,24 +422,43 @@ public class Fragment1 extends Fragment {
             data.add(current);
         }
         dataSize = data.size();
-
-        final List<DuyuruInformation> data2 = data;
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                adapter = new DuyuruAdapter(getActivity(), data2, new DuyuruAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        handleCardClicks(view, position);
-                    }
-                });
-                //adapter.notifyItemInserted(data2.size()-1);
-                adapter.notifyDataSetChanged();
-                recyclerView.setAdapter(adapter);
-                recyclerView.scrollToPosition(data2.size() - 6);
-            }
-        };
-        getActivity().runOnUiThread(r);
+        if (event.mode == "updating" || event.mode == "firstTime") {
+            final List<DuyuruInformation> data2 = data;
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    adapter = new DuyuruAdapter(getActivity(), data2, new DuyuruAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            handleCardClicks(view, position);
+                        }
+                    });
+                    //adapter.notifyItemInserted(data2.size()-1);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
+                }
+            };
+            getActivity().runOnUiThread(r);
+        } else {
+            // if user has downloaded history, scroll to down
+            final List<DuyuruInformation> data2 = data;
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    adapter = new DuyuruAdapter(getActivity(), data2, new DuyuruAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            handleCardClicks(view, position);
+                        }
+                    });
+                    //adapter.notifyItemInserted(data2.size()-1);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.scrollToPosition(data2.size() - 6);
+                }
+            };
+            getActivity().runOnUiThread(r);
+        }
     }
 
     public void handleCardClicks(View view, int position) {
