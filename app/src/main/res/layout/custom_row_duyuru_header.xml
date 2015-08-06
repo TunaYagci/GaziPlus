@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/duyuru_header_motherLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <view xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/view"
         class="android.support.v7.widget.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/duyuruCardsMargin"
+        android:layout_marginBottom="25dp"
         android:elevation="2dp"
         card_view:cardElevation="2dp">
 
@@ -17,7 +22,7 @@
         <ImageView
             android:id="@+id/bolum_image"
             android:layout_width="wrap_content"
-            android:layout_height="240dp"
+            android:layout_height="250dp"
             android:scaleType="fitXY"
             android:src="@drawable/lowres2" />
 
@@ -36,7 +41,24 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:text="CENGAZİ"
             android:textSize="@dimen/abc_text_size_headline_material"
-
             />
     </view>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_add_white_36dp"
+            app:backgroundTint="@color/material_blue_grey_800"
+            app:borderWidth="0dp"
+            app:elevation="4dp"
+            app:fabSize="normal"
+            app:layout_anchor="@id/view"
+            app:pressedTranslationZ="12dp"
+            app:rippleColor="@android:color/transparent" />
+    </android.support.design.widget.CoordinatorLayout>
+
+
 </LinearLayout>

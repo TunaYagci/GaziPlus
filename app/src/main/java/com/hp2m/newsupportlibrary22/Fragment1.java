@@ -253,6 +253,7 @@ public class Fragment1 extends Fragment {
                 );
                 data.add(current);
             }
+
             dataSize = data.size();
             if (!dataHolder.alreadyShownFragment1) {
                 Log.i("tuna", "update method fired");

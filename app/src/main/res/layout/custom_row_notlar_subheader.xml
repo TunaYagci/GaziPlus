@@ -15,7 +15,7 @@
             android:id="@+id/donemAdi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/my_secondary_text"
+            android:background="@color/my_accent"
             android:gravity="center_horizontal"
             android:padding="5dp"
             android:text="Large Text"

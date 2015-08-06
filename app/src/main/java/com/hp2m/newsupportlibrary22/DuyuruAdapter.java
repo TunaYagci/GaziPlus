@@ -242,7 +242,6 @@ public class DuyuruAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-
 }
 
 class LoadOldDuyuru {
