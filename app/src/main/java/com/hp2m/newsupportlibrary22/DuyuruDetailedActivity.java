@@ -2,6 +2,7 @@ package com.hp2m.newsupportlibrary22;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -19,9 +20,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -32,6 +38,7 @@ import de.greenrobot.event.EventBus;
 public class DuyuruDetailedActivity extends AppCompatActivity {
 
     final EventBus bus = EventBus.getDefault();
+    ImageView image1, image2, image3;
     TextView header, tarih, content;
     RelativeLayout layout;
     String originalLink;
@@ -62,11 +69,16 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         goToOriginalSourceButton = (Button) findViewById(R.id.showOriginal);
         layout = (RelativeLayout) findViewById(R.id.weirdLayout);
         header = (TextView) findViewById(R.id.header);
+        image1 = (ImageView) findViewById(R.id.image1);
+        image2 = (ImageView) findViewById(R.id.image2);
+        image3 = (ImageView) findViewById(R.id.image3);
         tarih = (TextView) findViewById(R.id.tarih);
+
         db = new DuyuruDB(this);
         header.setText(db.fetchMeMyDuyuru(POSITION).get(0));
         tarih.setText("Yayýnlanma tarihi: " + db.fetchMeMyDuyuru(POSITION).get(2));
 
+        Log.i("tuna", "db.fetchMeMyDuyuru(POSITION).get(4)= " + db.fetchMeMyDuyuru(POSITION).get(4));
         if (db.fetchMeMyDuyuru(POSITION).get(4).length() < 2) {
             Log.i("tuna", db.fetchMeMyDuyuru(POSITION).get(4));
             goToOriginalSourceButton.setVisibility(View.GONE);
@@ -77,16 +89,17 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
             // check if its on exceptioner list
             for (int i = 0; i < db.getDuyuruSayisi(); i++) {
                 for (int i2 = 0; i2 < db2.getExceptionedDuyuruSayisi(); i2++) {
-                    if (db.fetchMeMyDuyuru(i).get(0) == db2.fetchFailedDuyuru(i2).get(0)) {
+                    if (db.fetchMeMyDuyuru(i).get(0).equals(db2.fetchFailedDuyuru(i2).get(0))) {
                         isThisDuyuruOnExceptions = true;
                     }
                 }
             }
             if (isThisDuyuruOnExceptions) {
+                Log.i("tuna", "This is on Duyuru Exceptions");
                 onEvent(new StatusForDetailedActivity("exception"));
             }
         } else {
-            Log.i("tuna", "" + db.fetchMeMyDuyuru(POSITION).get(1).length());
+            Log.i("tuna", "gonna load duyuru detailed");
             startLoad();
         }
 
@@ -109,6 +122,65 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
 
 
+        Log.i("tuna", "lets download images");
+        String cx = db.fetchMeMyDuyuru(POSITION).get(6);
+        final ArrayList<String> imageLinks = new ArrayList<>();
+        if (!cx.isEmpty()) {
+            Scanner scanner = new Scanner(cx);
+            while (scanner.hasNextLine()) {
+                String a = scanner.nextLine();
+                imageLinks.add(a);
+            }
+            scanner.close();
+            Log.i("tuna", "there is actually some image, see= " + cx + " or see this= " + imageLinks.get(0));
+
+
+            //  ImageLoader imageLoader = ImageLoader.getInstance();
+            //  imageLoader.clearMemoryCache();
+
+            for (int i = 0; i < imageLinks.size(); i++) {
+                if (i == 0) {
+                    image1.setVisibility(View.VISIBLE);
+                    ImageLoader.getInstance().displayImage(imageLinks.get(i), image1, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            final Uri uri = Uri.parse(imageUri);
+                            image1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent i = new Intent(Intent.ACTION_VIEW);
+                                    i.setDataAndType(uri, "image/jpeg");
+                                    startActivity(i);
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String imageUri, View view) {
+
+                        }
+                    });
+                } else if (i == 1) {
+                    image2.setVisibility(View.VISIBLE);
+                    ImageLoader.getInstance().displayImage(imageLinks.get(i), image2);
+                } else if (i == 2) {
+                    image3.setVisibility(View.VISIBLE);
+                    ImageLoader.getInstance().displayImage(imageLinks.get(i), image3);
+                } else
+                    break;
+            }
+        }
         originalLink = db.fetchMeMyDuyuru(POSITION).get(4);
         final ArrayList<String> links = new ArrayList<>();
         ArrayList<String> linkWords = new ArrayList<>();
@@ -126,6 +198,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         }
 
         final String contentText = db.fetchMeMyDuyuru(POSITION).get(1);
+        Log.i("tuna", "contentText is " + contentText);
         final SpannableString ss = new SpannableString(contentText);
 
 
@@ -140,9 +213,8 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         for (int i = 0; i < linkWords.size(); i++) {
             final int start = contentText.indexOf(linkWords.get(i));
             final int end = start + linkWords.get(i).length();
+            Log.i("tuna", "linkWord is =" + linkWords.get(i) + "and start is " + start + " and end is " + end);
             if (links.get(i).contains("download")) {
-                final DuyuruDB db2 = db;
-
                 final int i3 = i;
                 ClickableSpan clickableSpan = new ClickableSpan() {
 
@@ -154,12 +226,16 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
                         new DuyuruDetailedPageTask(activity, links.get(i3))
                                 .execute();
 
-                        ss.setSpan(new ForegroundColorSpan(R.color.cardview_light_background), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         ss.setSpan(new RelativeSizeSpan(0.8f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.cardview_light_background)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         content.setText(ss);
-                    }
+                    } // once link is clicked, it'll be normal
                 };
-                ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                try {
+                    ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } catch (Exception e) {
+                    Log.i("tuna", e.toString());
+                }
             } else {
                 final int i2 = i;
                 ClickableSpan clickableSpan = new ClickableSpan() {
@@ -172,7 +248,11 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
                 };
                 ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
-            ss.setSpan(new RelativeSizeSpan(1.4f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            try {
+                ss.setSpan(new RelativeSizeSpan(1.4f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } catch (Exception e) {
+                Log.i("tuna", e.toString());
+            }
         }
 
 

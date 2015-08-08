@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +20,6 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -104,9 +101,8 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     .duration(1000)
                     .playOn(((NotHeaderViewHolder) holder).genelOrtNumber);
 
-
-            Picasso picasso = new Picasso.Builder(context)
-                    .downloader(new OkHttpDownloader(new OkHttpClient()))
+            /*Picasso picasso = new Picasso.Builder(context)
+                    .downloader(new UrlConnectionDownloader(context))
                     .listener(new Picasso.Listener() {
                         @Override
                         public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
@@ -115,16 +111,27 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             exception.printStackTrace();
                         }
                     })
-                    .build();
+                    .build();*/
 
             Log.i("tuna", "gonna use picasso");
             SharedPreferences sharedPreferences = context.getSharedPreferences("avatar", Context.MODE_PRIVATE);
-            picasso.with(((NotHeaderViewHolder) holder).sahip.getContext())
+
+            Picasso.with(((NotHeaderViewHolder) holder).sahip.getContext())
                     .load(current.imageLink)
-                    .placeholder(R.drawable.arrow_right)
-                    .error(R.drawable.error_notlar_avatar)
+                    .placeholder(R.drawable.loading_notlar_avatar_2)
+                    .error(R.drawable.loading_error_1)
                     .transform(new CircleTransform())
                     .into(((NotHeaderViewHolder) holder).sahip);
+            /*DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .build();
+            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                    .defaultDisplayImageOptions(defaultOptions)
+                    .build();
+            ImageLoader.getInstance().init(config);
+            ImageLoader.getInstance().displayImage(current.imageLink, ((NotHeaderViewHolder) holder).sahip, defaultOptions);*/
+
             if (!sharedPreferences.getBoolean("IsAvatarDownloadedFor" + current.ogrNo, false)) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("IsAvatarDownloadedFor" + current.ogrNo, true);

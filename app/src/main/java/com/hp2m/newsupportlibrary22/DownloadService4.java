@@ -57,6 +57,20 @@ public class DownloadService4 extends IntentService {
                     builder.append("\n\n");
                 }
             }
+            try {
+                Elements duyuruInsafsizElement = insideDocs.select("div.post-content div");
+                for (int i2 = 0; i2 < duyuruInsafsizElement.size(); i2++) {
+                    Log.i("tuna", "inner side parsing 2");
+                    if (!duyuruInsafsizElement.get(i2).text().isEmpty()) {
+                        //a += duyuruElements.get(i2).text();
+                        //a += "\n\n";
+                        builder.append(duyuruInsafsizElement.get(i2).text());
+                        builder.append("\n\n");
+                    }
+                }
+            } catch (Exception e) {
+                Log.i("tuna", "insafsiz element exception " + e.toString());
+            }
             icerik = builder.toString();
             builder = new StringBuilder();
             Log.i("tuna", "gonna parse links");
@@ -80,16 +94,25 @@ public class DownloadService4 extends IntentService {
             icerikLink = builder.toString();
 
 
+            Log.i("tuna", "gonna look for image links");
+            builder = new StringBuilder();
+            Elements duyuruImageLinks = insideDocs.select("div.post-content img[src]");
+            for (int i = 0; i < duyuruImageLinks.size(); i++) {
+                builder.append(duyuruImageLinks.get(i).attr("abs:src"));
+                builder.append("\n");
+            }
+            String imageLinks = builder.toString();
+
             DuyuruDB db = new DuyuruDB(getBaseContext());
-            DuyuruGetSet duyuru = new DuyuruGetSet(null, // im putting header but not adding it
+            DuyuruGetSet duyuru = new DuyuruGetSet(null,
                     icerik,
                     null,
                     icerikLink,
                     link,
-                    null
+                    null,
+                    imageLinks
             );
             db.updateDuyuru(duyuru, header);
-
 
             if (exceptioner) {
                 bus.post(new ExceptionerResult("goodToGo"));

@@ -41,9 +41,14 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         try {
-            if (mode == "updating") {
-                fragment.swipeLayout.setRefreshing(true);
-            } else if (mode == "firstTime") {
+            if (mode.equals("updating")) {
+                fragment.swipeLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment.swipeLayout.setRefreshing(true);
+                    }
+                });
+            } else if (mode.equals("firstTime")) {
                 fragment.progressBar.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
@@ -63,10 +68,10 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
         // addHeaders to DB directly
         // while updating, check if new item has added
         // like, if duyuruHeaderElement.get(0).text() is on DB or not
-        Document doc = null;
+        Document doc;
         try {
             int timeout = 5000;
-            if (mode == "firstTime")
+            if (mode.equals("firstTime"))
                 timeout = 2000;
             doc = Jsoup.connect(URL).timeout(timeout).get(); // biiiig timeoouuuut
         } catch (IOException e) {
@@ -158,7 +163,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                         fragment.getActivity().startService(intent);
                     }
                 }
-            } else if (mode == "old" || mode == "firstTime") {
+            } else if (mode.equals("old") || mode.equals("firstTime")) {
                 hasAnythingDone = true;
                 int x;
                 if (NET_MAX_DUYURU > DB_MAX_DUYURU + MIN_ITEM_TO_LOAD) // check if website has enough element to fetch
@@ -208,7 +213,8 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                                 tarihList.get(i2),
                                 " ",
                                 " ",
-                                "old"
+                                "old",
+                                " "
                         );
                         db.addDuyuru(duyuru);
                     }
@@ -221,7 +227,8 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                                 tarihList.get(i2),
                                 " ",
                                 " ",
-                                "new"
+                                "new",
+                                " "
                         );
                         db.addDuyuru(duyuru);
                     }
@@ -234,7 +241,8 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                                 tarihList.get(i2),
                                 " ",
                                 " ",
-                                "firstTime"
+                                "firstTime",
+                                " "
                         );
                         db.addDuyuru(duyuru);
                     }
@@ -284,10 +292,10 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
         // updating ise swipeLayout'u durdur
         if (mode == "updating") {
             fragment.swipeLayout.setRefreshing(false);
-            if (LOADED_ITEM_COUNT == 0) {
+           /* if (LOADED_ITEM_COUNT == 0) {
                 Snackbar.make(fragment.motherLayout, "Duyurular güncel", Snackbar.LENGTH_SHORT)
                         .show();
-            }
+            }*/
             }
         //hata varsa
         if (ioException) {

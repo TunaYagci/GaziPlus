@@ -21,6 +21,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
     public static final String COLUMN_CONTENTLINKS = "contentLinks";
     public static final String COLUMN_NEWSLINKS = "newsLinks";
     public static final String COLUMN_NEWOROLD = "newORold";
+    public static final String COLUMN_IMAGELINKS = "img_link";
     private static final String DATABASE_NAME = "duyurular2.db";
 
 
@@ -30,8 +31,8 @@ public class DuyuruDB extends SQLiteOpenHelper {
 
 
     public int getDuyuruSayisi() {
-        String query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_DUYURU;
         SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_DUYURU;
         Cursor c = db.rawQuery(query, null);
         int idMax = 0;
         if (c.moveToFirst())
@@ -53,7 +54,8 @@ public class DuyuruDB extends SQLiteOpenHelper {
                 COLUMN_TARIH + " TEXT, " +
                 COLUMN_CONTENTLINKS + " TEXT, " +
                 COLUMN_NEWSLINKS + " TEXT, " +
-                COLUMN_NEWOROLD + " TEXT" +
+                COLUMN_NEWOROLD + " TEXT, " +
+                COLUMN_IMAGELINKS + " TEXT" +
                 ");";
         db.execSQL(query);
 
@@ -83,6 +85,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
         contentValues.put(COLUMN_CONTENTLINKS, duyuru.getContentLinks());
         contentValues.put(COLUMN_NEWSLINKS, duyuru.getNewsLinks());
         //contentValues.put(COLUMN_NEWOROLD, duyuru.getNewORold());
+        contentValues.put(COLUMN_IMAGELINKS, duyuru.getImageLinks());
         Log.i("tuna", "updated body is = " + duyuru.getContent());
         int i = db.update(TABLE_DUYURU, contentValues, COLUMN_TITLE + "=?", new String[]{header});
         Log.i("tuna", "is update succesful? " + i);
@@ -107,6 +110,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
         contentValues.put(COLUMN_CONTENTLINKS, duyuru.getContentLinks());
         contentValues.put(COLUMN_NEWSLINKS, duyuru.getNewsLinks());
         contentValues.put(COLUMN_NEWOROLD, duyuru.getNewORold());
+        contentValues.put(COLUMN_IMAGELINKS, duyuru.getImageLinks());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_DUYURU, null, contentValues);
         //db.update(TABLE_DUYURU, contentValues, COLUMNN_ID + "=" + 5, null);
@@ -122,7 +126,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
-            for (int i = 1; i < 7; i++) { // 0=_id, 1=title 2=content 3=tarih, 4=contentLinks, 5=newsList 6=newORold
+            for (int i = 1; i < 8; i++) { // 0=_id, 1=title 2=content 3=tarih, 4=contentLinks, 5=newsList 6=newORold 7=imageLinks
                 fetchMeMyDuyuru.add(c.getString(i));
                 //Log.i("tuna", "is this a loop");
             }

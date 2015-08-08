@@ -2,7 +2,6 @@ package com.hp2m.newsupportlibrary22;
 
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -21,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +51,12 @@ public class Fragment1 extends Fragment {
     public Fragment1() {
 
     }
+
+
+    /*private static boolean doesDatabaseExist(ContextWrapper context, String dbName) {
+        File dbFile = context.getDatabasePath(dbName);
+        return dbFile.exists();
+    }*/
 
     private static String getTimeDifference(String old, String now) {
         // taking "now" as parameter coz SimpleDataFormat may cause lag
@@ -93,11 +97,6 @@ public class Fragment1 extends Fragment {
                 }
             }
         }
-    }
-
-    private static boolean doesDatabaseExist(ContextWrapper context, String dbName) {
-        File dbFile = context.getDatabasePath(dbName);
-        return dbFile.exists();
     }
 
     @Override
@@ -173,7 +172,8 @@ public class Fragment1 extends Fragment {
         // check if db exists and "up-to-date"
         // check if db up to date PLEASEEEE
         //if (doesTableExist(db.getReadableDatabase(), db.TABLE_DUYURU)) {
-        if (doesDatabaseExist(getActivity(), db.getDatabaseName())) { // LATER ON CHANGE THIS, thats very SLOWW
+        //if (doesDatabaseExist(getActivity(), db.getDatabaseName())) { // LATER ON CHANGE THIS, thats very SLOWW
+        if (db.getDuyuruSayisi() != 0) {
             ArrayList<Integer> oldList = new ArrayList<>();
             ArrayList<Integer> firstTimeList = new ArrayList<>();
             ArrayList<Integer> newList = new ArrayList<>();
@@ -217,7 +217,10 @@ public class Fragment1 extends Fragment {
                 current = new DuyuruInformation();
                 Log.i("tuna", "a new post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
-                current.body = duyuruList.get(1);
+                if (duyuruList.get(1).isEmpty())
+                    current.body = "Resmi görüntülemek için týklayýn";
+                else
+                    current.body = duyuruList.get(1);
                 current.dateDiff = getTimeDifference(
                         duyuruList.get(2),
                         currentTime
@@ -231,7 +234,10 @@ public class Fragment1 extends Fragment {
                 current = new DuyuruInformation();
                 Log.i("tuna", "a firstTime post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
-                current.body = duyuruList.get(1);
+                if (duyuruList.get(1).isEmpty())
+                    current.body = "Resmi görüntülemek için týklayýn";
+                else
+                    current.body = duyuruList.get(1);
                 current.dateDiff = getTimeDifference(
                         duyuruList.get(2),
                         currentTime
@@ -246,7 +252,10 @@ public class Fragment1 extends Fragment {
                 current = new DuyuruInformation();
                 Log.i("tuna", "an old post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
-                current.body = duyuruList.get(1);
+                if (duyuruList.get(1).isEmpty())
+                    current.body = "Resmi görüntülemek için týklayýn";
+                else
+                    current.body = duyuruList.get(1);
                 current.dateDiff = getTimeDifference(
                         duyuruList.get(2),
                         currentTime
@@ -386,7 +395,10 @@ public class Fragment1 extends Fragment {
             current = new DuyuruInformation();
             Log.i("tuna", "a new post is pulling " + duyuruList.get(0));
             current.header = duyuruList.get(0);
-            current.body = duyuruList.get(1);
+            if (duyuruList.get(1).isEmpty())
+                current.body = "Resmi görüntülemek için týklayýn";
+            else
+                current.body = duyuruList.get(1);
             current.dateDiff = getTimeDifference(
                     duyuruList.get(2),
                     currentTime
@@ -400,7 +412,10 @@ public class Fragment1 extends Fragment {
             current = new DuyuruInformation();
             Log.i("tuna", "a firstTime post is pulling " + duyuruList.get(0));
             current.header = duyuruList.get(0);
-            current.body = duyuruList.get(1);
+            if (duyuruList.get(1).isEmpty())
+                current.body = "Resmi görüntülemek için týklayýn";
+            else
+                current.body = duyuruList.get(1);
             current.dateDiff = getTimeDifference(
                     duyuruList.get(2),
                     currentTime
@@ -415,7 +430,10 @@ public class Fragment1 extends Fragment {
             current = new DuyuruInformation();
             Log.i("tuna", "an old post is pulling " + duyuruList.get(0));
             current.header = duyuruList.get(0);
-            current.body = duyuruList.get(1);
+            if (duyuruList.get(1).isEmpty())
+                current.body = "Resmi görüntülemek için týklayýn";
+            else
+                current.body = duyuruList.get(1);
             current.dateDiff = getTimeDifference(
                     duyuruList.get(2),
                     currentTime
@@ -513,7 +531,6 @@ public class Fragment1 extends Fragment {
                 bus.post(new StatusForDetailedActivity("goodToGo"));
         }
     }
-
 
     public void onEvent(ExceptionerResult event) {
         if (event.message == "goodToGo") {

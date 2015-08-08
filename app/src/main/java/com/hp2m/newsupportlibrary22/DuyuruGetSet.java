@@ -5,15 +5,24 @@ package com.hp2m.newsupportlibrary22;
  */
 public class DuyuruGetSet {
     private int _id;
-    private String title, content, tarih, contentLinks, newsLinks, newORold;
+    private String title, content, tarih, contentLinks, newsLinks, newORold, imageLinks;
 
-    public DuyuruGetSet(String title, String content, String tarih, String contentLinks, String newsLinks, String newORold) {
+    public DuyuruGetSet(String title, String content, String tarih, String contentLinks, String newsLinks, String newORold, String imageLinks) {
         this.title = title;
         this.content = content;
         this.tarih = tarih;
         this.contentLinks = contentLinks;
         this.newsLinks = newsLinks;
         this.newORold = newORold;
+        this.imageLinks = imageLinks;
+    }
+
+    public String getImageLinks() {
+        return imageLinks;
+    }
+
+    public void setImageLinks(String imageLinks) {
+        this.imageLinks = imageLinks;
     }
 
     public String getNewORold() {

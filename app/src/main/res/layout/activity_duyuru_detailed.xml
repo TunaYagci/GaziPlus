@@ -28,10 +28,48 @@
         <RelativeLayout
             android:id="@+id/weirdLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="24dp">
+
+            <ImageView
+                android:id="@+id/image1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tarih"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                android:maxHeight="350dp"
+                android:maxWidth="350dp"
+                android:scaleType="centerInside"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/image2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/image1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:maxHeight="350dp"
+                android:maxWidth="350dp"
+                android:scaleType="centerInside"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/image3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/image2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:maxHeight="350dp"
+                android:maxWidth="350dp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/header"
@@ -63,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tarih"
                 android:layout_alignStart="@+id/tarih"
-                android:layout_below="@+id/tarih"
+                android:layout_below="@+id/image3"
                 android:paddingBottom="24dp"
                 android:text=""
                 android:textColor="@color/cardview_light_background" />
