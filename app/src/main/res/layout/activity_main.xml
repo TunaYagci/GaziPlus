@@ -21,7 +21,7 @@
         android:id="@+id/tabLayout"
         style="@style/tabStayla"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="@dimen/defaultPadding"
         android:background="?attr/colorPrimary"
@@ -31,7 +31,7 @@
         app:tabTextColor="@color/tab_selected_text_color" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/userButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/tabLayout"
@@ -40,7 +40,7 @@
                 android:layout_alignTop="@+id/tabLayout"
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/person_1" />
+                android:src="@drawable/ic_person_outline_white_48dp" />
         </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>

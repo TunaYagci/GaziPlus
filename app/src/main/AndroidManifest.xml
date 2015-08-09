@@ -45,6 +45,12 @@
         <activity
             android:name=".NotlarDetailed"
             android:label="@string/title_activity_notlar_detailed"></activity>
+
+
+        <activity
+            android:name=".UserActivity"
+            android:label="@string/title_activity_notlar_detailed"></activity>
+
     </application>
 
 </manifest>

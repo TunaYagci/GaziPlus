@@ -1,5 +1,6 @@
 package com.hp2m.newsupportlibrary22;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -12,6 +13,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -40,16 +43,27 @@ public class MainActivity extends AppCompatActivity {
         //ab.setHomeAsUpIndicator(R.mipmap.ic_launcher); adding logo
         //ab.setDisplayHomeAsUpEnabled(true); to go back, to the main activity
 
+        ImageButton userButton = (ImageButton) findViewById(R.id.userButton);
+        userButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleUserButtonClick();
+            }
+        });
+
+
+
+
         final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         //tabLayout.setTabGravity(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         tabLayout.setupWithViewPager(mPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.public_1);
-        tabLayout.getTabAt(1).setIcon(R.drawable.school_1);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_white_48dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_school_white_48dp);
         //tabLayout.addTab(tabLayout.newTab().setText("Yemek Listesi"));
-        tabLayout.getTabAt(2).setIcon(R.drawable.cake_1);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_white_48dp);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -106,6 +120,13 @@ public class MainActivity extends AppCompatActivity {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         ImageLoader.getInstance().init(config);
+
+    }
+
+    private void handleUserButtonClick() {
+
+        Intent i = new Intent(this, UserActivity.class);
+        startActivity(i);
 
     }
 

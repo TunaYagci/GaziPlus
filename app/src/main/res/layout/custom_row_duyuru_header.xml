@@ -23,6 +23,7 @@
             android:id="@+id/bolum_image"
             android:layout_width="wrap_content"
             android:layout_height="250dp"
+            android:alpha="0.9"
             android:scaleType="fitXY"
             android:src="@drawable/lowres2" />
 
@@ -34,8 +35,8 @@
             android:layout_height="50dp"
             android:layout_gravity="bottom"
             android:layout_marginTop="8dp"
-            android:alpha="0.8"
-            android:background="#000000"
+            android:alpha="0.7"
+            android:background="@color/duyuru_header_color"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"

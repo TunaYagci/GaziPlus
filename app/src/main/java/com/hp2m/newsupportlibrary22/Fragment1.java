@@ -215,7 +215,7 @@ public class Fragment1 extends Fragment {
                 duyuruList = new ArrayList<>();
                 duyuruList.addAll(db.fetchMeMyDuyuru(newList.get(i))); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
                 current = new DuyuruInformation();
-                Log.i("tuna", "a new post is pulling " + duyuruList.get(0));
+                //Log.i("tuna", "a new post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
                 if (duyuruList.get(1).isEmpty())
                     current.body = "Resmi görüntülemek için týklayýn";
@@ -232,7 +232,7 @@ public class Fragment1 extends Fragment {
                 duyuruList = new ArrayList<>();
                 duyuruList.addAll(db.fetchMeMyDuyuru(firstTimeList.get(i))); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
                 current = new DuyuruInformation();
-                Log.i("tuna", "a firstTime post is pulling " + duyuruList.get(0));
+                // Log.i("tuna", "a firstTime post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
                 if (duyuruList.get(1).isEmpty())
                     current.body = "Resmi görüntülemek için týklayýn";
@@ -250,7 +250,7 @@ public class Fragment1 extends Fragment {
                 duyuruList = new ArrayList<>();
                 duyuruList.addAll(db.fetchMeMyDuyuru(oldList.get(i))); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
                 current = new DuyuruInformation();
-                Log.i("tuna", "an old post is pulling " + duyuruList.get(0));
+                // Log.i("tuna", "an old post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
                 if (duyuruList.get(1).isEmpty())
                     current.body = "Resmi görüntülemek için týklayýn";

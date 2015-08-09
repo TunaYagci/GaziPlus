@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -161,7 +159,7 @@ public class DuyuruAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return position == 0;
     }
 
-    @Override
+    /*@Override
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         if (holder instanceof HeaderViewHolder) {
             BitmapDrawable drawable = (BitmapDrawable) ((HeaderViewHolder) holder).i1.getDrawable();
@@ -185,7 +183,7 @@ public class DuyuruAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     });
 
         }
-    }
+    }*/
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
