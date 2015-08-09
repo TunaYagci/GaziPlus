@@ -2,7 +2,7 @@
 <resources>
     <color name="window_background">#F9F8F8</color>
 
-    <color name="my_primary">#333C36</color>
+    <color name="my_primary">#212121</color>
     <!-- old color: 9c27b0 -->
     <color name="my_primary_dark">#7b1fa2</color>
     <color name="my_primary_light">#B3E5FC</color>
@@ -17,11 +17,11 @@
     <color name="tab_indicator_color">#FFFFFF</color>
     <color name="tab_selected_text_color">#FFFFFF</color>
 
-    <color name="card_color_1">#1D2113</color>
-    <color name="card_color_2">#3F1900</color>
-    <color name="card_color_3">#7A1600</color>
-    <color name="card_color_4">#8C325F</color>
-    <color name="card_color_5">#334500</color>
+    <color name="card_color_1">#235789</color>
+    <color name="card_color_2">#C1292E</color>
+    <color name="card_color_3">#071108</color>
+    <color name="card_color_4">#dd8100</color>
+    <color name="card_color_5">#B10F2E</color>
     <color name="fragment3_backgroundcolor">#f7f7f7</color>
     <color name="raised_button_text_color">@color/cardview_light_background</color>
     <color name="tab_selected_background_color">#BB0A21</color>
@@ -34,8 +34,7 @@
     <color name="login_error_text_color">#ff172a</color>
     <color name="login_success_text_color">#63C132</color>
 
-    light white #d6d6d6
-    808080
 
+    <color name="fragment3_tabColor">#58355e</color>
 
 </resources>

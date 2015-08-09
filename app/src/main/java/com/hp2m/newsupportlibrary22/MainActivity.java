@@ -2,6 +2,7 @@ package com.hp2m.newsupportlibrary22;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,7 +10,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Gazi+");
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);*/
         mPager = (ViewPager) findViewById(R.id.viewPager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(pagerAdapter);
@@ -40,13 +40,48 @@ public class MainActivity extends AppCompatActivity {
         //ab.setHomeAsUpIndicator(R.mipmap.ic_launcher); adding logo
         //ab.setDisplayHomeAsUpEnabled(true); to go back, to the main activity
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.addTab(tabLayout.newTab().setText("Duyuru"));
-        tabLayout.addTab(tabLayout.newTab().setText("Notlar"));
-        tabLayout.addTab(tabLayout.newTab().setText("Yemek Listesi"));
-        tabLayout.addTab(tabLayout.newTab().setText("Ekstra"));
+        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        //tabLayout.setTabGravity(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
         tabLayout.setupWithViewPager(mPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.public_1);
+        tabLayout.getTabAt(1).setIcon(R.drawable.school_1);
+        //tabLayout.addTab(tabLayout.newTab().setText("Yemek Listesi"));
+        tabLayout.getTabAt(2).setIcon(R.drawable.cake_1);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        appBarLayout.setBackgroundColor(getResources().getColor(R.color.my_primary));
+                        tabLayout.setBackgroundColor(getResources().getColor(R.color.my_primary));
+                        mPager.setCurrentItem(0, true);
+                        return;
+                    case 1:
+                        appBarLayout.setBackgroundColor(getResources().getColor(R.color.my_accent));
+                        tabLayout.setBackgroundColor(getResources().getColor(R.color.my_accent));
+                        mPager.setCurrentItem(1, true);
+                        return;
+                    case 2:
+                        appBarLayout.setBackgroundColor(getResources().getColor(R.color.fragment3_tabColor));
+                        tabLayout.setBackgroundColor(getResources().getColor(R.color.fragment3_tabColor));
+                        mPager.setCurrentItem(2, true);
+                        return;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .showImageOnFail(R.drawable.detailed_duyuru_error)
@@ -57,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 .postProcessor(new BitmapProcessor() {
                     @Override
                     public Bitmap process(Bitmap bmp) {
-                        return Bitmap.createScaledBitmap(bmp, 700, 700, false);
+                        return Bitmap.createScaledBitmap(bmp, 1000, 1000, false);
                     }
                 })
                 .cacheInMemory(true)
@@ -106,13 +141,13 @@ public class MainActivity extends AppCompatActivity {
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter //implements PagerSlidingTabStrip.IconTabProvider
     {
-        private final int NUM_PAGES = 4;
+        private final int NUM_PAGES = 3;
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        @Override
+        /*@Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
@@ -126,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     return null;
             }
-        }
+        }*/
 
         @Override
         public Fragment getItem(int position) {
@@ -138,8 +173,8 @@ public class MainActivity extends AppCompatActivity {
                     return new Fragment2();
                 case 2:
                     return new Fragment3();
-                case 3:
-                    return new Fragment4();
+                //case 3:
+                // return new Fragment4();
                 default:
                     return null;
             }

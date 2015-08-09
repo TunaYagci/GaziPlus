@@ -8,10 +8,14 @@
     <!-- ctrl+alt+l to arrange code -->
 
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
@@ -19,22 +23,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
+        android:layout_marginTop="@dimen/defaultPadding"
         android:background="?attr/colorPrimary"
         android:scrollbars="horizontal"
+
         app:layout_scrollFlags="scroll|enterAlways"
         app:tabTextColor="@color/tab_selected_text_color" />
 
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tabLayout"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/tabLayout"
+                android:layout_marginRight="8dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/person_1" />
+        </RelativeLayout>
 
+    </android.support.design.widget.AppBarLayout>
     <view
         android:id="@+id/viewPager"
         class="android.support.v4.view.ViewPager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tabLayout"
+        android:layout_below="@+id/appBarLayout"
         android:layout_centerHorizontal="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
 </RelativeLayout>
-
-
