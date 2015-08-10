@@ -13,7 +13,8 @@ import java.util.ArrayList;
 public class DuyuruDB extends SQLiteOpenHelper {
 
     public final static int DATABASE_VERSION = 1;
-    public static final String TABLE_DUYURU = "cengazi2";
+    public static final String TABLE_FAKULTE = "fakulte";
+    public static final String TABLE_BOLUM = "bolum";
     public static final String COLUMNN_ID = "_id";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_CONTENT = "content";
@@ -30,9 +31,13 @@ public class DuyuruDB extends SQLiteOpenHelper {
     }
 
 
-    public int getDuyuruSayisi() {
+    public int getDuyuruSayisi(String generalMode) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_DUYURU;
+        String query;
+        if (generalMode.equals("bolum"))
+            query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_BOLUM;
+        else
+            query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_FAKULTE;
         Cursor c = db.rawQuery(query, null);
         int idMax = 0;
         if (c.moveToFirst())
@@ -47,7 +52,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.i("tuna", "onCreate DB");
-        String query = "CREATE TABLE " + TABLE_DUYURU + " (" +
+        String query = "CREATE TABLE " + TABLE_BOLUM + " (" +
                 COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TITLE + " TEXT, " +
                 COLUMN_CONTENT + " TEXT, " +
@@ -58,6 +63,20 @@ public class DuyuruDB extends SQLiteOpenHelper {
                 COLUMN_IMAGELINKS + " TEXT" +
                 ");";
         db.execSQL(query);
+
+        String query2 = "CREATE TABLE " + TABLE_FAKULTE + " (" +
+                COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_TITLE + " TEXT, " +
+                COLUMN_CONTENT + " TEXT, " +
+                COLUMN_TARIH + " TEXT, " +
+                COLUMN_CONTENTLINKS + " TEXT, " +
+                COLUMN_NEWSLINKS + " TEXT, " +
+                COLUMN_NEWOROLD + " TEXT, " +
+                COLUMN_IMAGELINKS + " TEXT" +
+                ");";
+        db.execSQL(query2);
+
+
 
         Log.i("tuna", "db created");
     }
@@ -76,7 +95,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
         super.onDowngrade(db, oldVersion, newVersion);
     }
 
-    public int updateDuyuru(DuyuruGetSet duyuru, String header) {
+    public int updateDuyuru(DuyuruGetSet duyuru, String header, String generalMode) {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         ContentValues contentValues = new ContentValues();
@@ -87,7 +106,12 @@ public class DuyuruDB extends SQLiteOpenHelper {
         //contentValues.put(COLUMN_NEWOROLD, duyuru.getNewORold());
         contentValues.put(COLUMN_IMAGELINKS, duyuru.getImageLinks());
         Log.i("tuna", "updated body is = " + duyuru.getContent());
-        int i = db.update(TABLE_DUYURU, contentValues, COLUMN_TITLE + "=?", new String[]{header});
+        int i;
+        if (generalMode.equals("bolum"))
+            i = db.update(TABLE_BOLUM, contentValues, COLUMN_TITLE + "=?", new String[]{header});
+        else
+            i = db.update(TABLE_FAKULTE, contentValues, COLUMN_TITLE + "=?", new String[]{header});
+
         Log.i("tuna", "is update succesful? " + i);
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -102,7 +126,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
 
 
     // Tarihe gore yemek ekle
-    public void addDuyuru(DuyuruGetSet duyuru) {
+    public void addDuyuru(DuyuruGetSet duyuru, String generalMode) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_TITLE, duyuru.getTitle());
         contentValues.put(COLUMN_CONTENT, duyuru.getContent());
@@ -112,16 +136,23 @@ public class DuyuruDB extends SQLiteOpenHelper {
         contentValues.put(COLUMN_NEWOROLD, duyuru.getNewORold());
         contentValues.put(COLUMN_IMAGELINKS, duyuru.getImageLinks());
         SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_DUYURU, null, contentValues);
+        if (generalMode.equals("bolum"))
+            db.insert(TABLE_BOLUM, null, contentValues);
+        else
+            db.insert(TABLE_FAKULTE, null, contentValues);
         //db.update(TABLE_DUYURU, contentValues, COLUMNN_ID + "=" + 5, null);
         db.close();
     }
 
-    public ArrayList<String> fetchMeMyDuyuru(int row) { // 1 is title, 2 is content
+    public ArrayList<String> fetchMeMyDuyuru(int row, String generalMode) { // 1 is title, 2 is content
         Log.i("tuna", "fetchMeMyDuyuru");
         ArrayList<String> fetchMeMyDuyuru = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_DUYURU + " WHERE " + COLUMNN_ID + "=" + row;
+        String query;
+        if (generalMode.equals("bolum"))
+            query = "SELECT * FROM " + TABLE_BOLUM + " WHERE " + COLUMNN_ID + "=" + row;
+        else
+            query = "SELECT * FROM " + TABLE_FAKULTE + " WHERE " + COLUMNN_ID + "=" + row;
 
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();

@@ -43,7 +43,7 @@ public class UserActivity extends AppCompatActivity {
         avatar = (ImageView) findViewById(R.id.avatar);
         name = (TextView) findViewById(R.id.name);
         bolum = (TextView) findViewById(R.id.bolum);
-        loginButton = (Button) findViewById(R.id.loginButton);
+        loginButton = (Button) findViewById(R.id.ogrenciLoginLayout);
         haventLoggedIn = (TextView) findViewById(R.id.youHaventLoggedIn);
 
 

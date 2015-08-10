@@ -2,8 +2,8 @@
 <resources>
     <color name="window_background">#F9F8F8</color>
 
-    <color name="my_primary">#0a3d4f</color>
-    <!-- old color: 9c27b0 -->
+    <color name="my_primary">#393e41</color>
+    <!-- old color: 9c27b0 393e41-->
     <color name="my_primary_dark">#143E51</color>
     <color name="my_primary_light">#B3E5FC</color>
     <color name="my_accent">#B70003</color>
@@ -38,5 +38,7 @@
     <color name="fragment3_tabColor">#58355e</color>
     <color name="activity_detailed_toolbar">#333C36</color>
     <color name="duyuru_header_color">#8c0002</color>
+
+    <color name="welcome_activity_login">#1462AA</color>
 
 </resources>

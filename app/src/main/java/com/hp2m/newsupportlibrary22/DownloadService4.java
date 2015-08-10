@@ -1,7 +1,9 @@
 package com.hp2m.newsupportlibrary22;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -30,6 +32,8 @@ public class DownloadService4 extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.i("tuna", "service4 started");
 
+        SharedPreferences sP = this.getBaseContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        String generalMode = sP.getString("generalMode", "");
         String header = intent.getStringExtra("header");
         // int iStart=intent.getIntExtra("iStart", 0);
         // int iSize=intent.getIntExtra("iSize", 0);
@@ -112,12 +116,12 @@ public class DownloadService4 extends IntentService {
                     null,
                     imageLinks
             );
-            db.updateDuyuru(duyuru, header);
+            db.updateDuyuru(duyuru, header, generalMode);
 
             if (exceptioner) {
                 bus.post(new ExceptionerResult("goodToGo"));
                 DuyuruExceptionDB db2 = new DuyuruExceptionDB(getApplicationContext());
-                db2.deleteFailedDuyuru(header);
+                db2.deleteFailedDuyuru(header, generalMode);
             } else {
                 Log.i("tuna", "service2 completed job, reporting back");
                 bus.post(new ThreadResult("goodToGo"));
@@ -134,7 +138,7 @@ public class DownloadService4 extends IntentService {
                         header,
                         link
                 );
-                db2.addFailedDuyuru(fetcher);
+                db2.addFailedDuyuru(fetcher, generalMode);
             }
         }
     }

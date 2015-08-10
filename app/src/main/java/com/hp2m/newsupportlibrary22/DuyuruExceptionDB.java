@@ -13,7 +13,8 @@ import java.util.ArrayList;
 public class DuyuruExceptionDB extends SQLiteOpenHelper {
 
     public final static int DATABASE_VERSION = 1;
-    public static final String TABLE_EXCEPTION = "cengaziExceptions";
+    public static final String TABLE_FAKULTE_EXCEPTIONS = "fakulteExceptions";
+    public static final String TABLE_BOLUM_EXCEPTIONS = "bolumExceptions";
     public static final String COLUMNN_ID = "_id";
     public static final String COLUMN_HEADER = "header";
     public static final String COLUMN_LINK = "link";
@@ -28,12 +29,20 @@ public class DuyuruExceptionDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         Log.i("tuna", "onCreate Exception DB");
-        String query = "CREATE TABLE " + TABLE_EXCEPTION + " (" +
+        String query = "CREATE TABLE " + TABLE_BOLUM_EXCEPTIONS + " (" +
                 COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_HEADER + " TEXT, " +
                 COLUMN_LINK + " TEXT" +
                 ");";
         db.execSQL(query);
+
+        String query2 = "CREATE TABLE " + TABLE_FAKULTE_EXCEPTIONS + " (" +
+                COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_HEADER + " TEXT, " +
+                COLUMN_LINK + " TEXT" +
+                ");";
+        db.execSQL(query2);
+
 
         Log.i("tuna", "Exception db created");
 
@@ -51,31 +60,41 @@ public class DuyuruExceptionDB extends SQLiteOpenHelper {
     }
 
 
-    public void addFailedDuyuru(DuyuruExceptionGetSet fetcher) {
+    public void addFailedDuyuru(DuyuruExceptionGetSet fetcher, String generalMode) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_HEADER, fetcher.getHeader());
         contentValues.put(COLUMN_LINK, fetcher.getLink());
         SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_EXCEPTION, null, contentValues);
+        if (generalMode.equals("bolum"))
+            db.insert(TABLE_BOLUM_EXCEPTIONS, null, contentValues);
+        else
+            db.insert(TABLE_FAKULTE_EXCEPTIONS, null, contentValues);
         //db.update(TABLE_DUYURU, contentValues, COLUMNN_ID + "=" + 5, null);
         db.close();
     }
 
-    public void deleteFailedDuyuru(String header) {
+    public void deleteFailedDuyuru(String header, String generalMode) {
         Log.i("tuna", "onDelete from ExceptionDB " + header);
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
-        db.delete(TABLE_EXCEPTION, COLUMN_HEADER + "=?", new String[]{header});
+        if (generalMode.equals("bolum"))
+            db.delete(TABLE_BOLUM_EXCEPTIONS, COLUMN_HEADER + "=?", new String[]{header});
+        else
+            db.delete(TABLE_FAKULTE_EXCEPTIONS, COLUMN_HEADER + "=?", new String[]{header});
         db.setTransactionSuccessful();
         db.endTransaction();
         db.close();
     }
 
-    public ArrayList<String> fetchFailedDuyuru(int row) {
+    public ArrayList<String> fetchFailedDuyuru(int row, String generalMode) {
         Log.i("tuna", "fetchMeMyDuyuru");
         ArrayList<String> fetchFailedDuyuru = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_EXCEPTION + " WHERE " + COLUMNN_ID + "=" + row;
+        String query;
+        if (generalMode.equals("bolum"))
+            query = "SELECT * FROM " + TABLE_BOLUM_EXCEPTIONS + " WHERE " + COLUMNN_ID + "=" + row;
+        else
+            query = "SELECT * FROM " + TABLE_FAKULTE_EXCEPTIONS + " WHERE " + COLUMNN_ID + "=" + row;
 
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
@@ -91,8 +110,13 @@ public class DuyuruExceptionDB extends SQLiteOpenHelper {
         return fetchFailedDuyuru;
     }
 
-    public int getExceptionedDuyuruSayisi() {
-        String query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_EXCEPTION;
+    public int getExceptionedDuyuruSayisi(String generalMode) {
+        String query;
+        if (generalMode.equals("bolum"))
+            query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_BOLUM_EXCEPTIONS;
+        else
+            query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_FAKULTE_EXCEPTIONS;
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
         int idMax = 0;

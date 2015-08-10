@@ -1,7 +1,9 @@
 package com.hp2m.newsupportlibrary22;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -47,12 +50,19 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
     ProgressBar progressBar;
     private int POSITION;
     private DuyuruDB db;
+    private String generalMode;
+    private ImageButton reload;
+    private TextView reloadText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_duyuru_detailed);
 
+        reload = (ImageButton) findViewById(R.id.reload);
+        reloadText = (TextView) findViewById(R.id.reloadText);
+        SharedPreferences sP = getSharedPreferences("user", Context.MODE_PRIVATE);
+        generalMode = sP.getString("generalMode", "");
         activity = this;
         bus.register(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,21 +85,21 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         tarih = (TextView) findViewById(R.id.tarih);
 
         db = new DuyuruDB(this);
-        header.setText(db.fetchMeMyDuyuru(POSITION).get(0));
-        tarih.setText("Yayýnlanma tarihi: " + db.fetchMeMyDuyuru(POSITION).get(2));
+        header.setText(db.fetchMeMyDuyuru(POSITION, generalMode).get(0));
+        tarih.setText("Yayýnlanma tarihi: " + db.fetchMeMyDuyuru(POSITION, generalMode).get(2));
 
-        Log.i("tuna", "db.fetchMeMyDuyuru(POSITION).get(4)= " + db.fetchMeMyDuyuru(POSITION).get(4));
-        if (db.fetchMeMyDuyuru(POSITION).get(4).length() < 2) {
-            Log.i("tuna", db.fetchMeMyDuyuru(POSITION).get(4));
+        Log.i("tuna", "db.fetchMeMyDuyuru(POSITION).get(4)= " + db.fetchMeMyDuyuru(POSITION, generalMode).get(4));
+        if (db.fetchMeMyDuyuru(POSITION, generalMode).get(4).length() < 2) {
+            Log.i("tuna", db.fetchMeMyDuyuru(POSITION, generalMode).get(4));
             goToOriginalSourceButton.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
 
             DuyuruExceptionDB db2 = new DuyuruExceptionDB(getApplicationContext());
             boolean isThisDuyuruOnExceptions = false;
             // check if its on exceptioner list
-            for (int i = 0; i < db.getDuyuruSayisi(); i++) {
-                for (int i2 = 0; i2 < db2.getExceptionedDuyuruSayisi(); i2++) {
-                    if (db.fetchMeMyDuyuru(i).get(0).equals(db2.fetchFailedDuyuru(i2).get(0))) {
+            for (int i = 0; i < db.getDuyuruSayisi(generalMode); i++) {
+                for (int i2 = 0; i2 < db2.getExceptionedDuyuruSayisi(generalMode); i2++) {
+                    if (db.fetchMeMyDuyuru(i, generalMode).get(0).equals(db2.fetchFailedDuyuru(i2, generalMode).get(0))) {
                         isThisDuyuruOnExceptions = true;
                     }
                 }
@@ -123,7 +133,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
 
 
         Log.i("tuna", "lets download images");
-        String cx = db.fetchMeMyDuyuru(POSITION).get(6);
+        String cx = db.fetchMeMyDuyuru(POSITION, generalMode).get(6);
         final ArrayList<String> imageLinks = new ArrayList<>();
         if (!cx.isEmpty()) {
             Scanner scanner = new Scanner(cx);
@@ -181,10 +191,10 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
                     break;
             }
         }
-        originalLink = db.fetchMeMyDuyuru(POSITION).get(4);
+        originalLink = db.fetchMeMyDuyuru(POSITION, generalMode).get(4);
         final ArrayList<String> links = new ArrayList<>();
         ArrayList<String> linkWords = new ArrayList<>();
-        String a2link = db.fetchMeMyDuyuru(POSITION).get(3);
+        String a2link = db.fetchMeMyDuyuru(POSITION, generalMode).get(3);
         if (!a2link.equals("none")) {
             Scanner scanner = new Scanner(a2link);
             while (scanner.hasNextLine()) {
@@ -197,7 +207,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
             scanner.close();
         }
 
-        final String contentText = db.fetchMeMyDuyuru(POSITION).get(1);
+        final String contentText = db.fetchMeMyDuyuru(POSITION, generalMode).get(1);
         Log.i("tuna", "contentText is " + contentText);
         final SpannableString ss = new SpannableString(contentText);
 
@@ -267,21 +277,32 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         Log.i("tuna", "onEvent StatusForDetailedActivity");
         try {
             int indexOfException = 0;
-            if (event.message == "goodToGo") {
+            if (event.message.equals("goodToGo")) {
                 startLoad();
 
             } else { // means an exception has occurred in loading
                 DuyuruExceptionDB db2 = new DuyuruExceptionDB(this);
-                for (int i = 0; i < db.getDuyuruSayisi(); i++) {
-                    for (int i2 = 0; i2 < db2.getExceptionedDuyuruSayisi(); i2++) {
-                        if (db.fetchMeMyDuyuru(i).get(0) == db2.fetchFailedDuyuru(i2).get(0)) {
+                for (int i = 0; i < db.getDuyuruSayisi(generalMode); i++) {
+                    for (int i2 = 0; i2 < db2.getExceptionedDuyuruSayisi(generalMode); i2++) {
+                        if (db.fetchMeMyDuyuru(i, generalMode).get(0).equals(db2.fetchFailedDuyuru(i2, generalMode).get(0))) {
                             indexOfException = i2;
                         }
                     }
                 }
-                Log.i("tuna", "found exception, it is= " + db2.fetchFailedDuyuru(indexOfException).get(0));
+                Log.i("tuna", "found exception, it is= " + db2.fetchFailedDuyuru(indexOfException, generalMode).get(0));
                 progressBar.setVisibility(View.GONE);
                 final int indexOfException2 = indexOfException;
+                reload.setVisibility(View.VISIBLE);
+                reloadText.setVisibility(View.VISIBLE);
+                reload.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        reload.setVisibility(View.INVISIBLE);
+                        reloadText.setVisibility(View.INVISIBLE);
+                        HandleIOExceptions io = new HandleIOExceptions(getApplicationContext());
+                        io.main(indexOfException2);
+                    }
+                });
                 Snackbar.make(layout, "Sunucuya baðlanýlamýyor", Snackbar.LENGTH_LONG)
                         .setAction("Tekrar Dene", new View.OnClickListener() {
                             @Override

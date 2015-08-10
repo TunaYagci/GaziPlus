@@ -1,6 +1,8 @@
 package com.hp2m.newsupportlibrary22;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -26,7 +28,9 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
     int LOADED_ITEM_COUNT = 0;
     boolean hasAnythingDone = false;
     boolean ioException = false;
-
+    private String URL;
+    private String generalMode;
+    private SharedPreferences sharedPreferences;
     public DuyuruTask(Fragment1 fragment, String mode) {
         this.fragment = fragment;
         this.mode = mode;
@@ -41,6 +45,10 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         try {
+            sharedPreferences = this.fragment.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+            URL = sharedPreferences.getString("duyuruLink", "");
+            generalMode = sharedPreferences.getString("generalMode", "");
+
             if (mode.equals("updating")) {
                 fragment.swipeLayout.post(new Runnable() {
                     @Override
@@ -61,7 +69,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         // List<String> icerikList, icerikLinkList, newsLinkList, headerList;
         List<String> headerList, tarihList;
-        final String URL = "http://mf-bm.gazi.edu.tr/posts?type=news";
+        //final String URL = "http://mf-bm.gazi.edu.tr/posts?type=news";
         Log.i("tuna", "do in background");
 
         // go to main page, fetch links and "duyuru" headers
@@ -89,7 +97,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
 
             DuyuruDB db2 = new DuyuruDB(fragment.getActivity());
 
-            final int DB_MAX_DUYURU = db2.getDuyuruSayisi();
+            final int DB_MAX_DUYURU = db2.getDuyuruSayisi(generalMode);
             final int NET_MAX_DUYURU = duyuruHeaderElements.size() - 4;
             final int MIN_ITEM_TO_LOAD = 4;
             // Log.i("tuna", "Net Max Duyuru = "+ NET_MAX_DUYURU);
@@ -105,8 +113,8 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                 int updatedFirstRow = -1;
                 // check if user has loaded "any" new item
                 for (int j = DB_MAX_POSSIBLE_DUYURU; j >= 1; j--) {
-                    Log.i("tuna", "last item is " + db2.fetchMeMyDuyuru(j).get(0));
-                    if (db2.fetchMeMyDuyuru(j).get(5).equals("new")) { //db max duyuru+1??
+                    Log.i("tuna", "last item is " + db2.fetchMeMyDuyuru(j, generalMode).get(0));
+                    if (db2.fetchMeMyDuyuru(j, generalMode).get(5).equals("new")) { //db max duyuru+1??
                         updatedFirstRow = j;
                         break;
                     }
@@ -116,7 +124,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                     // user hasnt loaded any new item, check for firstTime items
                     for (int i = 0; i < NET_MAX_DUYURU; i++) {
                         Log.i("tuna", "duyuruHeaderElementsGet(i) = " + duyuruHeaderElements.get(i).text().substring(17));
-                        if (db2.fetchMeMyDuyuru(1).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
+                        if (db2.fetchMeMyDuyuru(1, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
                             break;
                         else {
                             updateList.add(i);
@@ -127,7 +135,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                     // user HAS loaded new items
                     for (int i = 0; i < NET_MAX_DUYURU; i++) {
                         // check if item is same or not
-                        if (db2.fetchMeMyDuyuru(updatedFirstRow).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
+                        if (db2.fetchMeMyDuyuru(updatedFirstRow, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
                             break;
                         else {
                             // add it coz it is new
@@ -216,7 +224,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                                 "old",
                                 " "
                         );
-                        db.addDuyuru(duyuru);
+                        db.addDuyuru(duyuru, generalMode);
                     }
                 } else if (mode.equals("updating")) {
                     Log.i("tuna", "gonna add " + LOADED_ITEM_COUNT + " item as " + mode);
@@ -230,7 +238,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                                 "new",
                                 " "
                         );
-                        db.addDuyuru(duyuru);
+                        db.addDuyuru(duyuru, generalMode);
                     }
                 } else if (mode.equals("firstTime")) {
                     Log.i("tuna", "gonna add " + LOADED_ITEM_COUNT + " item as " + mode);
@@ -244,7 +252,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                                 "firstTime",
                                 " "
                         );
-                        db.addDuyuru(duyuru);
+                        db.addDuyuru(duyuru, generalMode);
                     }
                     }
                 }
@@ -261,8 +269,35 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        if (ioException) {
+            if (mode.equals("old")) {
+                // adapter set to get rid of progress dialog
+                fragment.recyclerView.setAdapter(fragment.adapter);
+                fragment.recyclerView.scrollToPosition(fragment.dataSize);
+            } else if (mode.equals("firstTime")) {
+                fragment.reload.setVisibility(View.VISIBLE);
+                fragment.reloadText.setVisibility(View.VISIBLE);
+                fragment.reload.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fragment.LoadDuyuruForFirstTime();
+                        fragment.reload.setVisibility(View.INVISIBLE);
+                        fragment.reloadText.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
+            Snackbar.make(fragment.coordinator, "Sunucuya eriþilemiyor", Snackbar.LENGTH_LONG)
+                    .setAction("Tekrar Dene", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new DuyuruTask(fragment, mode).execute();
+                        }
+                    })
+                    .show();
+            return;
+        }
 
-        if (mode == "firstTime") {
+        if (mode.equals("firstTime")) {
             fragment.progressBar.setVisibility(View.GONE);
             if (LOADED_ITEM_COUNT == 0) { // demek ki bir hata oldu, ioException vs.
                 fragment.reload.setVisibility(View.VISIBLE);
@@ -283,12 +318,18 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
         // mod old veya updating
         if (LOADED_ITEM_COUNT > 0) {
             bus.post(new DuyuruDownloadComplated("letsGo", mode));
-            if (mode == "updating") {
+            if (mode.equals("updating")) {
                 // updating'de yeni item varsa flash efekti
                 lowerBrightness(fragment.motherLayout);
             }
 
-            }
+            } else {
+            if (sharedPreferences.getBoolean("needListUpdate", false))
+                bus.post(new DuyuruDownloadComplated("letsGo", mode));
+            else
+                fragment.setFabToReady();
+
+        }
         // updating ise swipeLayout'u durdur
         if (mode == "updating") {
             fragment.swipeLayout.setRefreshing(false);
@@ -298,27 +339,12 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
             }*/
             }
         //hata varsa
-        if (ioException) {
-            if (mode == "old") {
-                // adapter set to get rid of progress dialog
-                fragment.recyclerView.setAdapter(fragment.adapter);
-                fragment.recyclerView.scrollToPosition(fragment.dataSize);
-            }
-            Snackbar.make(fragment.motherLayout, "Sunucuya eriþilemiyor", Snackbar.LENGTH_LONG)
-                    .setAction("Tekrar Dene", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            new DuyuruTask(fragment, mode).execute();
-                        }
-                    })
-                        .show();
 
-            }
         if (mode == "old") { // limit duyuru reached
             if (LOADED_ITEM_COUNT == 0) {
                 fragment.recyclerView.setAdapter(fragment.adapter);
                 fragment.recyclerView.scrollToPosition(fragment.dataSize);
-                Snackbar.make(fragment.motherLayout, "Duyuru bulunamadý", Snackbar.LENGTH_LONG)
+                Snackbar.make(fragment.coordinator, "Duyuru bulunamadý", Snackbar.LENGTH_LONG)
                         .show();
             }
         }

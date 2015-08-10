@@ -1,0 +1,139 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hp2m.newsupportlibrary22.WelcomeActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/welcomeact_4" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_above="@+id/ogrenciLoginLayout"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/logo3" />
+
+    <RelativeLayout
+        android:id="@+id/ogrenciLoginLayout"
+        android:layout_width="350sp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/welcome_activity_ogrencilogin"
+        android:onClick="ogrenciLogin"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="10dp"
+            android:text="Öğrenci Girişi"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/ic_school_white_48dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/betaTesterLayout"
+        android:layout_width="350sp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/ogrenciLoginLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/welcome_custom_betatester"
+        android:onClick="betaTesterLogin"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="10dp"
+            android:text="Beta Tester"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/beta_icon_2" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/ogrenciLoginEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/ogrenciLoginFinal"
+        android:layout_alignLeft="@+id/ogrenciLoginFinal"
+        android:layout_alignRight="@+id/ogrenciLoginFinal"
+        android:layout_alignStart="@+id/ogrenciLoginFinal"
+        android:layout_below="@+id/logo"
+        android:layout_marginTop="29dp"
+        android:hint="Öğrenci numarası"
+        android:inputType="number"
+        android:maxLength="9"
+        android:maxLines="1"
+        android:textColorHint="#FFFFFF"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/ogrenciLoginFinal"
+        android:layout_width="350sp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/ogrenciLoginErrorText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/welcome_activity_ogrencilogin"
+        android:onClick="ogrenciLoginFinal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="10dp"
+            android:text="Giriş Yap"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/ic_school_white_48dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/ogrenciLoginErrorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ogrenciLoginEditText"
+        android:layout_alignStart="@+id/ogrenciLoginEditText"
+        android:layout_below="@+id/ogrenciLoginEditText"
+        android:layout_marginTop="3dp"
+        android:text="Böyle bir öğrenci numarası yok hacı"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

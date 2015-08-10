@@ -79,7 +79,7 @@ public class Fragment2 extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setVisibility(View.GONE);
         loginErrorText = (TextView) rootView.findViewById(R.id.login_error);
-        loginButton = (Button) rootView.findViewById(R.id.loginButton);
+        loginButton = (Button) rootView.findViewById(R.id.ogrenciLoginLayout);
         bottomLine = (ImageView) rootView.findViewById(R.id.bottomLine);
         topLine = (ImageView) rootView.findViewById(R.id.topLine);
         topLine.setVisibility(View.VISIBLE);

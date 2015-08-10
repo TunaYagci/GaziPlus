@@ -40,7 +40,7 @@
                 android:layout_alignTop="@+id/tabLayout"
                 android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_person_outline_white_48dp" />
+                android:src="@drawable/person_2" />
         </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>

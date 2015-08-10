@@ -73,7 +73,7 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/ogrenciLoginLayout"
             android:layout_width="300sp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/avatar"
