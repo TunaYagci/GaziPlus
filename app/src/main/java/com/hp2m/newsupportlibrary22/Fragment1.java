@@ -130,6 +130,10 @@ public class Fragment1 extends Fragment {
             }
         });
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+        swipeLayout.setColorSchemeResources(R.color.card_color_1,
+                R.color.card_color_2,
+                R.color.card_color_4,
+                R.color.card_color_5);
         /*swipeLayout.setProgressBackgroundColorSchemeColor(
                 getResources().getColor(R.color.shadow_end_color)*
         );*/
@@ -141,7 +145,6 @@ public class Fragment1 extends Fragment {
 
             }
         });
-        swipeLayout.setColorSchemeColors(R.color.my_primary_dark);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
@@ -187,7 +190,7 @@ public class Fragment1 extends Fragment {
 
     public void setFabToLoading() {
         fab.setClickable(false);
-        fab.setImageResource(R.drawable.loading_notlar_avatar_2);
+        fab.setImageResource(R.drawable.loading_notlar_avatar_2); // or loading_fab...
     }
 
     public void setFabToReady() {

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +35,7 @@ public class Fragment3 extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ArrayList<String> yemekList;
+    private DataHolder dataHolder = new DataHolder();
 
     public Fragment3() {
 
@@ -102,11 +104,24 @@ public class Fragment3 extends Fragment {
                 current.cardColor = cardColors[i];
                 data.add(current);
             }
+            if (!dataHolder.alreadyShownFragment3) {
+                yemekGuncelle();
+                dataHolder.alreadyShownFragment3 = true;
+            }
             return data;
         } else {
             List<YemekInformation> data = Collections.emptyList();
             if (isNetworkAvailable()) {
+                dataHolder.alreadyShownFragment3 = true;
                 yemekYukle();
+            } else {
+                Snackbar.make(motherLayout, "Ýnternete eriþilemiyor", Snackbar.LENGTH_SHORT)
+                        .setAction("Yeniden dene", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getData();
+                            }
+                        });
             }
             return data;
         }
@@ -161,7 +176,9 @@ public class Fragment3 extends Fragment {
     }
 
     private void yemekGuncelle() {
-        new YemekTask(this, true).execute();
+        if (isNetworkAvailable()) {
+            new YemekTask(this, true).execute();
+        }
     }
 
     private void yemekYukle() {

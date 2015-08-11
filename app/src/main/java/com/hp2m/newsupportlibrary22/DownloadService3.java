@@ -80,6 +80,8 @@ public class DownloadService3 extends IntentService {
             Elements duyuruLinkElements = insideDocs.select("div.post-content a[href]");
             Log.i("tuna", "link parsing ended");
             for (int i3 = 0; i3 < duyuruLinkElements.size(); i3++) {
+                if (i3 != 0)
+                    builder.append("\n");
                 Log.i("tuna", "inner side parsing 3");
                 //b += duyuruLinkElements.get(i3).attr("abs:href");
                 //b += "\n";

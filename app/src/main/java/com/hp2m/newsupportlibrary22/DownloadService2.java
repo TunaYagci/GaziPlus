@@ -84,6 +84,8 @@ public class DownloadService2 extends IntentService {
             Log.i("tuna", "link parsing ended");
             for (int i3 = 0; i3 < duyuruLinkElements.size(); i3++) {
                 Log.i("tuna", "inner side parsing 3");
+                if (i3 != 0)
+                    builder.append("\n");
                 //b += duyuruLinkElements.get(i3).attr("abs:href");
                 //b += "\n";
                 //b += duyuruLinkElements.get(i3).text();

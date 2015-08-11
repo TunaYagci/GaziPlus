@@ -41,7 +41,13 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
         super.onPreExecute();
         try {
             if (isUpdating) {
-                fragment.swipeLayout.setRefreshing(true);
+                fragment.swipeLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment.swipeLayout.setRefreshing(true);
+
+                    }
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,7 +128,7 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
             bus.post(new YemekDownloadComplated("goodToGo"));
             if (isUpdating) {
                 fragment.swipeLayout.setRefreshing(false);
-                lowerBrightness(fragment.motherLayout);
+                //lowerBrightness(fragment.motherLayout);
             }
         } catch (Exception e) {
             Log.i("tuna", "exception in yemektask post execute " + e.toString());

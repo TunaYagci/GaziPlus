@@ -132,7 +132,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
 
 
-        Log.i("tuna", "lets download images");
+        //Log.i("tuna", "lets download images");
         String cx = db.fetchMeMyDuyuru(POSITION, generalMode).get(6);
         final ArrayList<String> imageLinks = new ArrayList<>();
         if (!cx.isEmpty()) {
@@ -142,7 +142,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
                 imageLinks.add(a);
             }
             scanner.close();
-            Log.i("tuna", "there is actually some image, see= " + cx + " or see this= " + imageLinks.get(0));
+            //Log.i("tuna", "there is actually some image, see= " + cx + " or see this= " + imageLinks.get(0));
 
 
             //  ImageLoader imageLoader = ImageLoader.getInstance();
@@ -195,12 +195,14 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         final ArrayList<String> links = new ArrayList<>();
         ArrayList<String> linkWords = new ArrayList<>();
         String a2link = db.fetchMeMyDuyuru(POSITION, generalMode).get(3);
+        //Log.i("tuna", "a2link is = " + a2link);
         if (!a2link.equals("none")) {
             Scanner scanner = new Scanner(a2link);
             while (scanner.hasNextLine()) {
                 String a = scanner.nextLine(); // first saved is link
                 scanner.hasNext();
                 String b = scanner.nextLine(); // second is the word
+                //Log.i("tuna", "first a and first b= " + a + " " + b);
                 links.add(a);
                 linkWords.add(b);
             }
@@ -208,7 +210,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         }
 
         final String contentText = db.fetchMeMyDuyuru(POSITION, generalMode).get(1);
-        Log.i("tuna", "contentText is " + contentText);
+        //Log.i("tuna", "contentText is " + contentText);
         final SpannableString ss = new SpannableString(contentText);
 
 
@@ -223,7 +225,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         for (int i = 0; i < linkWords.size(); i++) {
             final int start = contentText.indexOf(linkWords.get(i));
             final int end = start + linkWords.get(i).length();
-            Log.i("tuna", "linkWord is =" + linkWords.get(i) + "and start is " + start + " and end is " + end);
+            //Log.i("tuna", "linkWord is =" + linkWords.get(i) + "and start is " + start + " and end is " + end);
             if (links.get(i).contains("download")) {
                 final int i3 = i;
                 ClickableSpan clickableSpan = new ClickableSpan() {

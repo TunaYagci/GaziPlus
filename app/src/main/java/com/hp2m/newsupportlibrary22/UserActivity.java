@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,10 +26,8 @@ public class UserActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ImageView avatar, background;
-    private Button loginButton;
-    private TextView name, bolum, haventLoggedIn;
+    private TextView name, bolum;
     private Context context;
-    private boolean isThisMisafir = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,8 +40,6 @@ public class UserActivity extends AppCompatActivity {
         avatar = (ImageView) findViewById(R.id.avatar);
         name = (TextView) findViewById(R.id.name);
         bolum = (TextView) findViewById(R.id.bolum);
-        loginButton = (Button) findViewById(R.id.ogrenciLoginLayout);
-        haventLoggedIn = (TextView) findViewById(R.id.youHaventLoggedIn);
 
 
         final String number = "141180068"; // default number'ý sharedPref ile çek
@@ -92,22 +87,10 @@ public class UserActivity extends AppCompatActivity {
             };
             r.run();
         } else {
-            if (3 > 2) { // if this is a misafir
-                loginButton.setVisibility(View.VISIBLE);
-                haventLoggedIn.setVisibility(View.VISIBLE);
-                background.setMaxHeight(100);
-                loginButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // login ekranýna git
-                    }
-                });
-            } else if (2 > 1) { // this is a user who hasn't logged in credentials yet
-                name.setVisibility(View.VISIBLE);
-                background.setMaxHeight(50);
-                name.setText("Öðrenci sistemine giriþ yapýlmadý");
-                isThisMisafir = true;
-            }
+            // this is a user who hasn't logged in credentials yet
+            name.setVisibility(View.VISIBLE);
+            background.setMaxHeight(50);
+            name.setText("Öðrenci sistemine giriþ yapýlmadý");
         }
         // misafir mi yoksa kayýtlý kullanýcý mý bir bak, SharedPrefzz
 
@@ -127,35 +110,20 @@ public class UserActivity extends AppCompatActivity {
         List<ActivityUserInfo> data = new ArrayList<>();
         ActivityUserInfo current;
 
-        if (!isThisMisafir) {
+        ArrayList<String> bodyList = new ArrayList<>();
+        bodyList.add("Ayarlar");
+        bodyList.add("Hakkýnda");
+        bodyList.add("Açýk Kaynak Kütüphaneleri");
+        bodyList.add("Çýkýþ Yap");
 
-            ArrayList<String> bodyList = new ArrayList<>();
-            bodyList.add("Ayarlar");
-            bodyList.add("Hakkýnda");
-            bodyList.add("Açýk Kaynak Kütüphaneleri");
-            bodyList.add("Çýkýþ Yap");
-
-            for (int i = 0; i < 4; i++) {
-                current = new ActivityUserInfo();
-                current.body = bodyList.get(i);
-                if (i == 0)
-                    current.imageID = R.drawable.settings;
-                data.add(current);
-            }
-        } else {
-            ArrayList<String> bodyList = new ArrayList<>();
-            bodyList.add("Ayarlar");
-            bodyList.add("Hakkýnda");
-            bodyList.add("Açýk Kaynak Kütüphaneleri");
-
-            for (int i = 0; i < 3; i++) {
-                current = new ActivityUserInfo();
-                current.body = bodyList.get(i);
-                if (i == 0)
-                    current.imageID = R.drawable.settings;
-                data.add(current);
-            }
+        for (int i = 0; i < 4; i++) {
+            current = new ActivityUserInfo();
+            current.body = bodyList.get(i);
+            if (i == 0)
+                current.imageID = R.drawable.settings;
+            data.add(current);
         }
+
         return data;
     }
 }
