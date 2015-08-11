@@ -299,7 +299,8 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
 
         if (mode.equals("firstTime")) {
             fragment.progressBar.setVisibility(View.GONE);
-            if (LOADED_ITEM_COUNT == 0) { // demek ki bir hata oldu, ioException vs.
+            if (LOADED_ITEM_COUNT == 0) {
+             // demek ki bir hata oldu, ioException vs.
                 fragment.reload.setVisibility(View.VISIBLE);
                 fragment.reloadText.setVisibility(View.VISIBLE);
                 fragment.reload.setOnClickListener(new View.OnClickListener() {
@@ -311,6 +312,9 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                     }
                 });
             }
+            if(sharedPreferences.getBoolean("needListUpdate", false))
+                fragment.recyclerView.setAlpha(1F);
+
             bus.post(new DuyuruDownloadComplated("letsGo", mode));
             return;
             }

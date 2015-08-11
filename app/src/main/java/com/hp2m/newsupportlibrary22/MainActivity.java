@@ -1,6 +1,8 @@
 package com.hp2m.newsupportlibrary22;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -33,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sP = getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sP.edit();
+        editor.putString("generalMode", "bolum");
+        editor.putString("duyuruLink", sP.getString("defaultBolumLink", ""));
+        // when we open the activity, first shown should be "bolum" not "fakulte"
+        editor.commit();
 
        /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Gazi+");
@@ -72,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                         tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_white_48dp);
                         tabLayout.getTabAt(1).setIcon(R.drawable.school_darky_2);
                         tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_darky_48dp);
-
                         appBarLayout.setBackgroundColor(getResources().getColor(R.color.my_primary));
                         tabLayout.setBackgroundColor(getResources().getColor(R.color.my_primary));
                         mPager.setCurrentItem(0, true);

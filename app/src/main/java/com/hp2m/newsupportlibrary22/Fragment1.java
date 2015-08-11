@@ -54,6 +54,7 @@ public class Fragment1 extends Fragment {
     private int failedThreadsSoFar;
     private SharedPreferences sP;
     private SharedPreferences.Editor editor;
+
     public Fragment1() {
 
     }
@@ -116,6 +117,9 @@ public class Fragment1 extends Fragment {
         reloadText = (TextView) rootView.findViewById(R.id.reloadText);
         motherLayout = (FrameLayout) rootView.findViewById(R.id.fragment1_motherLayout);
         progressBar = (ProgressBar) rootView.findViewById(R.id.loadingBar);
+
+        sP = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+        editor = sP.edit();
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         coordinator = (CoordinatorLayout) rootView.findViewById(R.id.coordinator2);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -125,10 +129,6 @@ public class Fragment1 extends Fragment {
                 handleFabClicks();
             }
         });
-        sP = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        editor = sP.edit();
-        editor.putBoolean("areWeInFakulte", false);
-        editor.commit();
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         /*swipeLayout.setProgressBackgroundColorSchemeColor(
                 getResources().getColor(R.color.shadow_end_color)*
@@ -157,9 +157,9 @@ public class Fragment1 extends Fragment {
         //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             boolean hideToolBar = false;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -181,6 +181,7 @@ public class Fragment1 extends Fragment {
                 }
             }
         });
+
         return rootView;
     }
 
@@ -192,10 +193,8 @@ public class Fragment1 extends Fragment {
     public void setFabToReady() {
         String generalMode = sP.getString("generalMode", "");
         if (generalMode.equals("bolum")) {
-            editor.putBoolean("areWeInFakulte", false);
             fab.setImageResource(R.drawable.ic_arrow_forward_white_36dp);
         } else {
-            editor.putBoolean("areWeInFakulte", true);
             fab.setImageResource(R.drawable.ic_arrow_back_white_36dp);
         }
         editor.putBoolean("needListUpdate", false);
@@ -206,7 +205,7 @@ public class Fragment1 extends Fragment {
     private void handleFabClicks() {
         setFabToLoading();
         editor.putBoolean("needListUpdate", true);
-        if (!sP.getBoolean("areWeInFakulte", false)) { // fakülteye gidicez yani
+        if (sP.getString("generalMode", "bolum").equals("bolum")) { // fakülteye gidicez yani
             editor.putString("duyuruLink", sP.getString("defaultFakulteLink", ""));
             editor.putString("generalMode", "fakulte");
         } else { // fakülteden bölüme gidicez
@@ -217,16 +216,46 @@ public class Fragment1 extends Fragment {
 
         DuyuruDB db = new DuyuruDB(getActivity());
         if (db.getDuyuruSayisi(sP.getString("generalMode", "")) != 0) { // not the first time
-            duyuruGuncelle();
+            if (isNetworkAvailable()) {
+                duyuruGuncelle();
+            } else {
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                handleCardClicks(view, position);
+                            }
+                        });
+                        //adapter.notifyItemInserted(data2.size()-1);
+                        adapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(adapter);
+                    }
+                };
+                getActivity().runOnUiThread(r);
+                setFabToReady();
+            }
         } else {
-            LoadDuyuruForFirstTime();
+            if (isNetworkAvailable()) {
+                recyclerView.setAlpha(0.5F);
+                LoadDuyuruForFirstTime();
+            } else {
+                editor.putString("duyuruLink", sP.getString("defaultBolumLink", ""));
+                editor.putString("generalMode", "bolum");
+                editor.commit();
+                setFabToReady();
+                Snackbar.make(coordinator, "Ýnternete baðlanýlamýyor", Snackbar.LENGTH_LONG)
+                        .setAction("Tekrar Dene", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                handleFabClicks();
+                            }
+                        })
+                        .show();
+            }
         }
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     public List<DuyuruInformation> getData() {
@@ -401,7 +430,7 @@ public class Fragment1 extends Fragment {
                     .setAction("Tekrar Dene", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            eskiDuyuruYukle();
+                            LoadDuyuruForFirstTime();
                         }
                     })
                     .show();
@@ -420,6 +449,10 @@ public class Fragment1 extends Fragment {
         super.onDestroy();
         bus.unregister(this);
 
+        // go default on ondestroy
+        editor.putString("generalMode", "bolum");
+        editor.putString("duyuruLink", sP.getString("defaultBolumLink", ""));
+        editor.commit();
     }
 
     public void onEvent(DuyuruDownloadComplated event) {
