@@ -45,7 +45,8 @@ public class DuyuruDB extends SQLiteOpenHelper {
                 idMax = c.getInt((0));
             } while (c.moveToNext());
 
-        return idMax; // niye 1 fazla veriyor bilmiyorum
+        //return idMax; // niye 1 fazla veriyor bilmiyorum
+        return idMax;
     }
 
 
@@ -166,6 +167,49 @@ public class DuyuruDB extends SQLiteOpenHelper {
         c.close();
         db.close();
         return fetchMeMyDuyuru;
+    }
+
+
+    public void clearTable(String generalMode) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (generalMode.equals("bolum")) {
+            db.execSQL("DROP TABLE " + TABLE_BOLUM);
+            String query = "CREATE TABLE " + TABLE_BOLUM + " (" +
+                    COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_TITLE + " TEXT, " +
+                    COLUMN_CONTENT + " TEXT, " +
+                    COLUMN_TARIH + " TEXT, " +
+                    COLUMN_CONTENTLINKS + " TEXT, " +
+                    COLUMN_NEWSLINKS + " TEXT, " +
+                    COLUMN_NEWOROLD + " TEXT, " +
+                    COLUMN_IMAGELINKS + " TEXT" +
+                    ");";
+            db.execSQL(query);
+        } else {
+            db.execSQL("DROP TABLE " + TABLE_FAKULTE);
+            String query2 = "CREATE TABLE " + TABLE_FAKULTE + " (" +
+                    COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_TITLE + " TEXT, " +
+                    COLUMN_CONTENT + " TEXT, " +
+                    COLUMN_TARIH + " TEXT, " +
+                    COLUMN_CONTENTLINKS + " TEXT, " +
+                    COLUMN_NEWSLINKS + " TEXT, " +
+                    COLUMN_NEWOROLD + " TEXT, " +
+                    COLUMN_IMAGELINKS + " TEXT" +
+                    ");";
+            db.execSQL(query2);
+        }
+    }
+
+    public void clearForLogOut() {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_BOLUM, null, null);
+            db.delete(TABLE_FAKULTE, null, null);
+        } catch (Exception e) {
+            Log.i("tuna", e.toString());
+        }
+
     }
 
 }

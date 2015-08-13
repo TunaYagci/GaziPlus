@@ -24,13 +24,15 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
 
     final EventBus bus = EventBus.getDefault();
     Fragment1 fragment;
-    String mode;
     int LOADED_ITEM_COUNT = 0;
     boolean hasAnythingDone = false;
     boolean ioException = false;
+    private String mode;
     private String URL;
     private String generalMode;
     private SharedPreferences sharedPreferences;
+
+
     public DuyuruTask(Fragment1 fragment, String mode) {
         this.fragment = fragment;
         this.mode = mode;
@@ -80,7 +82,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
         try {
             int timeout = 5000;
             if (mode.equals("firstTime"))
-                timeout = 2000;
+                timeout = 0;
             doc = Jsoup.connect(URL).timeout(timeout).get(); // biiiig timeoouuuut
         } catch (IOException e) {
             Log.i("tuna", "timeout done");
@@ -151,82 +153,12 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                     hasAnythingDone = true;
                     LOADED_ITEM_COUNT = updateList.size();
                     bus.post(new ReportingThreadNumbers(LOADED_ITEM_COUNT));
+                    DuyuruDB db = new DuyuruDB(fragment.getActivity());
+
                     for (int i = 0; i < updateList.size(); i++) {
                         headerList.add(duyuruHeaderElements.get(i).text().substring(17));
                         tarihList.add(duyuruHeaderElements.get(i).text().substring(0, 16));
-                        // look idk if loaded item count > 4 RIGHT NOW !!
-                        // its probably gonna downloaded in downloadservice4
-                        Intent intent = null;
-                        if (i == 0 || i == 4)
-                            intent = new Intent(fragment.getActivity(), DownloadService1.class);
-                        else if (i == 1 || i == 5)
-                            intent = new Intent(fragment.getActivity(), DownloadService2.class);
-                        else if (i == 2 || i == 6)
-                            intent = new Intent(fragment.getActivity(), DownloadService3.class);
-                        else if (i == 3 || i == 7)
-                            intent = new Intent(fragment.getActivity(), DownloadService4.class);
-                        intent.putExtra("header", duyuruHeaderElements.get(i).text().substring(17));
-
-                        intent.putExtra("link", duyuruHeaderElements.get(i).attr("abs:href"));
-                        fragment.getActivity().startService(intent);
                     }
-                }
-            } else if (mode.equals("old") || mode.equals("firstTime")) {
-                hasAnythingDone = true;
-                int x;
-                if (NET_MAX_DUYURU > DB_MAX_DUYURU + MIN_ITEM_TO_LOAD) // check if website has enough element to fetch
-                    x = DB_MAX_DUYURU + MIN_ITEM_TO_LOAD;
-                    else
-                    x = NET_MAX_DUYURU; // website only have x duyuru left, not MIN_ITEM_TO_LOAD
-                LOADED_ITEM_COUNT = x - DB_MAX_DUYURU;
-                bus.post(new ReportingThreadNumbers(LOADED_ITEM_COUNT));
-                Log.i("tuna", "DB_MAX_DUYURU = " + DB_MAX_DUYURU);
-                Log.i("tuna", "NET_MAX_DUYURU = " + NET_MAX_DUYURU);
-                Log.i("tuna", "LOADED_ITEM_COUNT = " + LOADED_ITEM_COUNT);
-
-                for (int i = DB_MAX_DUYURU; i < x; i++) {
-                    headerList.add(duyuruHeaderElements.get(i).text().substring(17));
-                    tarihList.add(duyuruHeaderElements.get(i).text().substring(0, 16));
-                    // look idk if loaded item count > 4 RIGHT NOW !!
-                    Intent intent;
-                    if (x - i == 4) // thats not loaded_item_count, this is: loading order of those items. like 3rd one
-                        intent = new Intent(fragment.getActivity(), DownloadService4.class);
-                    else if (x - i == 3)
-                        intent = new Intent(fragment.getActivity(), DownloadService3.class);
-                    else if (x - i == 2)
-                        intent = new Intent(fragment.getActivity(), DownloadService2.class);
-                    else
-                        intent = new Intent(fragment.getActivity(), DownloadService1.class);
-                    intent.putExtra("header", duyuruHeaderElements.get(i).text().substring(17));
-                    //intent.putExtra("iSize", x);
-                    //intent.putExtra("iStart", DB_MAX_DUYURU);
-                    intent.putExtra("link", duyuruHeaderElements.get(i).attr("abs:href"));
-                    fragment.getActivity().startService(intent);
-                    Log.i("tuna", "service fired, old duyuru loading");
-                }
-
-
-            }
-
-
-            if (hasAnythingDone) {
-                DuyuruDB db = new DuyuruDB(fragment.getActivity());
-                // we basically clearing all previous data before adding
-                // fix that on DuyuruDB
-                Log.i("tuna", "about to add");
-                if (mode.equals("old")) {
-                    for (int i2 = 0; i2 < LOADED_ITEM_COUNT; i2++) {
-                        DuyuruGetSet duyuru = new DuyuruGetSet(headerList.get(i2),
-                                " ",
-                                tarihList.get(i2),
-                                " ",
-                                " ",
-                                "old",
-                                " "
-                        );
-                        db.addDuyuru(duyuru, generalMode);
-                    }
-                } else if (mode.equals("updating")) {
                     Log.i("tuna", "gonna add " + LOADED_ITEM_COUNT + " item as " + mode);
                     for (int i2 = 0; i2 < LOADED_ITEM_COUNT; i2++) {
                         Log.i("tuna", "adding " + headerList.get(i2) + " to DuyuruDB");
@@ -240,10 +172,103 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                         );
                         db.addDuyuru(duyuru, generalMode);
                     }
+
+
+                    for (int i = 0; i < updateList.size(); i++) {
+                        //headerList.add(duyuruHeaderElements.get(i).text().substring(17));
+                        //tarihList.add(duyuruHeaderElements.get(i).text().substring(0, 16));
+                        // look idk if loaded item count > 4 RIGHT NOW !!
+                        // its gonna downloaded in downloadservice1, 5th
+                        Intent intent = null;
+                        if (i == 0 || i == 4)
+                            intent = new Intent(fragment.getActivity(), DownloadService1.class);
+                        else if (i == 1)
+                            intent = new Intent(fragment.getActivity(), DownloadService2.class);
+                        else if (i == 2)
+                            intent = new Intent(fragment.getActivity(), DownloadService3.class);
+                        else if (i == 3)
+                            intent = new Intent(fragment.getActivity(), DownloadService4.class);
+                        intent.putExtra("header", duyuruHeaderElements.get(i).text().substring(17));
+
+                        intent.putExtra("link", duyuruHeaderElements.get(i).attr("abs:href"));
+                        fragment.getActivity().startService(intent);
+                    }
+                }
+            } else if (mode.equals("old") || mode.equals("firstTime")) {
+                hasAnythingDone = true;
+                int x;
+                if (mode.equals("firstTime")) {
+                    if (NET_MAX_DUYURU > 0 + MIN_ITEM_TO_LOAD) // check if website has enough element to fetch
+                        x = 0 + MIN_ITEM_TO_LOAD;
+                    else
+                        x = NET_MAX_DUYURU; // website only have x duyuru left, not MIN_ITEM_TO_LOAD
+                    LOADED_ITEM_COUNT = x - 0;
+
+                } else {
+                    if (NET_MAX_DUYURU > DB_MAX_DUYURU + MIN_ITEM_TO_LOAD) // check if website has enough element to fetch
+                        x = DB_MAX_DUYURU + MIN_ITEM_TO_LOAD;
+                    else
+                        x = NET_MAX_DUYURU; // website only have x duyuru left, not MIN_ITEM_TO_LOAD
+                    LOADED_ITEM_COUNT = x - DB_MAX_DUYURU;
+
+                }
+                bus.post(new ReportingThreadNumbers(LOADED_ITEM_COUNT));
+                Log.i("tuna", "DB_MAX_DUYURU = " + DB_MAX_DUYURU);
+                Log.i("tuna", "NET_MAX_DUYURU = " + NET_MAX_DUYURU);
+                Log.i("tuna", "LOADED_ITEM_COUNT = " + LOADED_ITEM_COUNT);
+
+
+                DuyuruDB db = new DuyuruDB(fragment.getActivity());
+                Log.i("tuna", "about to add");
+
+                if (mode.equals("old")) {
+                    for (int i = DB_MAX_DUYURU; i < x; i++) {
+                        headerList.add(duyuruHeaderElements.get(i).text().substring(17));
+                        tarihList.add(duyuruHeaderElements.get(i).text().substring(0, 16));
+                    }
+                    for (int i2 = 0; i2 < LOADED_ITEM_COUNT; i2++) {
+                        DuyuruGetSet duyuru = new DuyuruGetSet(headerList.get(i2),
+                                " ",
+                                tarihList.get(i2),
+                                " ",
+                                " ",
+                                "old",
+                                " "
+                        );
+                        db.addDuyuru(duyuru, generalMode);
+                    }
+
+                    for (int i = DB_MAX_DUYURU; i < x; i++) {
+                        // look idk if loaded item count > 4 RIGHT NOW !!
+                        Intent intent;
+                        if (x - i == 4) // thats not loaded_item_count, this is: loading order of those items. like 3rd one
+                            intent = new Intent(fragment.getActivity(), DownloadService4.class);
+                        else if (x - i == 3)
+                            intent = new Intent(fragment.getActivity(), DownloadService3.class);
+                        else if (x - i == 2)
+                            intent = new Intent(fragment.getActivity(), DownloadService2.class);
+                        else
+                            intent = new Intent(fragment.getActivity(), DownloadService1.class);
+                        intent.putExtra("header", duyuruHeaderElements.get(i).text().substring(17));
+                        //intent.putExtra("iSize", x);
+                        //intent.putExtra("iStart", DB_MAX_DUYURU);
+                        intent.putExtra("link", duyuruHeaderElements.get(i).attr("abs:href"));
+                        fragment.getActivity().startService(intent);
+                        Log.i("tuna", "service fired, old duyuru loading");
+                    }
+
+
                 } else if (mode.equals("firstTime")) {
+                    db.clearTable(generalMode);
+                    int DB_MAX_DUYURU_2 = db.getDuyuruSayisi(generalMode);
+                    for (int i = DB_MAX_DUYURU_2; i < x; i++) {
+                        headerList.add(duyuruHeaderElements.get(i).text().substring(17));
+                        tarihList.add(duyuruHeaderElements.get(i).text().substring(0, 16));
+                    }
                     Log.i("tuna", "gonna add " + LOADED_ITEM_COUNT + " item as " + mode);
                     for (int i2 = 0; i2 < LOADED_ITEM_COUNT; i2++) {
                         Log.i("tuna", "adding " + headerList.get(i2) + " to DuyuruDB");
+                        Log.i("headerist", "DB header is= " + duyuruHeaderElements.get(i2).text().substring(17));
                         DuyuruGetSet duyuru = new DuyuruGetSet(headerList.get(i2),
                                 " ",
                                 tarihList.get(i2),
@@ -254,8 +279,30 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                         );
                         db.addDuyuru(duyuru, generalMode);
                     }
+
+                    for (int i = DB_MAX_DUYURU_2; i < x; i++) {
+                        // look idk if loaded item count > 4 RIGHT NOW !!
+                        Intent intent;
+                        if (x - i == 4) // thats not loaded_item_count, this is: loading order of those items. like 3rd one
+                            intent = new Intent(fragment.getActivity(), DownloadService4.class);
+                        else if (x - i == 3)
+                            intent = new Intent(fragment.getActivity(), DownloadService3.class);
+                        else if (x - i == 2)
+                            intent = new Intent(fragment.getActivity(), DownloadService2.class);
+                        else
+                            intent = new Intent(fragment.getActivity(), DownloadService1.class);
+                        Log.i("headerist", "header is= " + duyuruHeaderElements.get(i).text().substring(17));
+                        intent.putExtra("header", duyuruHeaderElements.get(i).text().substring(17));
+                        //intent.putExtra("iSize", x);
+                        //intent.putExtra("iStart", DB_MAX_DUYURU);
+                        intent.putExtra("link", duyuruHeaderElements.get(i).attr("abs:href"));
+                        fragment.getActivity().startService(intent);
+                        Log.i("tuna", "service fired, old duyuru loading");
                     }
                 }
+
+
+            }
 
 
         } catch (NullPointerException e) {
@@ -275,16 +322,20 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                 fragment.recyclerView.setAdapter(fragment.adapter);
                 fragment.recyclerView.scrollToPosition(fragment.dataSize);
             } else if (mode.equals("firstTime")) {
+                /*fragment.progressBar.setVisibility(View.GONE);
+                fragment.recyclerView.setVisibility(View.GONE);
                 fragment.reload.setVisibility(View.VISIBLE);
                 fragment.reloadText.setVisibility(View.VISIBLE);
                 fragment.reload.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         fragment.LoadDuyuruForFirstTime();
-                        fragment.reload.setVisibility(View.INVISIBLE);
-                        fragment.reloadText.setVisibility(View.INVISIBLE);
+                        fragment.recyclerView.setVisibility(View.VISIBLE);
+                        fragment.reload.setVisibility(View.GONE);
+                        fragment.reloadText.setVisibility(View.GONE);
                     }
-                });
+                });*/
+                bus.post(new IOExceptionInDuyuruTaskForFirstTime());
             }
             Snackbar.make(fragment.coordinator, "Sunucuya eriþilemiyor", Snackbar.LENGTH_LONG)
                     .setAction("Tekrar Dene", new View.OnClickListener() {
@@ -292,10 +343,18 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                         public void onClick(View v) {
                             new DuyuruTask(fragment, mode).execute();
                         }
-                    })
-                    .show();
+                    });
+
             return;
         }
+
+
+        DataHolder dataHolder = new DataHolder();
+        if (generalMode.equals("bolum"))
+            dataHolder.alreadyShownFragment1ForBolum = true;
+        else
+            dataHolder.alreadyShownFragment1ForFakulte = true;
+
 
         if (mode.equals("firstTime")) {
             fragment.progressBar.setVisibility(View.GONE);
@@ -353,8 +412,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
             }
         }
 
-        DataHolder dataHolder = new DataHolder();
-        dataHolder.alreadyShownFragment1 = true;
+
 
     }
 
@@ -367,6 +425,9 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
     }
 }
 
+class IOExceptionInDuyuruTaskForFirstTime {
+
+}
 
 class DuyuruDownloadComplated {
     public String message, mode;

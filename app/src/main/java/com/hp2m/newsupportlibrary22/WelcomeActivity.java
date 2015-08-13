@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -23,7 +24,9 @@ public class WelcomeActivity extends AppCompatActivity {
     private ImageView logo;
     private boolean onGoBack = false;
     private SharedPreferences sP;
-    private String defaultFakulteLink, defaultBolumLink;
+    private String defaultFakulteLink = "a", defaultBolumLink = "a";
+    private String bolumAdi, fakulteAdi;
+    private int bolumImg, fakulteImg;
 
 
     @Override
@@ -146,6 +149,9 @@ public class WelcomeActivity extends AppCompatActivity {
                 break;
             case "11":
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
+                fakulteAdi = "MÜHENDÝSLÝK FAKÜLTESÝ";
+                fakulteImg = R.drawable.mf_fakulte3;
+
                 break;
             case "12":
                 defaultFakulteLink = "http://mim.gazi.edu.tr/posts?type=news";
@@ -249,11 +255,12 @@ public class WelcomeActivity extends AppCompatActivity {
                 break;*/
         }
         switch (bolumNo) {
-            case "01":
-                defaultBolumLink = "http://ydyo.gazi.edu.tr/posts?type=news";
+            case "80":
+                defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
+                bolumAdi = "CENGAZÝ";
+                bolumImg = R.drawable.lowres2_2;
                 break;
         }
-
 
     }
 
@@ -272,15 +279,20 @@ public class WelcomeActivity extends AppCompatActivity {
             public void run() {
                 SharedPreferences.Editor editor = sP.edit();
 
-                // ogrenci linkini çek
+                bolumAdi = "CENGAZÝ";
+                bolumImg = R.drawable.lowres2_2;
+                fakulteAdi = "MÜHENDÝSLÝK FAKÜLTESÝ";
+                fakulteImg = R.drawable.mf_fakulte3;
+                defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
+                defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
 
-                // AKADEMÝK BÝRÝMLER BAÞ
-                String ogrNo = ogrenciLoginEditText.getText().toString();
-                switcher(ogrNo);
-
-                editor.putString("defaultFakulteLink", "http://mf.gazi.edu.tr/posts?type=news");
-                editor.putString("defaultBolumLink", "http://mf-bm.gazi.edu.tr/posts?type=news");
-                editor.putString("duyuruLink", "http://mf-bm.gazi.edu.tr/posts?type=news");
+                editor.putString("bolumAdi", bolumAdi);
+                editor.putInt("bolumImg", bolumImg);
+                editor.putString("fakulteAdi", fakulteAdi);
+                editor.putInt("fakulteImg", fakulteImg);
+                editor.putString("defaultFakulteLink", defaultFakulteLink);
+                editor.putString("defaultBolumLink", defaultBolumLink);
+                editor.putString("duyuruLink", defaultBolumLink);
                 editor.putString("generalMode", "bolum");
                 editor.putBoolean("isLoginSuccessful", true);
                 editor.commit();
@@ -302,8 +314,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
     public void ogrenciLoginFinal(View v) {
-        ogrenciLoginErrorText.setVisibility(View.VISIBLE);
         if (ogrenciLoginEditText.getText().toString().length() < 9) {
+            ogrenciLoginErrorText.setVisibility(View.VISIBLE);
             YoYo.with(Techniques.BounceIn)
                     .duration(250)
                     .playOn(ogrenciLoginErrorText);
@@ -311,6 +323,18 @@ public class WelcomeActivity extends AppCompatActivity {
                     .duration(250)
                     .playOn(ogrenciLoginEditText);
         } else {
+            ogrenciLoginErrorText.setVisibility(View.GONE);
+            String ogrNo = ogrenciLoginEditText.getText().toString();
+            switcher(ogrNo);
+
+            if (!defaultFakulteLink.equals("http://mf.gazi.edu.tr/posts?type=news") &&
+                    !defaultBolumLink.equals("http://mf-bm.gazi.edu.tr/posts?type=news")) {
+                Toast.makeText(this, "Bölümün henüz desteklenmiyor, lütfen öðrenci numaraný bana yolla", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+
+
             // Login successful
             YoYo.with(Techniques.RollOut)
                     .duration(250)
@@ -328,9 +352,13 @@ public class WelcomeActivity extends AppCompatActivity {
                 public void run() {
 
                     SharedPreferences.Editor editor = sP.edit();
-                    editor.putString("defaultFakulteLink", "http://mf.gazi.edu.tr/posts?type=news");
-                    editor.putString("defaultBolumLink", "http://mf-bm.gazi.edu.tr/posts?type=news");
-                    editor.putString("duyuruLink", "http://mf-bm.gazi.edu.tr/posts?type=news");
+                    editor.putString("bolumAdi", bolumAdi);
+                    editor.putInt("bolumImg", bolumImg);
+                    editor.putString("fakulteAdi", fakulteAdi);
+                    editor.putInt("fakulteImg", fakulteImg);
+                    editor.putString("defaultFakulteLink", defaultFakulteLink);
+                    editor.putString("defaultBolumLink", defaultBolumLink);
+                    editor.putString("duyuruLink", defaultBolumLink);
                     editor.putString("generalMode", "bolum");
                     editor.putBoolean("isLoginSuccessful", true);
                     editor.commit();

@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -219,26 +220,22 @@ public class Fragment1 extends Fragment {
 
         DuyuruDB db = new DuyuruDB(getActivity());
         if (db.getDuyuruSayisi(sP.getString("generalMode", "")) != 0) { // not the first time
-            if (isNetworkAvailable()) {
-                duyuruGuncelle();
-            } else {
-                Runnable r = new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                handleCardClicks(view, position);
-                            }
-                        });
-                        //adapter.notifyItemInserted(data2.size()-1);
-                        adapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(adapter);
-                    }
-                };
-                getActivity().runOnUiThread(r);
-                setFabToReady();
-            }
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            handleCardClicks(view, position);
+                        }
+                    });
+                    //adapter.notifyItemInserted(data2.size()-1);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
+                }
+            };
+            getActivity().runOnUiThread(r);
+            //setFabToReady();
         } else {
             if (isNetworkAvailable()) {
                 recyclerView.setAlpha(0.5F);
@@ -262,6 +259,7 @@ public class Fragment1 extends Fragment {
     }
 
     public List<DuyuruInformation> getData() {
+        boolean needUpdateForEmergency = false;
         String generalMode = sP.getString("generalMode", "");
         DuyuruDB db = new DuyuruDB(getActivity());
         // check if db exists and "up-to-date"
@@ -280,14 +278,14 @@ public class Fragment1 extends Fragment {
             List<DuyuruInformation> data = new ArrayList<>();
             DuyuruInformation current = new DuyuruInformation();
             if (generalMode.equals("bolum")) {
-                current.imageID = R.drawable.lowres2_2;
-                current.bolum = "CENGAZÝ";
+                current.imageID = sP.getInt("bolumImg", 0);
+                current.bolum = sP.getString("bolumAdi", "");
             } else {
-                current.imageID = R.drawable.mf_fakulte2;
-                current.bolum = "MÜHENDÝSLÝK FAKÜLTESÝ";
+                current.imageID = sP.getInt("fakulteImg", 0);
+                current.bolum = sP.getString("fakulteAdi", "");
             }
             data.add(current); // FIRST, ADD HEADER*/
-            for (int i = 1; i < db.getDuyuruSayisi(generalMode); i++) { // ADDING NEW DUYURU IF THERE IS
+            for (int i = 1; i < db.getDuyuruSayisi(generalMode) + 1; i++) { // ADDING NEW DUYURU IF THERE IS
                 duyuruList = new ArrayList<>();
                 duyuruList.addAll(db.fetchMeMyDuyuru(i, generalMode)); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
                 if (duyuruList.get(5).equals("firstTime")) {
@@ -311,7 +309,7 @@ public class Fragment1 extends Fragment {
                 );
                 data.add(current);*/
             }
-            for (int i = newList.size() - 1; i >= 0; i--) { // ADDING OLD DUYURU IF THERE IS
+            for (int i = newList.size() - 1; i >= 0; i--) { // ADDING NEW DUYURU IF THERE IS
                 duyuruList = new ArrayList<>();
                 duyuruList.addAll(db.fetchMeMyDuyuru(newList.get(i), generalMode)); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
                 current = new DuyuruInformation();
@@ -325,10 +323,12 @@ public class Fragment1 extends Fragment {
                         duyuruList.get(2),
                         currentTime
                 );
+                if (i == 0 && current.dateDiff.startsWith("-")) // CHECK FOR STATIC DUYURU
+                    needUpdateForEmergency = true;
                 data.add(current);
             }
 
-            for (int i = 0; i < firstTimeList.size(); i++) { // ADDING OLD DUYURU IF THERE IS
+            for (int i = 0; i < firstTimeList.size(); i++) { // ADDING FIRSTTIME DUYURU
                 duyuruList = new ArrayList<>();
                 duyuruList.addAll(db.fetchMeMyDuyuru(firstTimeList.get(i), generalMode)); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
                 current = new DuyuruInformation();
@@ -342,6 +342,9 @@ public class Fragment1 extends Fragment {
                         duyuruList.get(2),
                         currentTime
                 );
+
+                if (i == 0 && !needUpdateForEmergency && current.dateDiff.startsWith("-")) // CHECK FOR STATIC DUYURU
+                    needUpdateForEmergency = true;
                 data.add(current);
             }
 
@@ -364,9 +367,32 @@ public class Fragment1 extends Fragment {
             }
 
             dataSize = data.size();
-            if (!dataHolder.alreadyShownFragment1) {
-                Log.i("tuna", "update method fired");
-                duyuruGuncelle();
+            if (generalMode.equals("bolum")) {
+                if (!dataHolder.alreadyShownFragment1ForBolum) {
+                    if (needUpdateForEmergency) {
+                        if (isNetworkAvailable()) {
+                            data = Collections.emptyList(); // if there is a static duyuru, clear db and load from stratch
+                            Log.i("tuna", "emergency first time method fired");
+                            LoadDuyuruForFirstTime();
+                        }
+                    } else {
+                        duyuruGuncelle();
+                    }
+                } else
+                    setFabToReady();
+            } else {
+                if (!dataHolder.alreadyShownFragment1ForFakulte) {
+                    if (needUpdateForEmergency) {
+                        if (isNetworkAvailable()) {
+                            data = Collections.emptyList(); // if there is a static duyuru, clear db and load from stratch
+                            Log.i("tuna", "emergency first time method fired");
+                            LoadDuyuruForFirstTime();
+                        }
+                    } else {
+                        duyuruGuncelle();
+                    }
+                } else
+                    setFabToReady();
             }
             return data;
         } else {
@@ -401,7 +427,6 @@ public class Fragment1 extends Fragment {
             new DuyuruTask(this, "updating").execute();
         } else {
             swipeLayout.setRefreshing(false);
-            dataHolder.alreadyShownFragment1 = true;
             /*Snackbar.make(coordinator, "Ýnternete baðlanýlamýyor", Snackbar.LENGTH_LONG)
                     .setAction("Tekrar Dene", new View.OnClickListener() {
                         @Override
@@ -459,6 +484,7 @@ public class Fragment1 extends Fragment {
     }
 
     public void onEvent(DuyuruDownloadComplated event) {
+
         String generalMode = sP.getString("generalMode", "");
         ArrayList<Integer> oldList = new ArrayList<>();
         ArrayList<String> duyuruList;
@@ -471,14 +497,14 @@ public class Fragment1 extends Fragment {
         List<DuyuruInformation> data = new ArrayList<>();
         DuyuruInformation current = new DuyuruInformation();
         if (generalMode.equals("bolum")) {
-            current.imageID = R.drawable.lowres2_2;
-            current.bolum = "CENGAZÝ";
+            current.imageID = sP.getInt("bolumImg", 0);
+            current.bolum = sP.getString("bolumAdi", "");
         } else {
-            current.imageID = R.drawable.mf_fakulte2;
-            current.bolum = "MÜHENDÝSLÝK FAKÜLTESÝ";
+            current.imageID = sP.getInt("fakulteImg", 0);
+            current.bolum = sP.getString("fakulteAdi", "");
         }
         data.add(current); // FIRST ADD HEADER*/
-        for (int i = 1; i < db.getDuyuruSayisi(generalMode); i++) { // ADDING NEW DUYURU IF THERE IS
+        for (int i = 1; i < db.getDuyuruSayisi(generalMode) + 1; i++) { // ADDING NEW DUYURU IF THERE IS
             duyuruList = new ArrayList<>();
             duyuruList.addAll(db.fetchMeMyDuyuru(i, generalMode)); // coz db reads _id as normal people, i starts from 1, BECAREFUL!!
             if (duyuruList.get(5).equals("firstTime")) {
@@ -553,6 +579,10 @@ public class Fragment1 extends Fragment {
             );
             data.add(current);
         }
+
+        swipeLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+
         dataSize = data.size();
         if (event.mode == "updating" || event.mode == "firstTime") {
             final List<DuyuruInformation> data2 = data;
@@ -641,9 +671,10 @@ public class Fragment1 extends Fragment {
             Log.i("tuna", "all loading is completed");
             Log.i("tuna", "user is on loading screen, start load is fired");
             if (failedThreadsSoFar > 0) {
-                bus.post(new StatusForDetailedActivity("exception"));
+                Toast.makeText(getActivity(), "Hata kodu #01 --- bu mesajý görürseniz lütfen geliþtiriciye ulaþýn!", Toast.LENGTH_LONG).show();
+                //bus.post(new StatusForDetailedActivity("exception"));
             } else {
-                bus.post(new StatusForDetailedActivity("goodToGo"));
+                //bus.post(new StatusForDetailedActivity("goodToGo"));
             }
             setFabToReady();
         }
@@ -656,6 +687,31 @@ public class Fragment1 extends Fragment {
             bus.post(new StatusForDetailedActivity("exception"));
         }
     }
+
+
+    public void onEvent(IOExceptionInDuyuruTaskForFirstTime event) {
+        recyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
+        swipeLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        reload.setVisibility(View.VISIBLE);
+        reloadText.setVisibility(View.VISIBLE);
+        reload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleTryAgainToConnect();
+            }
+        });
+    }
+
+    private void handleTryAgainToConnect() {
+        LoadDuyuruForFirstTime();
+        swipeLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        reload.setVisibility(View.GONE);
+        reloadText.setVisibility(View.GONE);
+    }
+
 }
 
 class StatusForDetailedActivity {

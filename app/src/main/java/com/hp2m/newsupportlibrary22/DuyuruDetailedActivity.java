@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -53,6 +53,17 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
     private String generalMode;
     private ImageButton reload;
     private TextView reloadText;
+    private Handler handler = new Handler();
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (db.fetchMeMyDuyuru(POSITION, generalMode).get(4).length() < 2) {
+                handler.postDelayed(runnable, 300);
+            } else
+                startLoad();
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +117,9 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
             }
             if (isThisDuyuruOnExceptions) {
                 Log.i("tuna", "This is on Duyuru Exceptions");
-                onEvent(new StatusForDetailedActivity("exception"));
+                //onEvent(new StatusForDetailedActivity("exception"));
+            } else {
+                handler.postDelayed(runnable, 300);
             }
         } else {
             Log.i("tuna", "gonna load duyuru detailed");
@@ -127,6 +140,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
     }
 
     public void startLoad() {
+        Log.i("tuna", "onStartLoad");
         //goToOriginalSourceButton = (Button) findViewById(R.id.showOriginal);
         goToOriginalSourceButton.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
@@ -277,7 +291,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
 
     public void onEvent(StatusForDetailedActivity event) {
         Log.i("tuna", "onEvent StatusForDetailedActivity");
-        try {
+        /*try {
             int indexOfException = 0;
             if (event.message.equals("goodToGo")) {
                 startLoad();
@@ -319,7 +333,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.i("tuna", "unnecessary exception in DetailedActivity " + e.toString());
-        }
+        }*/
     }
 
 

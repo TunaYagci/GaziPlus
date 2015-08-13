@@ -1,6 +1,11 @@
 package com.hp2m.newsupportlibrary22;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +21,11 @@ public class ActivityUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     List<ActivityUserInfo> data = Collections.emptyList();
     private LayoutInflater inflater;
-    private Context context;
+    private Activity activity;
 
-    public ActivityUserAdapter(Context context, List<ActivityUserInfo> data) {
-        inflater = LayoutInflater.from(context);
-        this.context = context;
+    public ActivityUserAdapter(Activity activity, List<ActivityUserInfo> data) {
+        inflater = LayoutInflater.from(activity);
+        this.activity = activity;
         this.data = data;
     }
 
@@ -72,6 +77,31 @@ public class ActivityUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void onClick(View v) {
                         // çýkýþ yap intent
+                        new AlertDialog.Builder(activity)
+                                .setTitle("Çýkýþ yap")
+                                .setMessage("Çýkýþ yapmak istediðinizden emin misiniz?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // continue with delete
+                                        SharedPreferences sP = activity.getSharedPreferences("user", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sP.edit();
+                                        editor.putBoolean("isLoginSuccessful", false);
+                                        editor.commit();
+                                        DuyuruDB db = new DuyuruDB(activity);
+                                        db.clearForLogOut();
+                                        Intent i = new Intent(activity, WelcomeActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        activity.startActivity(i);
+                                        activity.finish();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                    }
+                                })
+                                .show();
+
                     }
                 });
                 return;
