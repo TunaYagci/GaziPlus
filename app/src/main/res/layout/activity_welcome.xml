@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/welcomeact_4" />
+        android:src="@drawable/welcomeact_4_3" />
 
     <ImageView
         android:id="@+id/logo"
@@ -21,8 +21,8 @@
 
     <RelativeLayout
         android:id="@+id/ogrenciLoginLayout"
-        android:layout_width="350sp"
-        android:layout_height="50dp"
+        android:layout_width="330sp"
+        android:layout_height="45dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@drawable/welcome_activity_ogrencilogin"
@@ -49,8 +49,8 @@
 
     <RelativeLayout
         android:id="@+id/betaTesterLayout"
-        android:layout_width="350sp"
-        android:layout_height="50dp"
+        android:layout_width="330sp"
+        android:layout_height="45dp"
         android:layout_below="@+id/ogrenciLoginLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
@@ -95,8 +95,8 @@
 
     <RelativeLayout
         android:id="@+id/ogrenciLoginFinal"
-        android:layout_width="350sp"
-        android:layout_height="50dp"
+        android:layout_width="330sp"
+        android:layout_height="45dp"
         android:layout_below="@+id/ogrenciLoginErrorText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"

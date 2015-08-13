@@ -280,10 +280,10 @@ public class Fragment1 extends Fragment {
             List<DuyuruInformation> data = new ArrayList<>();
             DuyuruInformation current = new DuyuruInformation();
             if (generalMode.equals("bolum")) {
-                current.imageID = R.drawable.lowres2;
+                current.imageID = R.drawable.lowres2_2;
                 current.bolum = "CENGAZÝ";
             } else {
-                current.imageID = R.drawable.mf_fakulte;
+                current.imageID = R.drawable.mf_fakulte2;
                 current.bolum = "MÜHENDÝSLÝK FAKÜLTESÝ";
             }
             data.add(current); // FIRST, ADD HEADER*/
@@ -471,10 +471,10 @@ public class Fragment1 extends Fragment {
         List<DuyuruInformation> data = new ArrayList<>();
         DuyuruInformation current = new DuyuruInformation();
         if (generalMode.equals("bolum")) {
-            current.imageID = R.drawable.lowres2;
+            current.imageID = R.drawable.lowres2_2;
             current.bolum = "CENGAZÝ";
         } else {
-            current.imageID = R.drawable.mf_fakulte;
+            current.imageID = R.drawable.mf_fakulte2;
             current.bolum = "MÜHENDÝSLÝK FAKÜLTESÝ";
         }
         data.add(current); // FIRST ADD HEADER*/

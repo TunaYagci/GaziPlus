@@ -44,7 +44,8 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="10dp"
-                android:text="CENGAZİ" />
+                android:text="CENGAZİ"
+                android:textSize="20sp" />
         </RelativeLayout>
     </view>
 

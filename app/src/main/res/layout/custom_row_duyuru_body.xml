@@ -46,7 +46,8 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:text="Large Text"
-                android:textColor="@color/duyuruCardsTextColor" />
+                android:textColor="@color/duyuruCardsTextColor"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/body"

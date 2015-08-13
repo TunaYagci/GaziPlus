@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,6 +56,7 @@ public class Fragment2 extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ImageButton clearParola, clearOgrNo;
+    private FloatingActionButton fab;
 
     public Fragment2() {
         // Required empty public constructor
@@ -71,6 +76,8 @@ public class Fragment2 extends Fragment {
         editor = sharedP.edit();
         bus.register(this);
 
+
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         clearParola = (ImageButton) rootView.findViewById(R.id.clearParola);
         clearOgrNo = (ImageButton) rootView.findViewById(R.id.clearOgrNo);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.not_list);
@@ -281,7 +288,7 @@ public class Fragment2 extends Fragment {
     public void onEvent(NotDownloadCompleted event) {
         ArrayList<String> notList;
         loadingCircle.setVisibility(View.GONE);
-        if (event.message == "error") {
+        if (event.message.equals("error")) {
             loginErrorText.setVisibility(View.VISIBLE);
             final float y1 = topLine.getY();
             final float y3 = loginErrorText.getY();
@@ -315,7 +322,7 @@ public class Fragment2 extends Fragment {
                 }
             });
 
-        } else if (event.message == "GoGoGo") {
+        } else if (event.message.equals("GoGoGo")) {
             topLine.animate().setDuration(2000).translationY(-3000).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -332,13 +339,13 @@ public class Fragment2 extends Fragment {
             });
 
 
-            fragment2MainText.setVisibility(View.INVISIBLE);
-            getView().findViewById(R.id.parola).setVisibility(View.INVISIBLE);
-            getView().findViewById(R.id.ogrenci_numarasi).setVisibility(View.INVISIBLE);
-            checkBox.setVisibility(View.INVISIBLE);
-            loginButton.setVisibility(View.INVISIBLE);
-            clearParola.setVisibility(View.INVISIBLE);
-            clearOgrNo.setVisibility(View.INVISIBLE);
+            fragment2MainText.setVisibility(View.GONE);
+            getView().findViewById(R.id.parola).setVisibility(View.GONE);
+            getView().findViewById(R.id.ogrenci_numarasi).setVisibility(View.GONE);
+            checkBox.setVisibility(View.GONE);
+            loginButton.setVisibility(View.GONE);
+            clearParola.setVisibility(View.GONE);
+            clearOgrNo.setVisibility(View.GONE);
 
 
             //isUserLoggedIn = true;
@@ -404,12 +411,83 @@ public class Fragment2 extends Fragment {
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     recyclerView.setVisibility(View.VISIBLE);
+                    fab.setVisibility(View.VISIBLE);//
+                    // if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    YoYo.with(Techniques.ZoomIn)
+                            .duration(1000)
+                            .playOn(fab);
+                    YoYo.with(Techniques.ZoomIn)
+                            .duration(500)
+                            .playOn(recyclerView);
+                    // }
                 }
             };
 
             getActivity().runOnUiThread(r);
         }
+
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleFabClicks();
+            }
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            boolean hideToolBar = false;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (hideToolBar) {
+                    fab.animate().translationY(300);
+                } else {
+                    fab.animate().translationY(0);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 20) {
+                    hideToolBar = true;
+
+                } else if (dy < -5) {
+                    hideToolBar = false;
+                }
+            }
+        });
     }
+
+    private void handleFabClicks() {
+        int animationDuration = 1000;
+        YoYo.with(Techniques.RotateOutDownLeft)
+                .duration(500)
+                .playOn(fab);
+        YoYo.with(Techniques.ZoomOut)
+                .duration(animationDuration)
+                .playOn(recyclerView);
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.setVisibility(View.GONE);
+                getView().findViewById(R.id.parola).setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.ogrenci_numarasi).setVisibility(View.VISIBLE);
+                fragment2MainText.setVisibility(View.VISIBLE);
+                checkBox.setVisibility(View.VISIBLE);
+                loginButton.setVisibility(View.VISIBLE);
+                clearParola.setVisibility(View.VISIBLE);
+                clearOgrNo.setVisibility(View.VISIBLE);
+                topLine.clearAnimation();
+                bottomLine.clearAnimation();
+                topLine.setVisibility(View.VISIBLE);
+                bottomLine.setVisibility(View.VISIBLE);
+            }
+        }, animationDuration);
+
+
+    }
+
 
     private String[] parseUpcomingNot(String satir) {
         //Log.i("tuna", "satir= " + satir);
