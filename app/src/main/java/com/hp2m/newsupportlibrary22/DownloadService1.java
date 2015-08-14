@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -52,10 +51,32 @@ public class DownloadService1 extends IntentService {
         try {
             insideDocs = Jsoup.connect(link).timeout(0).get();
 
-            Elements duyuruElements = insideDocs.select("div.post-content p");
             StringBuilder builder = new StringBuilder();
+
+            Elements duyuruH3Elements = insideDocs.select("div.post-content h3");
+            //builder = new StringBuilder();
+            for (int i2 = 0; i2 < duyuruH3Elements.size(); i2++) {
+                if (!duyuruH3Elements.get(i2).text().isEmpty()) {
+                    //a += duyuruElements.get(i2).text();
+                    //a += "\n\n";
+                    builder.append(duyuruH3Elements.get(i2).text());
+                    builder.append("\n\n");
+                }
+            }
+
+            Elements duyuruH4Elements = insideDocs.select("div.post-content h4");
+            //builder = new StringBuilder();
+            for (int i2 = 0; i2 < duyuruH4Elements.size(); i2++) {
+                if (!duyuruH4Elements.get(i2).text().isEmpty()) {
+                    //a += duyuruElements.get(i2).text();
+                    //a += "\n\n";
+                    builder.append(duyuruH4Elements.get(i2).text());
+                    builder.append("\n\n");
+                }
+            }
+
+            Elements duyuruElements = insideDocs.select("div.post-content p");
             for (int i2 = 0; i2 < duyuruElements.size(); i2++) {
-                Log.i("tuna", "inner side parsing 2");
                 if (!duyuruElements.get(i2).text().isEmpty()) {
                     //a += duyuruElements.get(i2).text();
                     //a += "\n\n";
@@ -63,9 +84,11 @@ public class DownloadService1 extends IntentService {
                     builder.append("\n\n");
                 }
             }
-            if (StringUtils.isEmpty(builder.toString())) {
+            /*StringBuilder builder2 = new StringBuilder();
+            if (!builder.toString().matches(".*[a-z].*")){
+                // Do something
                 Elements duyuruElements2 = insideDocs.select("div.post-content");
-                StringBuilder builder2 = new StringBuilder();
+                builder2 = new StringBuilder();
                 for (int i2 = 0; i2 < duyuruElements2.size(); i2++) {
                     Log.i("tuna", "inner side parsing 2");
                     if (!duyuruElements2.get(i2).text().isEmpty()) {
@@ -77,12 +100,9 @@ public class DownloadService1 extends IntentService {
                 }
             } else {
                 Log.i("gazient", builder.toString());
-            }
-
-            try {
+            }*/
                 Elements duyuruInsafsizElement = insideDocs.select("div.post-content div");
                 for (int i2 = 0; i2 < duyuruInsafsizElement.size(); i2++) {
-                    Log.i("tuna", "inner side parsing 2");
                     if (!duyuruInsafsizElement.get(i2).text().isEmpty()) {
                         //a += duyuruElements.get(i2).text();
                         //a += "\n\n";
@@ -90,16 +110,23 @@ public class DownloadService1 extends IntentService {
                         builder.append("\n\n");
                     }
                 }
-            } catch (Exception e) {
-                Log.i("tuna", "insafsiz element exception " + e.toString());
+
+            Elements duyuruLiElement = insideDocs.select("div.post-content li");
+            for (int i2 = 0; i2 < duyuruInsafsizElement.size(); i2++) {
+                if (!duyuruInsafsizElement.get(i2).text().isEmpty()) {
+                    //a += duyuruElements.get(i2).text();
+                    //a += "\n\n";
+                    builder.append(duyuruInsafsizElement.get(i2).text());
+                    builder.append("\n\n");
+                }
             }
             icerik = builder.toString();
             builder = new StringBuilder();
-            Log.i("tuna", "gonna parse links");
+            //Log.i("tuna", "gonna parse links");
             Elements duyuruLinkElements = insideDocs.select("div.post-content a[href]");
-            Log.i("tuna", "link parsing ended");
+            // Log.i("tuna", "link parsing ended");
             for (int i3 = 0; i3 < duyuruLinkElements.size(); i3++) {
-                Log.i("tuna", "inner side parsing 3");
+                //Log.i("tuna", "inner side parsing 3");
                 if (i3 != 0)
                     builder.append("\n");
                 //b += duyuruLinkElements.get(i3).attr("abs:href");
@@ -118,7 +145,7 @@ public class DownloadService1 extends IntentService {
             icerikLink = builder.toString();
 
 
-            Log.i("tuna", "gonna look for image links");
+            //Log.i("tuna", "gonna look for image links");
             builder = new StringBuilder();
             Elements duyuruImageLinks = insideDocs.select("div.post-content img[src]");
             for (int i = 0; i < duyuruImageLinks.size(); i++) {
