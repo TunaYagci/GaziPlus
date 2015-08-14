@@ -26,6 +26,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private SharedPreferences sP;
     private String defaultFakulteLink = "a", defaultBolumLink = "a";
     private String bolumAdi, fakulteAdi;
+    private String bolumHint = "none";
     private int bolumImg, fakulteImg;
 
 
@@ -138,19 +139,46 @@ public class WelcomeActivity extends AppCompatActivity {
             case "07":
                 defaultFakulteLink = "http://gsf.gazi.edu.tr/posts?type=news";
                 break;
-            case "08":
-                defaultFakulteLink = "http://hukuk.gazi.edu.tr/posts?type=news";
+            case "10":
+                defaultFakulteLink = "none";
+                switch (bolumNo) {
+                    case "20":
+                        defaultBolumLink = "http://ilet.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "ÝLETÝÞÝM FAKÜLTESÝ";
+                        bolumHint = "nofab";
+                        bolumImg = R.drawable.gazi_iletisim;
+                        break;
+                    default:
+                        bolumHint = "none";
+                }
                 break;
-            case "9":
+            case "09":
                 defaultFakulteLink = "http://iibf.gazi.edu.tr/posts?type=news";
                 break;
-            case "10":
+            case "08":
                 defaultFakulteLink = "http://ilet.gazi.edu.tr/posts?type=news";
                 break;
             case "11":
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
                 fakulteAdi = "MÜHENDÝSLÝK FAKÜLTESÝ";
                 fakulteImg = R.drawable.mf_fakulte3;
+                switch (bolumNo) {
+                    case "80":
+                        defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "CENGAZÝ";
+                        bolumHint = "cengazi";
+                        bolumImg = R.drawable.lowres2_2;
+                        break;
+                    case "20":
+                        defaultBolumLink = "http://mf-em.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "ENDÜSTRÝ MÜHENDÝSLÝÐÝ";
+                        bolumHint = "ent";
+                        bolumImg = R.drawable.gazi_ent_1;
+                        break;
+                    default:
+                        break;
+                }
+
 
                 break;
             case "12":
@@ -254,13 +282,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://konservatuvar.gazi.edu.tr/posts?type=news";
                 break;*/
         }
-        switch (bolumNo) {
-            case "80":
-                defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
-                bolumAdi = "CENGAZÝ";
-                bolumImg = R.drawable.lowres2_2;
-                break;
-        }
 
     }
 
@@ -286,6 +307,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
                 defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
 
+                editor.putString("bolumHint", "cengazi");
                 editor.putString("bolumAdi", bolumAdi);
                 editor.putInt("bolumImg", bolumImg);
                 editor.putString("fakulteAdi", fakulteAdi);
@@ -327,8 +349,7 @@ public class WelcomeActivity extends AppCompatActivity {
             String ogrNo = ogrenciLoginEditText.getText().toString();
             switcher(ogrNo);
 
-            if (!defaultFakulteLink.equals("http://mf.gazi.edu.tr/posts?type=news") &&
-                    !defaultBolumLink.equals("http://mf-bm.gazi.edu.tr/posts?type=news")) {
+            if (bolumHint.equals("none")) {
                 Toast.makeText(this, "Bölümün henüz desteklenmiyor, lütfen öðrenci numaraný bana yolla", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -352,6 +373,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 public void run() {
 
                     SharedPreferences.Editor editor = sP.edit();
+                    editor.putString("bolumHint", bolumHint);
                     editor.putString("bolumAdi", bolumAdi);
                     editor.putInt("bolumImg", bolumImg);
                     editor.putString("fakulteAdi", fakulteAdi);

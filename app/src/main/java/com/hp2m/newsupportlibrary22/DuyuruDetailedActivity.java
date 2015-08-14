@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -48,6 +49,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
     Activity activity;
     Button goToOriginalSourceButton;
     ProgressBar progressBar;
+    private int circleCount = 0;
     private int POSITION;
     private DuyuruDB db;
     private String generalMode;
@@ -58,9 +60,17 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         @Override
         public void run() {
             if (db.fetchMeMyDuyuru(POSITION, generalMode).get(4).length() < 2) {
+                circleCount++;
+                if (circleCount > 20) {
+                    Toast.makeText(getApplicationContext(), "Sunucu yanýt vermiyor", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
                 handler.postDelayed(runnable, 300);
-            } else
+            } else {
+                circleCount = 0;
                 startLoad();
+            }
         }
     };
 
@@ -104,8 +114,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
             Log.i("tuna", db.fetchMeMyDuyuru(POSITION, generalMode).get(4));
             goToOriginalSourceButton.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
-
-            DuyuruExceptionDB db2 = new DuyuruExceptionDB(getApplicationContext());
+            /*DuyuruExceptionDB db2 = new DuyuruExceptionDB(getApplicationContext());
             boolean isThisDuyuruOnExceptions = false;
             // check if its on exceptioner list
             for (int i = 0; i < db.getDuyuruSayisi(generalMode); i++) {
@@ -118,9 +127,8 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
             if (isThisDuyuruOnExceptions) {
                 Log.i("tuna", "This is on Duyuru Exceptions");
                 //onEvent(new StatusForDetailedActivity("exception"));
-            } else {
+            } else { }*/
                 handler.postDelayed(runnable, 300);
-            }
         } else {
             Log.i("tuna", "gonna load duyuru detailed");
             startLoad();

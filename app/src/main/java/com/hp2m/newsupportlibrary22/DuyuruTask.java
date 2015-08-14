@@ -337,6 +337,9 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                 });*/
                 bus.post(new IOExceptionInDuyuruTaskForFirstTime());
             }
+            if (mode.equals("updating")) {
+                fragment.swipeLayout.setRefreshing(false);
+            }
             Snackbar.make(fragment.coordinator, "Sunucuya eriþilemiyor", Snackbar.LENGTH_LONG)
                     .setAction("Tekrar Dene", new View.OnClickListener() {
                         @Override

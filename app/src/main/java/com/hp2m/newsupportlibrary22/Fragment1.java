@@ -123,13 +123,17 @@ public class Fragment1 extends Fragment {
         editor = sP.edit();
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         coordinator = (CoordinatorLayout) rootView.findViewById(R.id.coordinator2);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("tuna", "fab click");
-                handleFabClicks();
-            }
-        });
+        if (!sP.getString("bolumHint", "nofab").equals("nofab")) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("tuna", "fab click");
+                    handleFabClicks();
+                }
+            });
+        } else {
+            fab.setVisibility(View.GONE);
+        }
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeLayout.setColorSchemeResources(R.color.card_color_1,
                 R.color.card_color_2,
@@ -161,30 +165,32 @@ public class Fragment1 extends Fragment {
         //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            boolean hideToolBar = false;
+        if (!sP.getString("bolumHint", "nofab").equals("nofab")) {
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                boolean hideToolBar = false;
 
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (hideToolBar) {
-                    fab.animate().translationY(300);
-                } else {
-                    fab.animate().translationY(0);
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (hideToolBar) {
+                        fab.animate().translationY(300);
+                    } else {
+                        fab.animate().translationY(0);
+                    }
                 }
-            }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 20) {
-                    hideToolBar = true;
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (dy > 20) {
+                        hideToolBar = true;
 
-                } else if (dy < -5) {
-                    hideToolBar = false;
+                    } else if (dy < -5) {
+                        hideToolBar = false;
+                    }
                 }
-            }
-        });
+            });
+        }
 
         return rootView;
     }
