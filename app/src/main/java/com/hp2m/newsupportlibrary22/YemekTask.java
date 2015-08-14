@@ -1,8 +1,6 @@
 package com.hp2m.newsupportlibrary22;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,6 +27,7 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ArrayList<String> yemekListFromYemekTask;
+    private boolean ioException = false;
 
     YemekTask(Fragment3 fragment, boolean isUpdating) {
         this.fragment = fragment;
@@ -58,11 +57,16 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         Log.i("tuna", "do in background");
         yemekListFromYemekTask = new ArrayList<>();
-
+        Document doc = null;
         try {
-            Document doc = Jsoup.connect(URL)
+            doc = Jsoup.connect(URL)
                     .timeout(0)
                     .get();
+        } catch (IOException e) {
+            Log.i("tuna", "ioexception in yemektask " + e.toString());
+            ioException = true;
+        }
+        try {
             Elements elements = doc.select("div.post-content td");
             // Haftalik veri indiriliyor
             // Burada listeye sadece o gunun verisi kaydediliyor
@@ -82,13 +86,8 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
             YemekGetSet yemekGetSet5 = new YemekGetSet(yemekListFromYemekTask.get(5), yemekListFromYemekTask.get(9),
                     yemekListFromYemekTask.get(15), yemekListFromYemekTask.get(20), yemekListFromYemekTask.get(25));
             ;
-            SharedPreferences sharedPreferences = fragment.getActivity().getSharedPreferences("db", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            int i = sharedPreferences.getInt("version", 0) + 1; // there is no chance its being 0 coz of onCreate on Fragment3
-            YemekDB dbHandler = new YemekDB(fragment.getActivity(), null, null, i);
-            editor.putInt("version", i);
-            editor.putInt("lastUpdatedTime", 1);
-            editor.commit();
+
+            YemekDB dbHandler = new YemekDB(fragment.getActivity());
             Log.i("tuna", "about to add");
             dbHandler.addHaftalikYemek(yemekGetSet);
             dbHandler.addHaftalikYemek(yemekGetSet2);
@@ -110,8 +109,6 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
              */
 
 
-        } catch (IOException e) {
-            Log.i("tuna", "ioexception in yemektask " + e.toString());
         } catch (Exception e) {
             Log.i("tuna", "exception in yemektask " + e.toString());
         }
@@ -125,7 +122,11 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
         Log.i("tuna", "we are on postExecute");
         try {
-            bus.post(new YemekDownloadComplated("goodToGo"));
+            if (ioException) {
+                bus.post(new YemekDownloadComplated("ioException"));
+            } else {
+                bus.post(new YemekDownloadComplated("goodToGo"));
+            }
             if (isUpdating) {
                 fragment.swipeLayout.setRefreshing(false);
                 //lowerBrightness(fragment.motherLayout);

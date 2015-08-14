@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -60,6 +61,21 @@ public class DownloadService3 extends IntentService {
                     builder.append("\n\n");
                 }
             }
+            if (StringUtils.isEmpty(builder.toString())) {
+                Elements duyuruElements2 = insideDocs.select("div.post-content");
+                StringBuilder builder2 = new StringBuilder();
+                for (int i2 = 0; i2 < duyuruElements2.size(); i2++) {
+                    Log.i("tuna", "inner side parsing 2");
+                    if (!duyuruElements2.get(i2).text().isEmpty()) {
+                        //a += duyuruElements.get(i2).text();
+                        //a += "\n\n";
+                        builder2.append(duyuruElements2.get(i2).text());
+                        builder2.append("\n\n");
+                    }
+                }
+            } else {
+                Log.i("gazient", builder.toString());
+            }
             try {
                 Elements duyuruInsafsizElement = insideDocs.select("div.post-content div");
                 for (int i2 = 0; i2 < duyuruInsafsizElement.size(); i2++) {
@@ -91,6 +107,7 @@ public class DownloadService3 extends IntentService {
                 builder.append(duyuruLinkElements.get(i3).text());
 
             }
+
             if (duyuruLinkElements.size() == 0) {
                 //b = "none";
                 builder.append("none");

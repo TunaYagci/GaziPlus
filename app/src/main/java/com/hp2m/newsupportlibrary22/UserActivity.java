@@ -21,8 +21,11 @@ import com.nostra13.universalimageloader.core.process.BitmapProcessor;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 public class UserActivity extends AppCompatActivity {
 
+    final EventBus bus = EventBus.getDefault();
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ImageView avatar, background;
@@ -91,6 +94,13 @@ public class UserActivity extends AppCompatActivity {
             name.setVisibility(View.VISIBLE);
             background.setMaxHeight(50);
             name.setText("Öðrenci sistemine giriþ yapýlmadý");
+            name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bus.post(new goToFragment2());
+                    finish();
+                }
+            });
         }
         // misafir mi yoksa kayýtlý kullanýcý mý bir bak, SharedPrefzz
 
@@ -126,4 +136,8 @@ public class UserActivity extends AppCompatActivity {
 
         return data;
     }
+
+}
+
+class goToFragment2 {
 }

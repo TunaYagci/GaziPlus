@@ -54,7 +54,7 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             View view = inflater.inflate(R.layout.custom_row_notlar_header, parent, false);
             return new NotHeaderViewHolder(view);
         } else if (viewType == EMPTY_VIEW) {
-            View view = inflater.inflate(R.layout.not_empty_view, parent, false);
+            View view = inflater.inflate(R.layout.notlar_empty_view, parent, false);
             return new NotEmptyView(view);
         } else if (viewType == TYPE_SUBHEADER) {
             View view = inflater.inflate(R.layout.custom_row_notlar_subheader, parent, false);
@@ -205,6 +205,8 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         } catch (NullPointerException e) {
             return TYPE_ITEM;
+        } catch (IndexOutOfBoundsException e) {
+            return EMPTY_VIEW;
         }
         return TYPE_ITEM;
     }

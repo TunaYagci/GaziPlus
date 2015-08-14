@@ -154,6 +154,7 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
             idList.add(name);
             idList.add(number);
             // use SharedPrefs to see if image is loaded before or not
+            boolean haveYouFoundGenelOrt = false;
             for (int i = 3; i < element1.size(); i++) {
                 String b = element1.get(i).text().replace(String.valueOf((char) 160), " ").trim();
                 if (b.startsWith("2")) {
@@ -162,17 +163,20 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                         i++;
                         continue;
                     } else if (b.contains("Genel Ortalama : ")) {
-                        int c = b.indexOf("Genel Ortalama :");
-                        String x2 = b.substring(c + 18, c + 22);
-                        if (!x2.equals("-")) {
-                            genelOrt = x2;
+                        if (!haveYouFoundGenelOrt) {
+                            int c = b.indexOf("Genel Ortalama :");
+                            String x2 = b.substring(c + 18, c + 22);
+                            if (!x2.equals("-")) {
+                                genelOrt = x2;
+                                haveYouFoundGenelOrt = true;
+                            }
                         }
                         continue;
                     } else {
                         continue;
                     }
                 } else {
-                    if (b.startsWith("MD- MUAF")) break;
+                    if (b.startsWith("MD- MUAF") || b.startsWith("(WEB")) break;
                 }
                 // sondaki o Dönem'i alma
                 notList.add(b.substring(0, b.length() - 15));

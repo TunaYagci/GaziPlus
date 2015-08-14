@@ -322,6 +322,7 @@ public class Fragment2 extends Fragment {
                 }
             });
 
+            return; // are you sure???
         } else if (event.message.equals("GoGoGo")) {
             topLine.animate().setDuration(2000).translationY(-3000).setListener(new AnimatorListenerAdapter() {
                 @Override
@@ -369,37 +370,42 @@ public class Fragment2 extends Fragment {
             // then add items. Adapter will notice who is sub-header by itself
             // String dersKodu, dersAdi, vizeNotu, finalNotu, butNotu, basariNotu, kredi, sinifOrt; // ITEMS
 
-            NotlarDB db = new NotlarDB(this.getActivity());
-            for (int i = 0; i < notList.size(); i++) {
-                if (notList.get(i).startsWith("2") && notList.get(i).endsWith("ý")) {
-                    current = new NotInformation();
-                    current.donemAdi = notList.get(i);
-                    data.add(current);
-                    Log.i("tuna", "donemAdi = " + notList.get(i));
-                } else {
-                    String[] parsedNot = parseUpcomingNot(notList.get(i));
-                    current = new NotInformation();
-                    // ders kodlarý ayný hizada olsun diye, max ders kodu sayýsý 7
-                    for (int i2 = parsedNot[0].length(); i2 < 8; i2++) {
-                        if (parsedNot[0].length() == 7) {
-                            parsedNot[0] += " ";
-                            break;
+            Log.i("tuna", "empty List size is=" + notList.size());
+            if (notList.size() > 3) {
+                NotlarDB db = new NotlarDB(this.getActivity());
+                for (int i = 0; i < notList.size(); i++) {
+                    if (notList.get(i).startsWith("2") && notList.get(i).endsWith("ý")) {
+                        current = new NotInformation();
+                        current.donemAdi = notList.get(i);
+                        data.add(current);
+                        Log.i("tuna", "donemAdi = " + notList.get(i));
+                    } else {
+                        String[] parsedNot = parseUpcomingNot(notList.get(i));
+                        current = new NotInformation();
+                        // ders kodlarý ayný hizada olsun diye, max ders kodu sayýsý 7
+                        for (int i2 = parsedNot[0].length(); i2 < 8; i2++) {
+                            if (parsedNot[0].length() == 7) {
+                                parsedNot[0] += " ";
+                                break;
+                            }
+                            parsedNot[0] += "  ";
                         }
-                        parsedNot[0] += "  ";
+                        current.ogrNo = event.idList.get(1);
+                        current.dersKodu = parsedNot[0];
+                        current.dersAdi = parsedNot[1];
+                        current.vizeNotu = parsedNot[2];
+                        current.finalNotu = parsedNot[3];
+                        current.butNotu = parsedNot[4];
+                        current.basariNotu = parsedNot[5];
+                        current.kredi = parsedNot[6];
+                        current.sinifOrt = parsedNot[7];
+                        // db'ye ekle. Baþka öðrencinin notlarý varsa onlarý silecek.
+                        db.addorUpdateNot(current);
+                        data.add(current);
                     }
-                    current.ogrNo = event.idList.get(1);
-                    current.dersKodu = parsedNot[0];
-                    current.dersAdi = parsedNot[1];
-                    current.vizeNotu = parsedNot[2];
-                    current.finalNotu = parsedNot[3];
-                    current.butNotu = parsedNot[4];
-                    current.basariNotu = parsedNot[5];
-                    current.kredi = parsedNot[6];
-                    current.sinifOrt = parsedNot[7];
-                    // db'ye ekle. Baþka öðrencinin notlarý varsa onlarý silecek.
-                    db.addorUpdateNot(current);
-                    data.add(current);
                 }
+            } else {
+                data = Collections.emptyList();
             }
 
 
@@ -490,7 +496,7 @@ public class Fragment2 extends Fragment {
 
 
     private String[] parseUpcomingNot(String satir) {
-        //Log.i("tuna", "satir= " + satir);
+        Log.i("tuna", "satir= " + satir);
         String nx2 = satir.replace("                   ", "-    -    -    -    -   ");
         String cc = nx2.replace("                ", "    -    -    -    -   ");
         String nx3 = cc.replace("                ", "    -    -    -    -   ");

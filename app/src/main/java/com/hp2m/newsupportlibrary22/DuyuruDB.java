@@ -46,6 +46,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
             } while (c.moveToNext());
 
         //return idMax; // niye 1 fazla veriyor bilmiyorum
+        db.close();
         return idMax;
     }
 
@@ -206,6 +207,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             db.delete(TABLE_BOLUM, null, null);
             db.delete(TABLE_FAKULTE, null, null);
+            db.close();
         } catch (Exception e) {
             Log.i("tuna", e.toString());
         }

@@ -22,11 +22,24 @@ public class YemekDB extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "yemeklistesi16.db";
     public static int DATABASE_VERSION = 1;
 
-    public YemekDB(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, version);
-        this.DATABASE_VERSION = version;
+    public YemekDB(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
+    public int getYemekSayisi() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_YEMEK;
+        Cursor c = db.rawQuery(query, null);
+        int idMax = 0;
+        if (c.moveToFirst())
+            do {
+                idMax = c.getInt((0));
+            } while (c.moveToNext());
+        db.close();
+        //return idMax; // niye 1 fazla veriyor bilmiyorum
+        return idMax;
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {

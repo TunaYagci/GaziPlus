@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class Fragment3 extends Fragment {
     private RecyclerView.Adapter adapter;
     private ArrayList<String> yemekList;
     private DataHolder dataHolder = new DataHolder();
+    private ImageButton reload;
+    private TextView reloadText;
 
     public Fragment3() {
 
@@ -49,7 +53,6 @@ public class Fragment3 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //bus.register(this);
         View rootView = (View) inflater.inflate(
                 R.layout.fragment3, container, false);
         bus.register(this);
@@ -77,14 +80,16 @@ public class Fragment3 extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        reload = (ImageButton) rootView.findViewById(R.id.reload);
+        reloadText = (TextView) rootView.findViewById(R.id.reloadText);
         return rootView;
     }
 
     private List<YemekInformation> getData() { // I MADE THIS PRIVATE
         Log.i("tuna", "yemek getData");
-        YemekDB db = new YemekDB(getActivity(), null, null, sharedPreferences.getInt("version", 1));
+        YemekDB db = new YemekDB(getActivity());
         //if(doesTableExist(db.getReadableDatabase(), db.TABLE_YEMEK)) { // check if DB is old or not, created or not
-        if (doesDatabaseExist(getActivity(), db.getDatabaseName())) {
+        if (db.getYemekSayisi() != 0) {
             // CHECK IF DB IS OLD OR NOT
             List<YemekInformation> data = new ArrayList<>();
             int[] cardColors = {getResources().getColor(R.color.card_color_1),
@@ -136,36 +141,58 @@ public class Fragment3 extends Fragment {
 
     public void onEvent(YemekDownloadComplated event) {
         Log.i("tuna", "we are on Event");
-        YemekDB db = new YemekDB(getActivity(), null, null, sharedPreferences.getInt("version", 1));
-        List<YemekInformation> data = new ArrayList<>();
-        int[] cardColors = {getResources().getColor(R.color.card_color_1),
-                getResources().getColor(R.color.card_color_2),
-                getResources().getColor(R.color.card_color_3),
-                getResources().getColor(R.color.card_color_4),
-                getResources().getColor(R.color.card_color_5)};
-        for (int i = 0; i < cardColors.length; i++) {
-            yemekList = new ArrayList<>();
-            YemekInformation current = new YemekInformation();
-            yemekList.addAll(db.fetchMeMyFood(i + 1));
-            current.header = yemekList.get(0);
-            current.yemek1 = yemekList.get(1);
-            current.yemek2 = yemekList.get(2);
-            current.yemek3 = yemekList.get(3);
-            current.yemek4 = yemekList.get(4);
-            current.cardColor = cardColors[i];
-            data.add(current);
-        }
-        final List<YemekInformation> data2 = data;
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                adapter = new YemekAdapter(getActivity(), data2);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+        YemekDB db = new YemekDB(getActivity());
+        if (event.message.equals("goodToGo")) {
+            List<YemekInformation> data = new ArrayList<>();
+            int[] cardColors = {getResources().getColor(R.color.card_color_1),
+                    getResources().getColor(R.color.card_color_2),
+                    getResources().getColor(R.color.card_color_3),
+                    getResources().getColor(R.color.card_color_4),
+                    getResources().getColor(R.color.card_color_5)};
+            for (int i = 0; i < cardColors.length; i++) {
+                yemekList = new ArrayList<>();
+                YemekInformation current = new YemekInformation();
+                yemekList.addAll(db.fetchMeMyFood(i + 1));
+                current.header = yemekList.get(0);
+                current.yemek1 = yemekList.get(1);
+                current.yemek2 = yemekList.get(2);
+                current.yemek3 = yemekList.get(3);
+                current.yemek4 = yemekList.get(4);
+                current.cardColor = cardColors[i];
+                data.add(current);
             }
-        };
-        getActivity().runOnUiThread(r);
-
+            final List<YemekInformation> data2 = data;
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    adapter = new YemekAdapter(getActivity(), data2);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+            };
+            getActivity().runOnUiThread(r);
+        } else {
+            if (db.getYemekSayisi() == 0) {
+                reload.setVisibility(View.VISIBLE);
+                reloadText.setVisibility(View.VISIBLE);
+                reload.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        reload.setVisibility(View.GONE);
+                        reloadText.setVisibility(View.GONE);
+                        yemekYukle();
+                    }
+                });
+            } else {
+                Snackbar.make(motherLayout, "Sunucuya eriþilemedi", Snackbar.LENGTH_LONG)
+                        .setAction("Tekrar dene", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                yemekGuncelle();
+                            }
+                        });
+            }
+        }
 
     }
 
@@ -177,12 +204,24 @@ public class Fragment3 extends Fragment {
 
     private void yemekGuncelle() {
         if (isNetworkAvailable()) {
+            swipeLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeLayout.setRefreshing(true);
+                }
+            });
             new YemekTask(this, true).execute();
         }
     }
 
     private void yemekYukle() {
-        new YemekTask(this, false).execute();
+        swipeLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeLayout.setRefreshing(true);
+            }
+        });
+        new YemekTask(this, true).execute();
     }
 
 }

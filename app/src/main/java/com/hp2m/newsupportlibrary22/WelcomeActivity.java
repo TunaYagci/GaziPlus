@@ -139,14 +139,14 @@ public class WelcomeActivity extends AppCompatActivity {
             case "07":
                 defaultFakulteLink = "http://gsf.gazi.edu.tr/posts?type=news";
                 break;
-            case "10":
+            case "08":
                 defaultFakulteLink = "none";
                 switch (bolumNo) {
                     case "20":
                         defaultBolumLink = "http://ilet.gazi.edu.tr/posts?type=news";
                         bolumAdi = "ÝLETÝÞÝM FAKÜLTESÝ";
                         bolumHint = "nofab";
-                        bolumImg = R.drawable.gazi_iletisim;
+                        bolumImg = R.drawable.gazi_iletisim_2;
                         break;
                     default:
                         bolumHint = "none";
@@ -155,7 +155,7 @@ public class WelcomeActivity extends AppCompatActivity {
             case "09":
                 defaultFakulteLink = "http://iibf.gazi.edu.tr/posts?type=news";
                 break;
-            case "08":
+            case "10":
                 defaultFakulteLink = "http://ilet.gazi.edu.tr/posts?type=news";
                 break;
             case "11":

@@ -115,6 +115,7 @@ public class NotlarDB extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         //db.execSQL("delete from " + TABLE_NOTLAR);
         db.delete(TABLE_NOTLAR, null, null);
+        db.close();
     }
 
     public ArrayList<String> fetchMeDers(String dersKodu) {

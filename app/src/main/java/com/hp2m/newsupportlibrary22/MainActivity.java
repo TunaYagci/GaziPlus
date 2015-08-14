@@ -24,9 +24,12 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.process.BitmapProcessor;
 
+import de.greenrobot.event.EventBus;
+
 
 public class MainActivity extends AppCompatActivity {
 
+    final EventBus bus = EventBus.getDefault();
     private ViewPager mPager;
     private PagerAdapter pagerAdapter;
 
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        bus.register(this);
         SharedPreferences sP = getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sP.edit();
         editor.putString("generalMode", "bolum");
@@ -149,10 +153,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onEvent(goToFragment2 event) {
+        mPager.setCurrentItem(1, true);
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        bus.unregister(this);
 
     }
 
