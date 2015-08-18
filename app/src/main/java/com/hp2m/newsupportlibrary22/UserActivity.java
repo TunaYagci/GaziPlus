@@ -130,7 +130,7 @@ public class UserActivity extends AppCompatActivity {
             current = new ActivityUserInfo();
             current.body = bodyList.get(i);
             if (i == 0)
-                current.imageID = R.drawable.settings;
+                current.imageID = R.drawable.ic_settings_black_24dp;
             data.add(current);
         }
 

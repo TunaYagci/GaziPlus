@@ -1,0 +1,37 @@
+  public void handleRFABClicks(int position, RFACLabelItem item){
+        if(item.getLabel().endsWith("duyurularý")) {
+            handleFabClicks();
+            if(sP.getString("generalMode", "bolum").equals("fakulte")) {
+                item.setResId(R.drawable.ic_arrow_back_white_24dp);
+                item.setLabel("Bölüm duyurularý");
+            }
+            else{
+                item.setResId(R.drawable.ic_arrow_forward_white_24dp);
+                item.setLabel("Fakülte duyurularý");
+            }
+        }
+        else if (item.getLabel().startsWith("Bildirimleri")){
+            if(sP.getBoolean("isNotificationServiceOnline", false)){
+                item.setLabel("Bildirimleri aç");
+                item.setResId(R.drawable.ic_notifications_active_white_24dp);
+            }
+            else{
+                item.setLabel("Bildirimleri kapat");
+                item.setResId(R.mipmap.ic_notifications_off_white_24dp);
+            }
+
+        }
+        else if (item.getLabel().equals("Yenile")){
+            setFabToLoading();
+            DuyuruDB db = new DuyuruDB(getActivity());
+            db.clearTable(sP.getString("generalMode", "bolum"));
+            LoadDuyuruForFirstTime();
+        }
+        fabHelper.toggleContent();
+        fabHelper = new RapidFloatingActionHelper(
+                getActivity(),
+                fabLayout,
+                fab,
+                rfaContent
+        ).build();
+    }

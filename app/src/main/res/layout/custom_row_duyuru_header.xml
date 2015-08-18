@@ -23,10 +23,10 @@
                 android:id="@+id/bolum_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:alpha="0.9"
+                android:alpha="0.8"
                 android:scaleType="fitXY"
                 android:scaleX="1"
-                android:src="@drawable/lowres2" />
+                android:src="@drawable/lowres2_2" />
 
 
             <TextView

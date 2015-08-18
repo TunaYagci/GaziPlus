@@ -307,6 +307,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
                 defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
 
+                //setupNotificationService();
                 editor.putString("bolumHint", "cengazi");
                 editor.putString("bolumAdi", bolumAdi);
                 editor.putInt("bolumImg", bolumImg);
@@ -372,6 +373,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 @Override
                 public void run() {
 
+                    //setupNotificationService();
                     SharedPreferences.Editor editor = sP.edit();
                     editor.putString("bolumHint", bolumHint);
                     editor.putString("bolumAdi", bolumAdi);
@@ -390,6 +392,19 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
             }, 250);
         }
+    }
+
+    public void setupNotificationService() {
+        // okay so here, we will start duyuru notifications first, fakulte too maybe?
+        // later on we will add not notifications when user wrote his pass
+
+        PlusMainReceiver receiver = new PlusMainReceiver();
+        receiver.SetAlarm(this);
+        SharedPreferences.Editor editor = sP.edit();
+        editor.putBoolean("isNotificationServiceOnline", true);
+        editor.putBoolean("isDuyuruServiceOnline", true);
+        editor.apply();
+
     }
 
 }

@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,11 +17,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,7 +50,8 @@ public class Fragment1 extends Fragment {
     public int dataSize;
     public ImageButton reload;
     public TextView reloadText;
-    public FloatingActionButton fab;
+    public FloatingActionButton fab1, fab2, fab3;
+    public FloatingActionMenu fabMenu;
     SwipeRefreshLayout swipeLayout;
     CoordinatorLayout coordinator;
     FrameLayout motherLayout;
@@ -55,6 +59,7 @@ public class Fragment1 extends Fragment {
     private int failedThreadsSoFar;
     private SharedPreferences sP;
     private SharedPreferences.Editor editor;
+    private FrameLayout dimLayout;
 
     public Fragment1() {
 
@@ -114,6 +119,7 @@ public class Fragment1 extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment1, container, false);
         bus.register(this);
 
+        dimLayout = (FrameLayout) rootView.findViewById(R.id.dimLayout);
         reload = (ImageButton) rootView.findViewById(R.id.reload);
         reloadText = (TextView) rootView.findViewById(R.id.reloadText);
         motherLayout = (FrameLayout) rootView.findViewById(R.id.fragment1_motherLayout);
@@ -121,18 +127,25 @@ public class Fragment1 extends Fragment {
 
         sP = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         editor = sP.edit();
-        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) rootView.findViewById(R.id.menu_item1);
+        fab2 = (FloatingActionButton) rootView.findViewById(R.id.menu_item2);
+        fab3 = (FloatingActionButton) rootView.findViewById(R.id.menu_item3);
+
+        fabMenu = (FloatingActionMenu) rootView.findViewById(R.id.fabMenu);
+        //fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+
         coordinator = (CoordinatorLayout) rootView.findViewById(R.id.coordinator2);
         if (!sP.getString("bolumHint", "nofab").equals("nofab")) {
-            fab.setOnClickListener(new View.OnClickListener() {
+            /*fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i("tuna", "fab click");
                     handleFabClicks();
                 }
-            });
+            });*/
+            createFabMenu();
         } else {
-            fab.setVisibility(View.GONE);
+            fabMenu.setVisibility(View.GONE);
         }
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeLayout.setColorSchemeResources(R.color.card_color_1,
@@ -173,9 +186,11 @@ public class Fragment1 extends Fragment {
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
                     if (hideToolBar) {
-                        fab.animate().translationY(300);
+                        //fabMenu.animate().translationY(330);
+                        fabMenu.hideMenuButton(true);
                     } else {
-                        fab.animate().translationY(0);
+                        //fabMenu.animate().translationY(0);
+                        fabMenu.showMenuButton(true);
                     }
                 }
 
@@ -191,25 +206,130 @@ public class Fragment1 extends Fragment {
                 }
             });
         }
-
         return rootView;
     }
 
+    private void createFabMenu() {
+
+        fabMenu.setMenuButtonHideAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.abc_slide_out_bottom));
+        fabMenu.setMenuButtonShowAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.abc_slide_in_bottom));
+
+        fabMenu.setClosedOnTouchOutside(true);
+        fabMenu.setIconAnimated(true);
+        fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(boolean b) {
+                if (b) {
+                    dimLayout.setVisibility(View.VISIBLE);
+                } else {
+                    dimLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+        if (sP.getString("generalMode", "bolum").equals("bolum")) {
+            fab2.setLabelText("Bölüm bildirimleri");
+        } else {
+            fab2.setLabelText("Fakülte bildirimleri");
+        }
+        fab1.setColorNormalResId(R.color.fab_menu_1);
+        fab2.setColorNormalResId(R.color.card_color_1);
+        fab3.setColorNormalResId(R.color.fab_menu_3);
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleMenuFab1Click();
+            }
+        });
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleMenuFab2Click();
+            }
+        });
+        fab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleMenuFab3Click();
+            }
+        });
+    }
+
+    private void handleMenuFab1Click() {
+        fabMenu.close(false);
+        handleFabClicks();
+    }
+
+    private void handleMenuFab2Click() {
+        if (sP.getBoolean("isNotificationServiceOnline", false)) {
+            // bildirimleri kapa
+            fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+        } else {
+            // bildirimleri aç
+            fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
+        }
+        if (sP.getString("generalMode", "bolum").equals("bolum")) {
+            fab2.setLabelText("Bölüm bildirimleri");
+        } else {
+            fab2.setLabelText("Fakülte bildirimleri");
+        }
+    }
+
+    private void handleMenuFab3Click() {
+        fabMenu.close(false);
+        setFabToLoading();
+        Log.i("fab", "onHandleMenu3Click");
+        if (isNetworkAvailable()) {
+            DuyuruDB db = new DuyuruDB(getActivity());
+            db.clearTable(sP.getString("generalMode", "bolum"));
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            handleCardClicks(view, position);
+                        }
+                    });
+                    //adapter.notifyItemInserted(data2.size()-1);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
+                }
+            };
+            getActivity().runOnUiThread(r);
+            LoadDuyuruForFirstTime();
+        } else {
+            Snackbar.make(coordinator, "Ýnternete baðlanýlamýyor", Snackbar.LENGTH_LONG)
+                    .setAction("Tekrar Dene", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            handleMenuFab3Click();
+                        }
+                    })
+                    .show();
+        }
+    }
+
+
+
+
+
     public void setFabToLoading() {
-        fab.setClickable(false);
-        fab.setImageResource(R.drawable.loading_notlar_avatar_2); // or loading_fab...
+        fabMenu.setClickable(false);
+        //fab.setButtonDrawable(getActivity().getResources().getDrawable(R.drawable.loading_notlar_avatar_2)); // or loading_fab...
     }
 
     public void setFabToReady() {
         String generalMode = sP.getString("generalMode", "");
         if (generalMode.equals("bolum")) {
-            fab.setImageResource(R.drawable.ic_arrow_forward_white_36dp);
+            fab1.setImageResource(R.drawable.ic_arrow_forward_white_24dp);
+            fab1.setLabelText("Fakülte duyurularý");
         } else {
-            fab.setImageResource(R.drawable.ic_arrow_back_white_36dp);
+            fab1.setImageResource(R.drawable.ic_arrow_back_white_24dp);
+            fab1.setLabelText(" Bölüm duyurularý ");
         }
         editor.putBoolean("needListUpdate", false);
         editor.commit();
-        fab.setClickable(true);
+        fabMenu.setClickable(true);
     }
 
     private void handleFabClicks() {
@@ -241,7 +361,7 @@ public class Fragment1 extends Fragment {
                 }
             };
             getActivity().runOnUiThread(r);
-            //setFabToReady();
+            setFabToReady();
         } else {
             if (isNetworkAvailable()) {
                 recyclerView.setAlpha(0.5F);
@@ -263,6 +383,7 @@ public class Fragment1 extends Fragment {
         }
 
     }
+
 
     public List<DuyuruInformation> getData() {
         boolean needUpdateForEmergency = false;
@@ -675,14 +796,13 @@ public class Fragment1 extends Fragment {
             reportedThreadsSoFar = 0;
             failedThreadsSoFar = 0;
             Log.i("tuna", "all loading is completed");
-            Log.i("tuna", "user is on loading screen, start load is fired");
             if (failedThreadsSoFar > 0) {
                 Toast.makeText(getActivity(), "Hata kodu #01 --- bu mesajý görürseniz lütfen geliþtiriciye ulaþýn!", Toast.LENGTH_LONG).show();
                 //bus.post(new StatusForDetailedActivity("exception"));
             } else {
                 //bus.post(new StatusForDetailedActivity("goodToGo"));
             }
-            setFabToReady();
+            //setFabToReady();
         }
     }
 
@@ -717,6 +837,7 @@ public class Fragment1 extends Fragment {
         reload.setVisibility(View.GONE);
         reloadText.setVisibility(View.GONE);
     }
+
 
 }
 

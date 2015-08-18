@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_school_white_48dp" />
+            android:src="@drawable/ic_school_white_24dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_school_white_48dp" />
+            android:src="@drawable/ic_school_white_24dp" />
     </RelativeLayout>
 
     <TextView

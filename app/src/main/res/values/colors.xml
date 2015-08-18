@@ -41,4 +41,12 @@
 
     <color name="welcome_activity_login">#1462AA</color>
 
+
+    <color name="fab_menu_1">#d83200</color>
+    <color name="fab_menu_2">@color/login_success_text_color</color>
+    <color name="fab_menu_3">#3e821a</color>
+
+    <color name="fabColor">#d31010</color>
+
+
 </resources>

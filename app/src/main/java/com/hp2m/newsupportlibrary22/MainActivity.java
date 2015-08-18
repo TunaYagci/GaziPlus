@@ -46,16 +46,12 @@ public class MainActivity extends AppCompatActivity {
         // when we open the activity, first shown should be "bolum" not "fakulte"
         editor.commit();
 
-       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Gazi+");
-        setSupportActionBar(toolbar);*/
+
         mPager = (ViewPager) findViewById(R.id.viewPager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(pagerAdapter);
 
-        //final ActionBar ab = getSupportActionBar();
-        //ab.setHomeAsUpIndicator(R.mipmap.ic_launcher); adding logo
-        //ab.setDisplayHomeAsUpEnabled(true); to go back, to the main activity
+
 
         ImageButton userButton = (ImageButton) findViewById(R.id.userButton);
         userButton.setOnClickListener(new View.OnClickListener() {
@@ -68,39 +64,37 @@ public class MainActivity extends AppCompatActivity {
 
         final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        //tabLayout.setTabGravity(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         tabLayout.setupWithViewPager(mPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_white_48dp);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_school_darky_48dp);
-        //tabLayout.addTab(tabLayout.newTab().setText("Yemek Listesi"));
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_darky_48dp);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_white_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_school_black_24dp);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_black_24dp);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_white_48dp);
-                        tabLayout.getTabAt(1).setIcon(R.drawable.school_darky_2);
-                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_darky_48dp);
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_white_24dp);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_school_black_24dp);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_black_24dp);
                         appBarLayout.setBackgroundColor(getResources().getColor(R.color.my_primary));
                         tabLayout.setBackgroundColor(getResources().getColor(R.color.my_primary));
                         mPager.setCurrentItem(0, true);
                         return;
                     case 1:
-                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_darky_48dp);
-                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_school_white_48dp);
-                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_darky_48dp);
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_black_24dp);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_school_white_24dp);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_black_24dp);
 
                         appBarLayout.setBackgroundColor(getResources().getColor(R.color.my_accent));
                         tabLayout.setBackgroundColor(getResources().getColor(R.color.my_accent));
                         mPager.setCurrentItem(1, true);
                         return;
                     case 2:
-                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_darky_48dp);
-                        tabLayout.getTabAt(1).setIcon(R.drawable.school_darky_2);
-                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_white_48dp);
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_black_24dp);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_school_black_24dp);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_white_24dp);
 
                         appBarLayout.setBackgroundColor(getResources().getColor(R.color.fragment3_tabColor));
                         tabLayout.setBackgroundColor(getResources().getColor(R.color.fragment3_tabColor));
@@ -143,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         ImageLoader.getInstance().init(config);
+
 
     }
 
