@@ -167,8 +167,8 @@ public class Fragment1 extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                handleCardClicks(view, position);
+            public void onItemClick(View view, int position, String title) {
+                handleCardClicks(view, position, title);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -325,8 +325,8 @@ public class Fragment1 extends Fragment {
                 public void run() {
                     adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position) {
-                            handleCardClicks(view, position);
+                        public void onItemClick(View view, int position, String title) {
+                            handleCardClicks(view, position, title);
                         }
                     });
                     //adapter.notifyItemInserted(data2.size()-1);
@@ -390,8 +390,8 @@ public class Fragment1 extends Fragment {
                 public void run() {
                     adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position) {
-                            handleCardClicks(view, position);
+                        public void onItemClick(View view, int position, String title) {
+                            handleCardClicks(view, position, title);
                         }
                     });
                     //adapter.notifyItemInserted(data2.size()-1);
@@ -755,10 +755,10 @@ public class Fragment1 extends Fragment {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    adapter = new DuyuruAdapter(getActivity(), data2, new DuyuruAdapter.OnItemClickListener() {
+                    adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position) {
-                            handleCardClicks(view, position);
+                        public void onItemClick(View view, int position, String title) {
+                            handleCardClicks(view, position, title);
                         }
                     });
                     //adapter.notifyItemInserted(data2.size()-1);
@@ -773,10 +773,10 @@ public class Fragment1 extends Fragment {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    adapter = new DuyuruAdapter(getActivity(), data2, new DuyuruAdapter.OnItemClickListener() {
+                    adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position) {
-                            handleCardClicks(view, position);
+                        public void onItemClick(View view, int position, String title) {
+                            handleCardClicks(view, position, title);
                         }
                     });
                     //adapter.notifyItemInserted(data2.size()-1);
@@ -790,9 +790,9 @@ public class Fragment1 extends Fragment {
         setFabToReady();
     }
 
-    public void handleCardClicks(View view, int position) {
+    public void handleCardClicks(View view, int position, String title) {
         Intent i = new Intent(getActivity(), DuyuruDetailedActivity.class);
-        i.putExtra("pos", position);
+        i.putExtra("title", title);
         /*Runnable r = new Runnable() {
             @Override
             public void run() {

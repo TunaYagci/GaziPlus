@@ -90,8 +90,13 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         toolbar.setTitle("Duyurular");
         setSupportActionBar(toolbar);
         Bundle extras = getIntent().getExtras();
+        db = new DuyuruDB(this);
+
+
+
         if (extras != null) {
-            POSITION = extras.getInt("pos");
+            String title = extras.getString("title");
+            POSITION = db.fetchMeDuyuruPosition(title, generalMode);
         }
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -105,7 +110,6 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         image3 = (ImageView) findViewById(R.id.image3);
         tarih = (TextView) findViewById(R.id.tarih);
 
-        db = new DuyuruDB(this);
         header.setText(db.fetchMeMyDuyuru(POSITION, generalMode).get(0));
         tarih.setText("Yayýnlanma tarihi: " + db.fetchMeMyDuyuru(POSITION, generalMode).get(2));
 

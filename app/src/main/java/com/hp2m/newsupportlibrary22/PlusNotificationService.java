@@ -324,79 +324,132 @@ public class PlusNotificationService extends IntentService {
     private void createNotification() {
 
         Log.i("gazinotification", "createNotification");
-        Intent resultIntent = new Intent(this, MainActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-// Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(MainActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
-        Load mLoad = PugNotification.with(this).load()
-                .smallIcon(R.drawable.pugnotification_ic_launcher)
-                .autoCancel(true)
-                .click(MainActivity.class)
-                .largeIcon(R.drawable.pugnotification_ic_launcher)
-                .title("Gazi+")
-                .message("Yeni duyurular")
-                .flags(Notification.DEFAULT_ALL);
-
-
-        // add items from notificationDB first
         NotificationzDB db = new NotificationzDB(getApplicationContext());
-        for (int i = 1; i < db.getBildirimSayisi("bolum"); i++) {
-            bolumHeaderList.add(db.fetchMeNotificationz(i, "bolum"));
-        }
-
-        for (int i = 1; i < db.getBildirimSayisi("fakulte"); i++) {
-            fakulteHeaderList.add(db.fetchMeNotificationz(i, "fakulte"));
-        }
-
-        // then add them to DB to retrieve later
-        // WE NEED TO DELETE ALL TABLES OF THIS DB WHENEVER MAINACTIVITY IS OPENED !!!
         for (int i = 0; i < bolumHeaderList.size(); i++) {
             db.addNotification(bolumHeaderList.get(i), "bolum");
         }
         for (int i = 0; i < fakulteHeaderList.size(); i++) {
             db.addNotification(fakulteHeaderList.get(i), "fakulte");
         }
+        bolumHeaderList.clear();
+        fakulteHeaderList.clear();
+
+        for (int i = db.getBildirimSayisi("bolum"); i > 0; i--) {
+            bolumHeaderList.add(db.fetchMeNotificationz(i, "bolum"));
+        }
+
+        for (int i = db.getBildirimSayisi("fakulte"); i > 0; i--) {
+            fakulteHeaderList.add(db.fetchMeNotificationz(i, "fakulte"));
+        }
+        Log.i("gazinotification", "bolumHeaderList size is " + bolumHeaderList.size());
+
+        // then add them to DB to retrieve later
+        // done. ---WE NEED TO DELETE ALL TABLES OF THIS DB WHENEVER MAINACTIVITY IS OPENED !!!
+
 
 
         int size = bolumHeaderList.size() + fakulteHeaderList.size();
-        String[] hey = new String[size];
-        List<String> notificationList = new ArrayList<>();
+        Log.i("gazinotification", "size is " + size);
+        if (size > 1) {
 
-        for (int i = 0; i < bolumHeaderList.size(); i++) {
-            notificationList.add(bolumHeaderList.get(i));
-        }
-        for (int i = 0; i < fakulteHeaderList.size(); i++) {
-            notificationList.add(fakulteHeaderList.get(i));
-        }
+            /*Intent resultIntent = new Intent(this, MainActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+// Adds the back stack for the Intent (but not the Intent itself)
+            stackBuilder.addParentStack(MainActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );*/
 
-        // then rewrite here
-        if (bolumHeaderList.size() == 0 && fakulteHeaderList.size() != 0) {
-            mLoad.inboxStyle(notificationList.toArray(hey),
-                    "Gazi+",
-                    fakulteHeaderList.size() + " fakülte duyurusu")
+            Load mLoad = PugNotification.with(this).load()
+                    .smallIcon(R.drawable.ic_stat_testlogo2_foricon)
+                    .autoCancel(true)
+                    .click(MainActivity.class)
+                    .largeIcon(R.mipmap.ic_launcher)
+                    .title("Gazi+")
+                    .message("Yeni duyurular")
+                    .flags(Notification.DEFAULT_ALL);
+
+
+            String[] hey = new String[size];
+            List<String> notificationList = new ArrayList<>();
+
+            for (int i = 0; i < bolumHeaderList.size(); i++) {
+                notificationList.add(bolumHeaderList.get(i));
+            }
+            for (int i = 0; i < fakulteHeaderList.size(); i++) {
+                notificationList.add(fakulteHeaderList.get(i));
+            }
+
+            // then rewrite here
+            if (bolumHeaderList.size() == 0 && fakulteHeaderList.size() != 0) {
+                mLoad.inboxStyle(notificationList.toArray(hey),
+                        "Gazi+",
+                        fakulteHeaderList.size() + " fakülte duyurusu")
+                        .simple()
+                        .build();
+            } else if (fakulteHeaderList.size() == 0 && bolumHeaderList.size() != 0) {
+                mLoad.inboxStyle(notificationList.toArray(hey),
+                        "Gazi+",
+                        bolumHeaderList.size() + " bölüm duyurusu")
+                        .simple()
+                        .build();
+            } else if (fakulteHeaderList.size() != 0 && bolumHeaderList.size() != 0) {
+                mLoad.inboxStyle(notificationList.toArray(hey),
+                        "Gazi+",
+                        bolumHeaderList.size() + " bölüm ve " +
+                                fakulteHeaderList.size() + " fakülte duyurusu")
+                        .simple()
+                        .build();
+            }
+        } else {
+            String title = null, generalMode = null;
+            if (bolumHeaderList.size() == 1) {
+                title = bolumHeaderList.get(0);
+                generalMode = "bolum";
+            } else {
+                title = fakulteHeaderList.get(0);
+                generalMode = "fakulte";
+            }
+            DuyuruDB duyuruDB = new DuyuruDB(getApplicationContext());
+            int position = duyuruDB.fetchMeDuyuruPosition(title, generalMode);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(duyuruDB.fetchMeMyDuyuru(position, generalMode).get(1).trim());
+            if (stringBuilder.toString().trim().isEmpty()) {
+                stringBuilder = new StringBuilder();
+                stringBuilder.append("Resmi görüntülemek için týklayýn");
+            }
+
+            Intent resultIntent = new Intent(this, DuyuruDetailedActivity.class);
+            resultIntent.putExtra("title", title);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+// Adds the back stack for the Intent (but not the Intent itself)
+            stackBuilder.addParentStack(MainActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+
+            Load mLoad = PugNotification.with(this).load()
+                    .smallIcon(R.drawable.ic_stat_testlogo2_foricon)
+                    .autoCancel(true)
+                    .click(resultPendingIntent)
+                    .largeIcon(R.mipmap.ic_launcher)
+                    .title("Gazi+")
+                    .message("Yeni duyuru")
+                    .flags(Notification.DEFAULT_ALL);
+
+            mLoad.bigTextStyle(stringBuilder.toString(), title)
                     .simple()
                     .build();
-        } else if (fakulteHeaderList.size() == 0 && bolumHeaderList.size() != 0) {
-            mLoad.inboxStyle(notificationList.toArray(hey),
-                    "Gazi+",
-                    bolumHeaderList.size() + " bölüm duyurusu")
-                    .simple()
-                    .build();
-        } else if (fakulteHeaderList.size() != 0 && bolumHeaderList.size() != 0) {
-            mLoad.inboxStyle(notificationList.toArray(hey),
-                    "Gazi+",
-                    bolumHeaderList.size() + " bölüm ve " +
-                            fakulteHeaderList.size() + " fakülte duyurusu")
-                    .simple()
-                    .build();
+
+
         }
 
         // and, at last, save the list to retrieve later for updating

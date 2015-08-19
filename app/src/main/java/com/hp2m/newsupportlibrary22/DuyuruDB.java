@@ -46,6 +46,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
             } while (c.moveToNext());
 
         //return idMax; // niye 1 fazla veriyor bilmiyorum
+        c.close();
         db.close();
         return idMax;
     }
@@ -167,6 +168,31 @@ public class DuyuruDB extends SQLiteOpenHelper {
         c.close();
         db.close();
         return fetchMeMyDuyuru;
+    }
+
+
+    public int fetchMeDuyuruPosition(String title, String generalMode) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query;
+        if (generalMode.equals("bolum"))
+            query = "SELECT * FROM " + TABLE_BOLUM + " WHERE " + COLUMN_TITLE + "=?";
+        else
+            query = "SELECT * FROM " + TABLE_FAKULTE + " WHERE " + COLUMN_TITLE + "=?";
+
+        int position = 0;
+        Cursor c = db.rawQuery(query, new String[]{title});
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            for (int i = 0; i < 1; i++) { // 0=_id, 1=title 2=content 3=tarih, 4=contentLinks, 5=newsList 6=newORold 7=imageLinks
+                position = c.getInt(i);
+                //Log.i("tuna", "is this a loop");
+            }
+            c.moveToNext();
+        }
+        c.close();
+        db.close();
+        return position;
+
     }
 
 

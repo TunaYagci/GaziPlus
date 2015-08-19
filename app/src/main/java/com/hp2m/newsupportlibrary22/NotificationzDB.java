@@ -40,6 +40,7 @@ public class NotificationzDB extends SQLiteOpenHelper {
             } while (c.moveToNext());
 
         //return idMax; // niye 1 fazla veriyor bilmiyorum
+        c.close();
         db.close();
         return idMax;
     }

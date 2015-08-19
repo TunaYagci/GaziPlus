@@ -103,11 +103,11 @@ public class DuyuruAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
-            DuyuruInformation current = data.get(position);
+            final DuyuruInformation current = data.get(position);
             ((ItemViewHolder) holder).c1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onItemClick(v, position);
+                    mOnItemClickListener.onItemClick(v, position, current.header);
                 }
             });
             ((ItemViewHolder) holder).h1.setText(current.header);
@@ -186,7 +186,7 @@ public class DuyuruAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }*/
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, int position, String title);
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
