@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sP.edit();
         editor.putString("generalMode", "bolum");
         editor.putString("duyuruLink", sP.getString("defaultBolumLink", ""));
+        editor.putInt("bolumNotifications", 0);
+        editor.putInt("fakulteNotifications", 0);
+        // if we are in here we got no notifications
         // when we open the activity, first shown should be "bolum" not "fakulte"
         editor.commit();
 

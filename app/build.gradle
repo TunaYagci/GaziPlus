@@ -36,5 +36,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.github.clans:fab:1.5.5'
+    compile 'com.github.halysongoncalves:pugnotification:1.6.0'
+
 
 }

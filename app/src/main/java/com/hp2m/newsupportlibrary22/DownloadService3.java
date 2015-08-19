@@ -30,6 +30,8 @@ public class DownloadService3 extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.i("tuna", "service3 started");
+
+
         SharedPreferences sP = this.getBaseContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         String generalMode = sP.getString("generalMode", "");
         String header = intent.getStringExtra("header");
@@ -170,7 +172,7 @@ public class DownloadService3 extends IntentService {
                 db2.deleteFailedDuyuru(header, generalMode);
             } else {
                 Log.i("tuna", "service2 completed job, reporting back");
-                bus.post(new ThreadResult("goodToGo"));
+                bus.post(new ThreadResult("goodToGo", generalMode));
             }
 
         } catch (IOException e) {
@@ -178,7 +180,7 @@ public class DownloadService3 extends IntentService {
             if (exceptioner) {
                 bus.post(new ExceptionerResult("exception"));
             } else {
-                bus.post(new ThreadResult("ioException"));
+                bus.post(new ThreadResult("ioException", generalMode));
                 DuyuruExceptionDB db2 = new DuyuruExceptionDB(getApplicationContext());
                 DuyuruExceptionGetSet fetcher = new DuyuruExceptionGetSet(
                         header,

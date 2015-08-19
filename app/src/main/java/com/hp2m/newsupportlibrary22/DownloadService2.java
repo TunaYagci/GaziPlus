@@ -171,7 +171,7 @@ public class DownloadService2 extends IntentService {
                 db2.deleteFailedDuyuru(header, generalMode);
             } else {
                 Log.i("tuna", "service2 completed job, reporting back");
-                bus.post(new ThreadResult("goodToGo"));
+                bus.post(new ThreadResult("goodToGo", generalMode));
             }
 
         } catch (IOException e) {
@@ -179,7 +179,7 @@ public class DownloadService2 extends IntentService {
             if (exceptioner) {
                 bus.post(new ExceptionerResult("exception"));
             } else {
-                bus.post(new ThreadResult("ioException"));
+                bus.post(new ThreadResult("ioException", generalMode));
                 DuyuruExceptionDB db2 = new DuyuruExceptionDB(getApplicationContext());
                 DuyuruExceptionGetSet fetcher = new DuyuruExceptionGetSet(
                         header,

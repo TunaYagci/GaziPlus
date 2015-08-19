@@ -307,7 +307,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
                 defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
 
-                //setupNotificationService();
+                setupNotificationService();
                 editor.putString("bolumHint", "cengazi");
                 editor.putString("bolumAdi", bolumAdi);
                 editor.putInt("bolumImg", bolumImg);
@@ -373,7 +373,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 @Override
                 public void run() {
 
-                    //setupNotificationService();
+                    setupNotificationService();
                     SharedPreferences.Editor editor = sP.edit();
                     editor.putString("bolumHint", bolumHint);
                     editor.putString("bolumAdi", bolumAdi);
@@ -403,6 +403,9 @@ public class WelcomeActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sP.edit();
         editor.putBoolean("isNotificationServiceOnline", true);
         editor.putBoolean("isDuyuruServiceOnline", true);
+        editor.putBoolean("isBolumNotificationsAllowed", true);
+        editor.putBoolean("isFakulteNotificationsAllowed", true);
+        editor.putBoolean("isNotNotificationsAllowed", false);
         editor.apply();
 
     }
