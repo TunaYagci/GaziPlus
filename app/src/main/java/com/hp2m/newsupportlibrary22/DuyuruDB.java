@@ -147,7 +147,6 @@ public class DuyuruDB extends SQLiteOpenHelper {
     }
 
     public ArrayList<String> fetchMeMyDuyuru(int row, String generalMode) { // 1 is title, 2 is content
-        Log.i("tuna", "fetchMeMyDuyuru");
         ArrayList<String> fetchMeMyDuyuru = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String query;
@@ -212,6 +211,17 @@ public class DuyuruDB extends SQLiteOpenHelper {
             Log.i("tuna", e.toString());
         }
 
+    }
+
+
+    public void deleteForTestingUpdate(String header) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        db.delete(TABLE_BOLUM, COLUMN_TITLE + "=?", new String[]{header});
+        db.delete(TABLE_FAKULTE, COLUMN_TITLE + "=?", new String[]{"6569 Sayýlý Kanunu Hakkýnda Önemli Duyuru"});
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
     }
 
 }

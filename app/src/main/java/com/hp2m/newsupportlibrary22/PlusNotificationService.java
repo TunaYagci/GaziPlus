@@ -29,46 +29,53 @@ import de.greenrobot.event.EventBus;
 
 public class PlusNotificationService extends IntentService {
 
+    public PowerManager.WakeLock wl;
     private int updatedBolumDuyuruCount = 0, updatedFakulteDuyuruCount = 0, updatedNotCount = 0;
     private int reportingBolumDuyuruCount = 0, reportingFakulteDuyuruCount = 0;
     private int eventedBolumDuyuruCount = 0, eventedFakulteDuyuruCount = 0;
     private EventBus bus = EventBus.getDefault();
-    private List<String> bolumHeaderList, fakulteHeaderList = new ArrayList<>();
+    private List<String> bolumHeaderList, fakulteHeaderList;
     private boolean isBolumReadyToNotificate = false, isFakulteReadyToNotificate = false;
     private SharedPreferences sP;
     private Handler bolumHandler = new Handler(Looper.getMainLooper());
     private Runnable bolumRunnable = new Runnable() {
         @Override
         public void run() {
-            if (eventedBolumDuyuruCount == reportingBolumDuyuruCount && eventedBolumDuyuruCount != 0) {
-                if (isFakulteReadyToNotificate) {
-                    // fakulte has already ended
-                    createNotification();
+            Log.i("gazinotification", "bolumRunnable and updatedBolumDuyuruCount is " + updatedBolumDuyuruCount);
+            if (updatedBolumDuyuruCount != 0) {
+                if (eventedBolumDuyuruCount == reportingBolumDuyuruCount && eventedBolumDuyuruCount != 0) {
+                    if (isFakulteReadyToNotificate || updatedFakulteDuyuruCount == 0) {
+                        // fakulte has already ended, or nothing to download
+                        createNotification();
+                    } else {
+                        // fakulte is still downloading
+                        isBolumReadyToNotificate = true;
+                    }
                 } else {
-                    // fakulte is still downloading
-                    isBolumReadyToNotificate = true;
+                    bolumHandler.postDelayed(bolumRunnable, 500);
                 }
-            } else {
-                bolumHandler.postDelayed(bolumRunnable, 300);
             }
-        }
+        } // do nothing if no item has downloaded for bolum
     };
     private Handler fakulteHandler = new Handler(Looper.getMainLooper());
     private Runnable fakulteRunnable = new Runnable() {
         @Override
         public void run() {
-            if (eventedFakulteDuyuruCount == reportingFakulteDuyuruCount && eventedFakulteDuyuruCount != 0) {
-                if (isBolumReadyToNotificate) {
-                    // bolum has already downloaded
-                    createNotification();
+            Log.i("gazinotification", "fakulteRunnable and updatedFakulteCont is " + updatedFakulteDuyuruCount);
+            if (updatedFakulteDuyuruCount != 0) {
+                if (eventedFakulteDuyuruCount == reportingFakulteDuyuruCount && eventedFakulteDuyuruCount != 0) {
+                    if (isBolumReadyToNotificate || updatedBolumDuyuruCount == 0) {
+                        // bolum has already downloaded, or nothing to download
+                        createNotification();
+                    } else {
+                        // bolum hasn't downloaded yet
+                        isFakulteReadyToNotificate = true;
+                    }
                 } else {
-                    // bolum hasn't downloaded yet
-                    isFakulteReadyToNotificate = true;
+                    fakulteHandler.postDelayed(fakulteRunnable, 500);
                 }
-            } else {
-                bolumHandler.postDelayed(bolumRunnable, 300);
             }
-        }
+        } // do nothing if no item has downloaded for fakulte
     };
 
     public PlusNotificationService() {
@@ -94,10 +101,22 @@ public class PlusNotificationService extends IntentService {
         Runnable r = new Runnable() {
             @Override
             public void run() {
+                updatedBolumDuyuruCount = 0;
+                updatedFakulteDuyuruCount = 0;
+                reportingBolumDuyuruCount = 0;
+                reportingFakulteDuyuruCount = 0;
+                eventedFakulteDuyuruCount = 0;
+                eventedBolumDuyuruCount = 0;
+                isBolumReadyToNotificate = false;
+                isFakulteReadyToNotificate = false;
+                bolumHeaderList = new ArrayList<>();
+                fakulteHeaderList = new ArrayList<>();
+
+
                 //Toast.makeText(getApplicationContext(), "onHandleIntent", Toast.LENGTH_SHORT).show();
                 if (isNetworkAvailable()) {
                     PowerManager pm = (PowerManager) getBaseContext().getSystemService(Context.POWER_SERVICE);
-                    PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
+                    wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
                     wl.acquire();
                     List<String> headerList, tarihList;
                     boolean hasAnythingDone = false;
@@ -120,14 +139,16 @@ public class PlusNotificationService extends IntentService {
                                     generalMode = "fakulte";
                                     URL = sP.getString("defaultFakulteLink", "");
                                     fakulteUpdate = true;
-                                }
+                                } else
+                                    break;
                             }
                         } else {
                             if (!fakulteUpdate) {
                                 if (isFakulteNotificationsAllowed) {
                                     generalMode = "fakulte";
                                     URL = sP.getString("defaultFakulteLink", "");
-                                }
+                                } else
+                                    break;
                             }
                         }
                         if (generalMode.equals("nothingHasDone"))
@@ -135,7 +156,12 @@ public class PlusNotificationService extends IntentService {
 
 
                         DuyuruDB db2 = new DuyuruDB(getApplicationContext());
-                        if (db2.getDuyuruSayisi(generalMode) != 0) {
+                        if (db2.getDuyuruSayisi(generalMode) > 0) {
+                            Log.i("gazinotification", "generalMode is " + generalMode + " and count is " + db2.getDuyuruSayisi(generalMode));
+
+                            //doTestDelete();
+
+
                             Document doc;
                             try {
                                 int timeout = 5000;
@@ -146,7 +172,6 @@ public class PlusNotificationService extends IntentService {
                                 wl.release();
                                 return;
                             }
-                            try {
                                 Log.i("gazinotification", "doc downloaded");
                                 Elements duyuruHeaderElements = doc.select("div.app-content li a[href]");
 
@@ -158,7 +183,7 @@ public class PlusNotificationService extends IntentService {
                                 final int NET_MAX_DUYURU = duyuruHeaderElements.size() - 4;
                                 final int MIN_ITEM_TO_LOAD = 4;
 
-                                final int DB_MAX_POSSIBLE_DUYURU = DB_MAX_DUYURU - 1;
+                            final int DB_MAX_POSSIBLE_DUYURU = DB_MAX_DUYURU;
                                 Log.i("gazinotification", "DB_MAX_DUYURU = " + DB_MAX_DUYURU + " and DB_MAX_POSSIBLE_DUYURU = " + DB_MAX_POSSIBLE_DUYURU);
 
                                 ArrayList<Integer> updateList = new ArrayList<>();
@@ -199,8 +224,8 @@ public class PlusNotificationService extends IntentService {
                                 }
                                 if (updateList.size() == 0) {
                                     Log.i("gazinotification", "no items to load");
-                                    wl.release();
-                                    return;
+                                    // wl.release();
+                                    // return;
                                 } else {
                                     hasAnythingDone = true;
                                     LOADED_ITEM_COUNT = updateList.size();
@@ -209,6 +234,7 @@ public class PlusNotificationService extends IntentService {
                                         reportingBolumDuyuruCount = LOADED_ITEM_COUNT;
                                     } else if (generalMode.equals("fakulte")) {
                                         reportingFakulteDuyuruCount = LOADED_ITEM_COUNT;
+                                        Log.i("gazinotification", "reportingFakulteDuyuruCount= " + reportingFakulteDuyuruCount);
                                     }
                                     DuyuruDB db = new DuyuruDB(getApplicationContext());
 
@@ -237,6 +263,7 @@ public class PlusNotificationService extends IntentService {
 
 
                                     for (int i = 0; i < updateList.size(); i++) {
+                                        Log.i("gazinotification", "in intentFirer");
                                         //headerList.add(duyuruHeaderElements.get(i).text().substring(17));
                                         //tarihList.add(duyuruHeaderElements.get(i).text().substring(0, 16));
                                         // look idk if loaded item count > 4 RIGHT NOW !!
@@ -251,27 +278,27 @@ public class PlusNotificationService extends IntentService {
                                         else if (i == 3 || i == 7)
                                             intent = new Intent(getApplicationContext(), DownloadService4.class);
                                         intent.putExtra("header", duyuruHeaderElements.get(i).text().substring(17));
-
+                                        intent.putExtra("generalModeForNotificationz", generalMode);
                                         intent.putExtra("link", duyuruHeaderElements.get(i).attr("abs:href"));
                                         getApplicationContext().startService(intent);
                                     }
                                 }
-                            } catch (Exception e) {
-                                Log.i("gazinotification", "exception occurred in service " + e.toString());
-                            }
                             if (generalMode.equals("bolum")) {
                                 updatedBolumDuyuruCount += LOADED_ITEM_COUNT;
-                                bolumHandler.postDelayed(bolumRunnable, 300);
+                                //bolumHandler.postDelayed(bolumRunnable, 300);
                             } else if (generalMode.equals("fakulte")) {
                                 updatedFakulteDuyuruCount += LOADED_ITEM_COUNT;
-                                fakulteHandler.postDelayed(fakulteRunnable, 300);
+                                //fakulteHandler.postDelayed(fakulteRunnable, 300);
                             }
                         } else {
-                            Log.i("gazinotification", "db hasn't opened yet");
+                            Log.i("gazinotification", "db hasn't opened yet for " + generalMode);
                         }
                         generalMode = "nothingHasDone";
-                    }
 
+                    }
+                    bolumHandler.postDelayed(bolumRunnable, 300);
+                    fakulteHandler.postDelayed(fakulteRunnable, 300);
+                    if (!hasAnythingDone)
                     wl.release();
                 } else {
                     Log.i("gazinotification", "no internet connection, closing service");
@@ -284,6 +311,11 @@ public class PlusNotificationService extends IntentService {
         return START_STICKY;
     }
 
+    private void doTestDelete() {
+        DuyuruDB db = new DuyuruDB(getApplicationContext());
+        db.deleteForTestingUpdate("2015-2016 Eðitim-Öðretim Yýlý Akademik Takvimi");
+    }
+
     @Override
     protected void onHandleIntent(Intent generalIntent) {
 
@@ -291,7 +323,7 @@ public class PlusNotificationService extends IntentService {
 
     private void createNotification() {
 
-
+        Log.i("gazinotification", "createNotification");
         Intent resultIntent = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 // Adds the back stack for the Intent (but not the Intent itself)
@@ -313,8 +345,28 @@ public class PlusNotificationService extends IntentService {
                 .message("Yeni duyurular")
                 .flags(Notification.DEFAULT_ALL);
 
-        int size = bolumHeaderList.size() + fakulteHeaderList.size();
 
+        // add items from notificationDB first
+        NotificationzDB db = new NotificationzDB(getApplicationContext());
+        for (int i = 1; i < db.getBildirimSayisi("bolum"); i++) {
+            bolumHeaderList.add(db.fetchMeNotificationz(i, "bolum"));
+        }
+
+        for (int i = 1; i < db.getBildirimSayisi("fakulte"); i++) {
+            fakulteHeaderList.add(db.fetchMeNotificationz(i, "fakulte"));
+        }
+
+        // then add them to DB to retrieve later
+        // WE NEED TO DELETE ALL TABLES OF THIS DB WHENEVER MAINACTIVITY IS OPENED !!!
+        for (int i = 0; i < bolumHeaderList.size(); i++) {
+            db.addNotification(bolumHeaderList.get(i), "bolum");
+        }
+        for (int i = 0; i < fakulteHeaderList.size(); i++) {
+            db.addNotification(fakulteHeaderList.get(i), "fakulte");
+        }
+
+
+        int size = bolumHeaderList.size() + fakulteHeaderList.size();
         String[] hey = new String[size];
         List<String> notificationList = new ArrayList<>();
 
@@ -325,47 +377,30 @@ public class PlusNotificationService extends IntentService {
             notificationList.add(fakulteHeaderList.get(i));
         }
 
+        // then rewrite here
         if (bolumHeaderList.size() == 0 && fakulteHeaderList.size() != 0) {
             mLoad.inboxStyle(notificationList.toArray(hey),
                     "Gazi+",
-                    sP.getInt("bolumNotifications", 0) + fakulteHeaderList.size() + " fakülte duyurusu")
-                    .simple()
-                    .build();
-        } else if (fakulteHeaderList.size() != 0 && sP.getInt("bolumNotifications", 0) != 0) {
-            mLoad.inboxStyle(notificationList.toArray(hey),
-                    "Gazi+",
-                    sP.getInt("bolumNotifications", 0) + " bölüm ve " +
-                            sP.getInt("fakulteNotifications", 0) + fakulteHeaderList.size() + " fakülte duyurusu")
-                    .simple()
-                    .build();
-        } else if (bolumHeaderList.size() != 0 && sP.getInt("fakulteNotifications", 0) != 0) {
-            mLoad.inboxStyle(notificationList.toArray(hey),
-                    "Gazi+",
-                    sP.getInt("bolumNotifications", 0) + bolumHeaderList.size() + " bölüm ve " +
-                            sP.getInt("fakulteNotifications", 0) + " fakülte duyurusu")
+                    fakulteHeaderList.size() + " fakülte duyurusu")
                     .simple()
                     .build();
         } else if (fakulteHeaderList.size() == 0 && bolumHeaderList.size() != 0) {
             mLoad.inboxStyle(notificationList.toArray(hey),
                     "Gazi+",
-                    sP.getInt("bolumNotifications", 0) + bolumHeaderList.size() + " bölüm duyurusu")
+                    bolumHeaderList.size() + " bölüm duyurusu")
                     .simple()
                     .build();
         } else if (fakulteHeaderList.size() != 0 && bolumHeaderList.size() != 0) {
             mLoad.inboxStyle(notificationList.toArray(hey),
                     "Gazi+",
-                    sP.getInt("bolumNotifications", 0) + bolumHeaderList.size() + " bölüm ve " +
-                            sP.getInt("fakulteNotifications", 0) + fakulteHeaderList.size() + " fakülte duyurusu")
+                    bolumHeaderList.size() + " bölüm ve " +
+                            fakulteHeaderList.size() + " fakülte duyurusu")
                     .simple()
                     .build();
         }
 
         // and, at last, save the list to retrieve later for updating
-
-        SharedPreferences.Editor editor = sP.edit();
-        editor.putInt("bolumNotifications", bolumHeaderList.size());
-        editor.putInt("fakulteNotifications", fakulteHeaderList.size());
-        editor.commit();
+        wl.release();
         // save those to db and retrieve for upcoming notifications
 
     }

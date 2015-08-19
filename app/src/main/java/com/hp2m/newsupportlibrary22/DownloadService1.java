@@ -33,6 +33,7 @@ public class DownloadService1 extends IntentService {
         Log.i("tuna", "service1 started");
 
 
+        String generalModeForNotificationz = intent.getStringExtra("generalModeForNotificationz");
         SharedPreferences sP = this.getBaseContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         String generalMode = sP.getString("generalMode", "");
         String header = intent.getStringExtra("header");
@@ -174,7 +175,7 @@ public class DownloadService1 extends IntentService {
                 db2.deleteFailedDuyuru(header, generalMode);
             } else {
                 Log.i("tuna", "service2 completed job, reporting back");
-                bus.post(new ThreadResult("goodToGo", generalMode));
+                bus.post(new ThreadResult("goodToGo", generalModeForNotificationz));
             }
 
         } catch (IOException e) {

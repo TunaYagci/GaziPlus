@@ -228,12 +228,24 @@ public class Fragment1 extends Fragment {
         });
         if (sP.getString("generalMode", "bolum").equals("bolum")) {
             fab2.setLabelText("Bölüm bildirimleri");
+            if (sP.getBoolean("isBolumNotificationsAllowed", false)) {
+                fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
+            } else {
+                fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+            }
         } else {
             fab2.setLabelText("Fakülte bildirimleri");
+            if (sP.getBoolean("isFakulteNotificationsAllowed", false)) {
+                fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
+            } else {
+                fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+            }
         }
         fab1.setColorNormalResId(R.color.fab_menu_1);
-        fab2.setColorNormalResId(R.color.card_color_1);
+        fab2.setColorNormalResId(R.color.fab_menu_2);
+        fab2.setColorPressedResId(R.color.fab_menu_2_pressed);
         fab3.setColorNormalResId(R.color.fab_menu_3);
+        fab3.setColorPressedResId(R.color.fab_menu_3_pressed);
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,20 +269,47 @@ public class Fragment1 extends Fragment {
     private void handleMenuFab1Click() {
         fabMenu.close(false);
         handleFabClicks();
+        if (sP.getString("generalMode", "bolum").equals("bolum")) {
+            fab2.setLabelText(" Bölüm bildirimleri ");
+            if (sP.getBoolean("isBolumNotificationsAllowed", false)) {
+                fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
+            } else {
+                fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+            }
+        } else {
+            fab2.setLabelText("Fakülte bildirimleri");
+            if (sP.getBoolean("isFakulteNotificationsAllowed", false)) {
+                fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
+            } else {
+                fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+            }
+        }
     }
 
     private void handleMenuFab2Click() {
-        if (sP.getBoolean("isNotificationServiceOnline", false)) {
-            // bildirimleri kapa
-            fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
-        } else {
-            // bildirimleri aç
-            fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
-        }
         if (sP.getString("generalMode", "bolum").equals("bolum")) {
-            fab2.setLabelText("Bölüm bildirimleri");
+            if (sP.getBoolean("isBolumNotificationsAllowed", false)) {
+                fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+                editor.putBoolean("isBolumNotificationsAllowed", false);
+                editor.apply();
+            } else {
+                fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
+                // bildirimleri aç
+                fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+                editor.putBoolean("isBolumNotificationsAllowed", true);
+                editor.apply();
+            }
         } else {
-            fab2.setLabelText("Fakülte bildirimleri");
+            if (sP.getBoolean("isFakulteNotificationsAllowed", false)) {
+                fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+                editor.putBoolean("isFakulteNotificationsAllowed", false);
+                editor.apply();
+            } else {
+                fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
+                // bildirimleri aç
+                editor.putBoolean("isFakulteNotificationsAllowed", true);
+                editor.apply();
+            }
         }
     }
 

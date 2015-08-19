@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         // when we open the activity, first shown should be "bolum" not "fakulte"
         editor.commit();
 
+        // clear notifications DB
+        NotificationzDB notificationzDB = new NotificationzDB(this);
+        notificationzDB.deleteAllNotificationz();
 
         mPager = (ViewPager) findViewById(R.id.viewPager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());

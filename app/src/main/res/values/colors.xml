@@ -43,8 +43,11 @@
 
 
     <color name="fab_menu_1">#d83200</color>
-    <color name="fab_menu_2">@color/login_success_text_color</color>
+    <color name="fab_menu_2">#235789</color>
+    <color name="fab_menu_2_pressed">#337fc6</color>
+
     <color name="fab_menu_3">#3e821a</color>
+    <color name="fab_menu_3_pressed">#55b223</color>
 
     <color name="fabColor">#d31010</color>
 
