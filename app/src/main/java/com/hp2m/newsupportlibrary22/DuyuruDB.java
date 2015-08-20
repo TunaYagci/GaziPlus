@@ -3,7 +3,9 @@ package com.hp2m.newsupportlibrary22;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -32,13 +34,16 @@ public class DuyuruDB extends SQLiteOpenHelper {
 
 
     public int getDuyuruSayisi(String generalMode) {
+        try {
         SQLiteDatabase db = this.getReadableDatabase();
         String query;
         if (generalMode.equals("bolum"))
             query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_BOLUM;
         else
             query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_FAKULTE;
-        Cursor c = db.rawQuery(query, null);
+
+            Cursor c = db.rawQuery(query, null);
+
         int idMax = 0;
         if (c.moveToFirst())
             do {
@@ -49,6 +54,9 @@ public class DuyuruDB extends SQLiteOpenHelper {
         c.close();
         db.close();
         return idMax;
+        } catch (SQLiteException e) {
+            return 0;
+        }
     }
 
 
@@ -197,33 +205,64 @@ public class DuyuruDB extends SQLiteOpenHelper {
 
 
     public void clearTable(String generalMode) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        if (generalMode.equals("bolum")) {
-            db.execSQL("DROP TABLE " + TABLE_BOLUM);
-            String query = "CREATE TABLE " + TABLE_BOLUM + " (" +
-                    COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_TITLE + " TEXT, " +
-                    COLUMN_CONTENT + " TEXT, " +
-                    COLUMN_TARIH + " TEXT, " +
-                    COLUMN_CONTENTLINKS + " TEXT, " +
-                    COLUMN_NEWSLINKS + " TEXT, " +
-                    COLUMN_NEWOROLD + " TEXT, " +
-                    COLUMN_IMAGELINKS + " TEXT" +
-                    ");";
-            db.execSQL(query);
-        } else {
-            db.execSQL("DROP TABLE " + TABLE_FAKULTE);
-            String query2 = "CREATE TABLE " + TABLE_FAKULTE + " (" +
-                    COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_TITLE + " TEXT, " +
-                    COLUMN_CONTENT + " TEXT, " +
-                    COLUMN_TARIH + " TEXT, " +
-                    COLUMN_CONTENTLINKS + " TEXT, " +
-                    COLUMN_NEWSLINKS + " TEXT, " +
-                    COLUMN_NEWOROLD + " TEXT, " +
-                    COLUMN_IMAGELINKS + " TEXT" +
-                    ");";
-            db.execSQL(query2);
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            if (generalMode.equals("bolum")) {
+                db.execSQL("DROP TABLE " + TABLE_BOLUM);
+                String query = "CREATE TABLE " + TABLE_BOLUM + " (" +
+                        COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_TITLE + " TEXT, " +
+                        COLUMN_CONTENT + " TEXT, " +
+                        COLUMN_TARIH + " TEXT, " +
+                        COLUMN_CONTENTLINKS + " TEXT, " +
+                        COLUMN_NEWSLINKS + " TEXT, " +
+                        COLUMN_NEWOROLD + " TEXT, " +
+                        COLUMN_IMAGELINKS + " TEXT" +
+                        ");";
+                db.execSQL(query);
+            } else {
+                db.execSQL("DROP TABLE " + TABLE_FAKULTE);
+                String query2 = "CREATE TABLE " + TABLE_FAKULTE + " (" +
+                        COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_TITLE + " TEXT, " +
+                        COLUMN_CONTENT + " TEXT, " +
+                        COLUMN_TARIH + " TEXT, " +
+                        COLUMN_CONTENTLINKS + " TEXT, " +
+                        COLUMN_NEWSLINKS + " TEXT, " +
+                        COLUMN_NEWOROLD + " TEXT, " +
+                        COLUMN_IMAGELINKS + " TEXT" +
+                        ");";
+                db.execSQL(query2);
+            }
+        } catch (SQLException e) {
+            Log.i("tuna", "sqlexception " + e.toString());
+            SQLiteDatabase db = this.getWritableDatabase();
+            if (generalMode.equals("bolum")) {
+                String query = "CREATE TABLE " + TABLE_BOLUM + " (" +
+                        COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_TITLE + " TEXT, " +
+                        COLUMN_CONTENT + " TEXT, " +
+                        COLUMN_TARIH + " TEXT, " +
+                        COLUMN_CONTENTLINKS + " TEXT, " +
+                        COLUMN_NEWSLINKS + " TEXT, " +
+                        COLUMN_NEWOROLD + " TEXT, " +
+                        COLUMN_IMAGELINKS + " TEXT" +
+                        ");";
+                db.execSQL(query);
+            } else {
+                db.execSQL("DROP TABLE " + TABLE_FAKULTE);
+                String query2 = "CREATE TABLE " + TABLE_FAKULTE + " (" +
+                        COLUMNN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_TITLE + " TEXT, " +
+                        COLUMN_CONTENT + " TEXT, " +
+                        COLUMN_TARIH + " TEXT, " +
+                        COLUMN_CONTENTLINKS + " TEXT, " +
+                        COLUMN_NEWSLINKS + " TEXT, " +
+                        COLUMN_NEWOROLD + " TEXT, " +
+                        COLUMN_IMAGELINKS + " TEXT" +
+                        ");";
+                db.execSQL(query2);
+            }
         }
     }
 

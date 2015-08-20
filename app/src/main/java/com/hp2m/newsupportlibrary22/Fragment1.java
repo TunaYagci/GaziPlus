@@ -159,8 +159,25 @@ public class Fragment1 extends Fragment {
             @Override
             public void onRefresh() {
                 Log.i("tuna", "onRefresh");
-                duyuruGuncelle();
+                if (isNetworkAvailable()) {
+                    DuyuruDB db = new DuyuruDB(getActivity());
+                    if (db.getDuyuruSayisi(sP.getString("generalMode", "bolum")) > 0) {
+                        duyuruGuncelle();
+                    } else {
+                        swipeLayout.setRefreshing(false);
+                        LoadDuyuruForFirstTime();
+                    }
 
+                } else {
+                    if (sP.getString("generalMode", "bolum").equals("bolum")) {
+                        Snackbar.make(coordinator, "Akýþ yenilenemedi", Snackbar.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        Snackbar.make(coordinator, "Akýþ yenilenemedi", Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                    swipeLayout.setRefreshing(false);
+                }
             }
         });
 
@@ -266,7 +283,15 @@ public class Fragment1 extends Fragment {
         });
     }
 
+    private void hideReloadThings() {
+        if (reload.getVisibility() == View.VISIBLE) {
+            reload.setVisibility(View.GONE);
+            reloadText.setVisibility(View.GONE);
+        }
+    }
+
     private void handleMenuFab1Click() {
+        hideReloadThings();
         fabMenu.close(false);
         handleFabClicks();
         if (sP.getString("generalMode", "bolum").equals("bolum")) {
@@ -287,6 +312,7 @@ public class Fragment1 extends Fragment {
     }
 
     private void handleMenuFab2Click() {
+        hideReloadThings();
         if (sP.getString("generalMode", "bolum").equals("bolum")) {
             if (sP.getBoolean("isBolumNotificationsAllowed", false)) {
                 fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
@@ -295,7 +321,6 @@ public class Fragment1 extends Fragment {
             } else {
                 fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
                 // bildirimleri aç
-                fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
                 editor.putBoolean("isBolumNotificationsAllowed", true);
                 editor.apply();
             }
@@ -314,6 +339,7 @@ public class Fragment1 extends Fragment {
     }
 
     private void handleMenuFab3Click() {
+        hideReloadThings();
         fabMenu.close(false);
         setFabToLoading();
         Log.i("fab", "onHandleMenu3Click");
@@ -373,6 +399,7 @@ public class Fragment1 extends Fragment {
 
     private void handleFabClicks() {
         setFabToLoading();
+        String defaultGeneralMode = sP.getString("generalMode", "bolum");
         editor.putBoolean("needListUpdate", true);
         if (sP.getString("generalMode", "bolum").equals("bolum")) { // fakülteye gidicez yani
             editor.putString("duyuruLink", sP.getString("defaultFakulteLink", ""));
@@ -382,9 +409,10 @@ public class Fragment1 extends Fragment {
             editor.putString("generalMode", "bolum");
         }
         editor.commit();
+        Log.i("tuna", "generalMode is " + sP.getString("generalMode", "bolum"));
 
         DuyuruDB db = new DuyuruDB(getActivity());
-        if (db.getDuyuruSayisi(sP.getString("generalMode", "")) != 0) { // not the first time
+        if (db.getDuyuruSayisi(sP.getString("generalMode", "")) > 0) { // not the first time
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
@@ -406,8 +434,12 @@ public class Fragment1 extends Fragment {
                 recyclerView.setAlpha(0.5F);
                 LoadDuyuruForFirstTime();
             } else {
-                editor.putString("duyuruLink", sP.getString("defaultBolumLink", ""));
-                editor.putString("generalMode", "bolum");
+                if (defaultGeneralMode.equals("bolum")) {
+                    editor.putString("duyuruLink", sP.getString("defaultBolumLink", ""));
+                } else {
+                    editor.putString("duyuruLink", sP.getString("defaultFakulteLink", ""));
+                }
+                editor.putString("generalMode", defaultGeneralMode);
                 editor.commit();
                 setFabToReady();
                 Snackbar.make(coordinator, "Ýnternete baðlanýlamýyor", Snackbar.LENGTH_LONG)
@@ -432,7 +464,7 @@ public class Fragment1 extends Fragment {
         // check if db up to date PLEASEEEE
         //if (doesTableExist(db.getReadableDatabase(), db.TABLE_DUYURU)) {
         //if (doesDatabaseExist(getActivity(), db.getDatabaseName())) { // LATER ON CHANGE THIS, thats very SLOWW
-        if (db.getDuyuruSayisi(generalMode) != 0) {
+        if (db.getDuyuruSayisi(generalMode) > 0) {
             ArrayList<Integer> oldList = new ArrayList<>();
             ArrayList<Integer> firstTimeList = new ArrayList<>();
             ArrayList<Integer> newList = new ArrayList<>();
@@ -534,7 +566,7 @@ public class Fragment1 extends Fragment {
 
             dataSize = data.size();
             if (generalMode.equals("bolum")) {
-                if (!dataHolder.alreadyShownFragment1ForBolum) {
+                if (!DataHolder.alreadyShownFragment1ForBolum) {
                     if (needUpdateForEmergency) {
                         if (isNetworkAvailable()) {
                             data = Collections.emptyList(); // if there is a static duyuru, clear db and load from stratch
@@ -547,7 +579,7 @@ public class Fragment1 extends Fragment {
                 } else
                     setFabToReady();
             } else {
-                if (!dataHolder.alreadyShownFragment1ForFakulte) {
+                if (!DataHolder.alreadyShownFragment1ForFakulte) {
                     if (needUpdateForEmergency) {
                         if (isNetworkAvailable()) {
                             data = Collections.emptyList(); // if there is a static duyuru, clear db and load from stratch
@@ -614,9 +646,10 @@ public class Fragment1 extends Fragment {
             reload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    reload.setVisibility(View.GONE);
+                    reloadText.setVisibility(View.GONE);
                     LoadDuyuruForFirstTime();
-                    reload.setVisibility(View.INVISIBLE);
-                    reloadText.setVisibility(View.INVISIBLE);
+
                 }
             });
 
@@ -751,7 +784,6 @@ public class Fragment1 extends Fragment {
 
         dataSize = data.size();
         if (event.mode == "updating" || event.mode == "firstTime") {
-            final List<DuyuruInformation> data2 = data;
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
@@ -791,6 +823,7 @@ public class Fragment1 extends Fragment {
     }
 
     public void handleCardClicks(View view, int position, String title) {
+        Log.i("tuna", "generalMode in handleCardClick is " + sP.getString("generalMode", "bolum"));
         Intent i = new Intent(getActivity(), DuyuruDetailedActivity.class);
         i.putExtra("title", title);
         /*Runnable r = new Runnable() {
@@ -838,9 +871,9 @@ public class Fragment1 extends Fragment {
             if (failedThreadsSoFar > 0) {
                 Toast.makeText(getActivity(), "Hata kodu #01 --- bu mesajý görürseniz lütfen geliþtiriciye ulaþýn!", Toast.LENGTH_LONG).show();
                 //bus.post(new StatusForDetailedActivity("exception"));
-            } else {
+            } /*else {
                 //bus.post(new StatusForDetailedActivity("goodToGo"));
-            }
+            }*/
             //setFabToReady();
         }
     }

@@ -352,11 +352,10 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
         }
 
 
-        DataHolder dataHolder = new DataHolder();
         if (generalMode.equals("bolum"))
-            dataHolder.alreadyShownFragment1ForBolum = true;
+            DataHolder.alreadyShownFragment1ForBolum = true;
         else
-            dataHolder.alreadyShownFragment1ForFakulte = true;
+            DataHolder.alreadyShownFragment1ForFakulte = true;
 
 
         if (mode.equals("firstTime")) {

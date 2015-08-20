@@ -67,6 +67,7 @@
                 android:layout_gravity="bottom|right"
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="8dp"
+                app:layout_behavior=".FloatingActionMenuBehavior"
                 fab:menu_animationDelayPerItem="15"
                 fab:menu_backgroundColor="@android:color/transparent"
                 fab:menu_buttonSpacing="0dp"
@@ -126,6 +127,7 @@
             </com.github.clans.fab.FloatingActionMenu>
 
 
+
         </android.support.design.widget.CoordinatorLayout>
 
         <RelativeLayout
@@ -137,10 +139,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="45dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/reload"
+                android:src="@drawable/ic_sync_black_48dp"
                 android:visibility="gone" />
 
             <TextView
@@ -149,10 +151,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/reload"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="Sunucuya erişilemedi\nYeniden yükle"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColor="@color/material_blue_grey_950"
                 android:visibility="gone" />
         </RelativeLayout>
 
