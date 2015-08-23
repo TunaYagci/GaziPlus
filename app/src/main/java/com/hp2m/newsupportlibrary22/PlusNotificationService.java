@@ -313,7 +313,12 @@ public class PlusNotificationService extends IntentService {
 
                 } catch (Exception e) {
                     Log.i("gazinotification", "exception in notification service " + e.toString());
-                    Toast.makeText(getApplicationContext(), "Hata kodu #003", Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getApplicationContext(), "Hata kodu #003", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                        Log.i("gazinotification", e1.toString());
+                    }
                     dropWakeLock();
                     }
                 }
