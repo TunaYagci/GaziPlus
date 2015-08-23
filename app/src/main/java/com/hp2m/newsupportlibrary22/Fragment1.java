@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -282,7 +283,7 @@ public class Fragment1 extends Fragment {
             }
         });
 
-
+        fabMenu.hideMenuButton(false);
     }
 
 
@@ -380,6 +381,8 @@ public class Fragment1 extends Fragment {
                 }
             };
             getActivity().runOnUiThread(r);
+            ImageLoader.getInstance().clearMemoryCache();
+            ImageLoader.getInstance().clearDiskCache();
             LoadDuyuruForFirstTime();
         } else {
             Snackbar.make(coordinator, "Ýnternete baðlanýlamýyor", Snackbar.LENGTH_LONG)
@@ -391,11 +394,15 @@ public class Fragment1 extends Fragment {
                     })
                     .show();
         }
+
+
     }
 
 
     public void setFabToLoading() {
         fabMenu.setClickable(false);
+        //fabMenu.close(false);
+        fabMenu.hideMenuButton(true);
         //fab.setButtonDrawable(getActivity().getResources().getDrawable(R.drawable.loading_notlar_avatar_2)); // or loading_fab...
     }
 
@@ -411,10 +418,14 @@ public class Fragment1 extends Fragment {
         editor.putBoolean("needListUpdate", false);
         editor.commit();
         fabMenu.setClickable(true);
+        fabMenu.showMenuButton(true);
     }
 
     private void handleFabClicks() {
-        setFabToLoading();
+        DuyuruDB db = new DuyuruDB(getActivity());
+        if (!(db.getDuyuruSayisi(sP.getString("generalMode", "")) > 0)) {
+            setFabToLoading();
+        }
         String defaultGeneralMode = sP.getString("generalMode", "bolum");
         editor.putBoolean("needListUpdate", true);
         if (sP.getString("generalMode", "bolum").equals("bolum")) { // fakülteye gidicez yani
@@ -427,7 +438,7 @@ public class Fragment1 extends Fragment {
         editor.commit();
         Log.i("tuna", "generalMode is " + sP.getString("generalMode", "bolum"));
 
-        DuyuruDB db = new DuyuruDB(getActivity());
+
         if (db.getDuyuruSayisi(sP.getString("generalMode", "")) > 0) { // not the first time
             Runnable r = new Runnable() {
                 @Override
@@ -530,7 +541,7 @@ public class Fragment1 extends Fragment {
                 //Log.i("tuna", "a new post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
                 if (duyuruList.get(1).isEmpty())
-                    current.body = "Resmi görüntülemek için týklayýn";
+                    current.body = "Resmi görüntülemek için dokunun";
                 else
                     current.body = duyuruList.get(1);
                 current.dateDiff = getTimeDifference(
@@ -549,7 +560,7 @@ public class Fragment1 extends Fragment {
                 // Log.i("tuna", "a firstTime post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
                 if (duyuruList.get(1).isEmpty())
-                    current.body = "Resmi görüntülemek için týklayýn";
+                    current.body = "Resmi görüntülemek için dokunun";
                 else
                     current.body = duyuruList.get(1);
                 current.dateDiff = getTimeDifference(
@@ -570,7 +581,7 @@ public class Fragment1 extends Fragment {
                 // Log.i("tuna", "an old post is pulling " + duyuruList.get(0));
                 current.header = duyuruList.get(0);
                 if (duyuruList.get(1).isEmpty())
-                    current.body = "Resmi görüntülemek için týklayýn";
+                    current.body = "Resmi görüntülemek için dokunun";
                 else
                     current.body = duyuruList.get(1);
                 current.dateDiff = getTimeDifference(
@@ -750,7 +761,7 @@ public class Fragment1 extends Fragment {
             Log.i("tuna", "a new post is pulling " + duyuruList.get(0));
             current.header = duyuruList.get(0);
             if (duyuruList.get(1).isEmpty())
-                current.body = "Resmi görüntülemek için týklayýn";
+                current.body = "Resmi görüntülemek için dokunun";
             else
                 current.body = duyuruList.get(1);
             current.dateDiff = getTimeDifference(
@@ -767,7 +778,7 @@ public class Fragment1 extends Fragment {
             Log.i("tuna", "a firstTime post is pulling " + duyuruList.get(0));
             current.header = duyuruList.get(0);
             if (duyuruList.get(1).isEmpty())
-                current.body = "Resmi görüntülemek için týklayýn";
+                current.body = "Resmi görüntülemek için dokunun";
             else
                 current.body = duyuruList.get(1);
             current.dateDiff = getTimeDifference(
@@ -785,7 +796,7 @@ public class Fragment1 extends Fragment {
             Log.i("tuna", "an old post is pulling " + duyuruList.get(0));
             current.header = duyuruList.get(0);
             if (duyuruList.get(1).isEmpty())
-                current.body = "Resmi görüntülemek için týklayýn";
+                current.body = "Resmi görüntülemek için dokunun";
             else
                 current.body = duyuruList.get(1);
             current.dateDiff = getTimeDifference(

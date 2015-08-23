@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         ImageLoader.getInstance().init(config);
 
-
     }
 
     private void handleUserButtonClick() {

@@ -86,6 +86,11 @@ public class ActivityUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                         SharedPreferences sP = activity.getSharedPreferences("user", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sP.edit();
                                         editor.putBoolean("isLoginSuccessful", false);
+                                        editor.putBoolean("isBolumNotificationsAllowed", false);
+                                        editor.putBoolean("isFakulteNotificationsAllowed", false);
+                                        // and NOT notifications..
+                                        editor.putBoolean("isFakulteNotificationsAllowed", false);
+                                        new PlusMainReceiver().CancelAlarm(activity);
                                         editor.commit();
                                         DuyuruDB db = new DuyuruDB(activity);
                                         db.clearForLogOut();

@@ -296,13 +296,14 @@ public class WelcomeActivity extends AppCompatActivity {
 
                 bolumAdi = "CENGAZÝ";
                 bolumImg = R.drawable.lowres2_2;
+                bolumHint = "cengazi";
                 fakulteAdi = "MÜHENDÝSLÝK FAKÜLTESÝ";
                 fakulteImg = R.drawable.mf_fakulte3;
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
                 defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
 
                 setupNotificationService();
-                editor.putString("bolumHint", "cengazi");
+                editor.putString("bolumHint", bolumHint);
                 editor.putString("bolumAdi", bolumAdi);
                 editor.putInt("bolumImg", bolumImg);
                 editor.putString("fakulteAdi", fakulteAdi);
