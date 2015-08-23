@@ -141,17 +141,11 @@ public class WelcomeActivity extends AppCompatActivity {
                 break;
             case "08":
                 defaultFakulteLink = "none";
-                switch (bolumNo) {
-                    case "20":
                         defaultBolumLink = "http://ilet.gazi.edu.tr/posts?type=news";
                         bolumAdi = "ÝLETÝÞÝM FAKÜLTESÝ";
                         bolumHint = "nofab";
                         bolumImg = R.drawable.gazi_iletisim_2;
                         break;
-                    default:
-                        bolumHint = "none";
-                }
-                break;
             case "09":
                 defaultFakulteLink = "http://iibf.gazi.edu.tr/posts?type=news";
                 break;
@@ -351,7 +345,7 @@ public class WelcomeActivity extends AppCompatActivity {
             switcher(ogrNo);
 
             if (bolumHint.equals("none")) {
-                Toast.makeText(this, "Bölümün henüz desteklenmiyor, lütfen öðrenci numaraný bana yolla", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Bölümün henüz desteklenmiyor, lütfen öðrenci numaraný bize yolla", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -404,8 +398,12 @@ public class WelcomeActivity extends AppCompatActivity {
         editor.putBoolean("isNotificationServiceOnline", true);
         editor.putBoolean("isDuyuruServiceOnline", true);
         editor.putBoolean("isBolumNotificationsAllowed", true);
-        editor.putBoolean("isFakulteNotificationsAllowed", true);
-        editor.putBoolean("isNotNotificationsAllowed", false);
+        if (!bolumHint.equals("nofab")) {
+            editor.putBoolean("isFakulteNotificationsAllowed", true);
+        } else {
+            editor.putBoolean("isFakulteNotificationsAllowed", false);
+        }
+        //editor.putBoolean("isNotNotificationsAllowed", false);
         editor.apply();
 
     }

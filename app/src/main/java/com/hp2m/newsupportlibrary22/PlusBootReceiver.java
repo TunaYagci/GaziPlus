@@ -3,6 +3,7 @@ package com.hp2m.newsupportlibrary22;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 /**
@@ -11,7 +12,16 @@ import android.util.Log;
 public class PlusBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("tuna", "device booted, rescheduling alarms");
+        Log.i("gazinotification", "device booted, rescheduling alarms");
         // reschedule alarms here
+
+        SharedPreferences sP = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        if (sP.getBoolean("isBolumNotificationsAllowed", false) ||
+                sP.getBoolean("isFakulteNotificationsAllowed", false)
+            // sP.getBoolean("isBolumNotificationsAllowed", false) put not notifications sP here
+                ) {
+            PlusMainReceiver receiver = new PlusMainReceiver();
+            receiver.SetAlarm(context);
+        }
     }
 }

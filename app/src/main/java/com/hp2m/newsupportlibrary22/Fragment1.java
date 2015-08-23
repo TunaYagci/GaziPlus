@@ -135,18 +135,12 @@ public class Fragment1 extends Fragment {
         //fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
         coordinator = (CoordinatorLayout) rootView.findViewById(R.id.coordinator2);
-        if (!sP.getString("bolumHint", "nofab").equals("nofab")) {
-            /*fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.i("tuna", "fab click");
-                    handleFabClicks();
-                }
-            });*/
+        /*if (!sP.getString("bolumHint", "nofab").equals("nofab")) {
             createFabMenu();
         } else {
             fabMenu.setVisibility(View.GONE);
-        }
+        }*/
+        createFabMenu();
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeLayout.setColorSchemeResources(R.color.card_color_1,
                 R.color.card_color_2,
@@ -227,7 +221,6 @@ public class Fragment1 extends Fragment {
     }
 
     private void createFabMenu() {
-
         fabMenu.setMenuButtonHideAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.abc_slide_out_bottom));
         fabMenu.setMenuButtonShowAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.abc_slide_in_bottom));
 
@@ -258,17 +251,24 @@ public class Fragment1 extends Fragment {
                 fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
             }
         }
-        fab1.setColorNormalResId(R.color.fab_menu_1);
+
+        if (sP.getString("bolumHint", "nofab").equals("nofab")) { // gazi iletiþim
+            fabMenu.removeMenuButton(fab1);
+            fab2.setLabelText("Fakülte bildirimleri");
+        } else {
+            fab1.setColorNormalResId(R.color.fab_menu_1);
+            fab1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleMenuFab1Click();
+                }
+            });
+        }
+
         fab2.setColorNormalResId(R.color.fab_menu_2);
         fab2.setColorPressedResId(R.color.fab_menu_2_pressed);
         fab3.setColorNormalResId(R.color.fab_menu_3);
         fab3.setColorPressedResId(R.color.fab_menu_3_pressed);
-        fab1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleMenuFab1Click();
-            }
-        });
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,7 +281,10 @@ public class Fragment1 extends Fragment {
                 handleMenuFab3Click();
             }
         });
+
+
     }
+
 
     private void hideReloadThings() {
         if (reload.getVisibility() == View.VISIBLE) {
@@ -313,29 +316,45 @@ public class Fragment1 extends Fragment {
 
     private void handleMenuFab2Click() {
         hideReloadThings();
+        boolean wasBothClosed = !sP.getBoolean("isBolumNotificationsAllowed", false) && !sP.getBoolean("isFakulteNotificationsAllowed", false);
         if (sP.getString("generalMode", "bolum").equals("bolum")) {
             if (sP.getBoolean("isBolumNotificationsAllowed", false)) {
                 fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
                 editor.putBoolean("isBolumNotificationsAllowed", false);
-                editor.apply();
+                //editor.apply();
             } else {
                 fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
                 // bildirimleri aç
                 editor.putBoolean("isBolumNotificationsAllowed", true);
-                editor.apply();
+                //editor.apply();
             }
         } else {
             if (sP.getBoolean("isFakulteNotificationsAllowed", false)) {
                 fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
                 editor.putBoolean("isFakulteNotificationsAllowed", false);
-                editor.apply();
+                //editor.apply();
             } else {
                 fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
                 // bildirimleri aç
                 editor.putBoolean("isFakulteNotificationsAllowed", true);
-                editor.apply();
+                //editor.apply();
             }
         }
+        editor.commit();
+        alarmSetterCanceller(wasBothClosed);
+    }
+
+    private void alarmSetterCanceller(boolean wasBothClosed) {
+        PlusMainReceiver receiver = new PlusMainReceiver();
+        if (!sP.getBoolean("isFakulteNotificationsAllowed", false) && !sP.getBoolean("isBolumNotificationsAllowed", false)) {
+            // and check if NOT sP is active or not
+            receiver.CancelAlarm(getActivity());
+            Log.i("gazinotification", "all alarms are cancelled");
+        } else if (wasBothClosed) { // and check if NOT sP was online or not, so we don't set alarm twice.
+            receiver.SetAlarm(getActivity());
+            Log.i("gazinotification", "all alarms are opened");
+        }
+
     }
 
     private void handleMenuFab3Click() {
@@ -373,9 +392,6 @@ public class Fragment1 extends Fragment {
                     .show();
         }
     }
-
-
-
 
 
     public void setFabToLoading() {

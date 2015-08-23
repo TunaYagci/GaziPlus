@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.os.PowerManager;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -98,80 +99,83 @@ public class PlusNotificationService extends IntentService {
 
     @Override
     public int onStartCommand(Intent yointent, int flags, int startId) {
+
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                updatedBolumDuyuruCount = 0;
-                updatedFakulteDuyuruCount = 0;
-                reportingBolumDuyuruCount = 0;
-                reportingFakulteDuyuruCount = 0;
-                eventedFakulteDuyuruCount = 0;
-                eventedBolumDuyuruCount = 0;
-                isBolumReadyToNotificate = false;
-                isFakulteReadyToNotificate = false;
-                bolumHeaderList = new ArrayList<>();
-                fakulteHeaderList = new ArrayList<>();
+                try {
+                    updatedBolumDuyuruCount = 0;
+                    updatedFakulteDuyuruCount = 0;
+                    reportingBolumDuyuruCount = 0;
+                    reportingFakulteDuyuruCount = 0;
+                    eventedFakulteDuyuruCount = 0;
+                    eventedBolumDuyuruCount = 0;
+                    isBolumReadyToNotificate = false;
+                    isFakulteReadyToNotificate = false;
+                    bolumHeaderList = new ArrayList<>();
+                    fakulteHeaderList = new ArrayList<>();
 
 
-                //Toast.makeText(getApplicationContext(), "onHandleIntent", Toast.LENGTH_SHORT).show();
-                if (isNetworkAvailable()) {
-                    PowerManager pm = (PowerManager) getBaseContext().getSystemService(Context.POWER_SERVICE);
-                    wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
-                    wl.acquire();
-                    List<String> headerList, tarihList;
-                    boolean hasAnythingDone = false;
-                    int LOADED_ITEM_COUNT = 0;
-                    sP = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
-                    String URL = null, generalMode = "nothingHasDone";
-                    final EventBus bus = EventBus.getDefault();
-                    boolean isBolumNotificationsAllowed = sP.getBoolean("isBolumNotificationsAllowed", false);
-                    boolean isFakulteNotificationsAllowed = sP.getBoolean("isFakulteNotificationsAllowed", false);
-                    boolean isNotNotificationsAllowed = sP.getBoolean("isNotNotificationsAllowed", false);
+                    //Toast.makeText(getApplicationContext(), "onHandleIntent", Toast.LENGTH_SHORT).show();
+                    if (isNetworkAvailable()) {
+                        PowerManager pm = (PowerManager) getBaseContext().getSystemService(Context.POWER_SERVICE);
+                        wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
+                        wl.acquire();
+                        List<String> headerList, tarihList;
+                        boolean hasAnythingDone = false;
+                        int LOADED_ITEM_COUNT = 0;
+                        sP = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+                        String URL = null, generalMode = "nothingHasDone";
+                        final EventBus bus = EventBus.getDefault();
+                        boolean isBolumNotificationsAllowed = sP.getBoolean("isBolumNotificationsAllowed", false);
+                        boolean isFakulteNotificationsAllowed = sP.getBoolean("isFakulteNotificationsAllowed", false);
+                        //boolean isNotNotificationsAllowed = sP.getBoolean("isNotNotificationsAllowed", false);
 
-                    boolean fakulteUpdate = false;
-                    for (int counter = 0; counter < 2; counter++) {
-                        if (counter == 0) { // check for bolum duyuru
-                            if (isBolumNotificationsAllowed) {
-                                generalMode = "bolum";
-                                URL = sP.getString("defaultBolumLink", "");
+                        boolean fakulteUpdate = false;
+                        for (int counter = 0; counter < 2; counter++) {
+                            if (counter == 0) { // check for bolum duyuru
+                                if (isBolumNotificationsAllowed) {
+                                    generalMode = "bolum";
+                                    URL = sP.getString("defaultBolumLink", "");
+                                } else {
+                                    if (isFakulteNotificationsAllowed) {
+                                        generalMode = "fakulte";
+                                        URL = sP.getString("defaultFakulteLink", "");
+                                        fakulteUpdate = true;
+                                    } else
+                                        break;
+                                }
                             } else {
-                                if (isFakulteNotificationsAllowed) {
-                                    generalMode = "fakulte";
-                                    URL = sP.getString("defaultFakulteLink", "");
-                                    fakulteUpdate = true;
-                                } else
-                                    break;
+                                if (!fakulteUpdate) {
+                                    if (isFakulteNotificationsAllowed) {
+                                        generalMode = "fakulte";
+                                        URL = sP.getString("defaultFakulteLink", "");
+                                    } else
+                                        break;
+                                }
                             }
-                        } else {
-                            if (!fakulteUpdate) {
-                                if (isFakulteNotificationsAllowed) {
-                                    generalMode = "fakulte";
-                                    URL = sP.getString("defaultFakulteLink", "");
-                                } else
-                                    break;
-                            }
-                        }
-                        if (generalMode.equals("nothingHasDone"))
-                            break;
+                            if (generalMode.equals("nothingHasDone"))
+                                break;
 
 
-                        DuyuruDB db2 = new DuyuruDB(getApplicationContext());
-                        if (db2.getDuyuruSayisi(generalMode) > 0) {
-                            Log.i("gazinotification", "generalMode is " + generalMode + " and count is " + db2.getDuyuruSayisi(generalMode));
+                            DuyuruDB db2 = new DuyuruDB(getApplicationContext());
+                            if (db2.getDuyuruSayisi(generalMode) > 0) {
+                                Log.i("gazinotification", "generalMode is " + generalMode + " and count is " + db2.getDuyuruSayisi(generalMode));
 
-                            //doTestDelete();
+                                //doTestDelete();
 
 
-                            Document doc;
-                            try {
-                                int timeout = 5000;
-                                doc = Jsoup.connect(URL).timeout(timeout).get(); // biiiig timeoouuuut
-                            } catch (IOException e) {
-                                Log.i("gazinotification", "timeout done");
-                                Log.i("gazinotification", e.toString());
-                                wl.release();
-                                return;
-                            }
+                                Document doc;
+                                try {
+                                    int timeout = 5000;
+                                    doc = Jsoup.connect(URL).timeout(timeout).get(); // biiiig timeoouuuut
+                                } catch (IOException e) {
+                                    Log.i("gazinotification", "timeout done");
+                                    Log.i("gazinotification", e.toString());
+                                    //wl.release();
+                                    dropWakeLock();
+                                    return;
+                                }
                                 Log.i("gazinotification", "doc downloaded");
                                 Elements duyuruHeaderElements = doc.select("div.app-content li a[href]");
 
@@ -183,7 +187,7 @@ public class PlusNotificationService extends IntentService {
                                 final int NET_MAX_DUYURU = duyuruHeaderElements.size() - 4;
                                 final int MIN_ITEM_TO_LOAD = 4;
 
-                            final int DB_MAX_POSSIBLE_DUYURU = DB_MAX_DUYURU;
+                                final int DB_MAX_POSSIBLE_DUYURU = DB_MAX_DUYURU;
                                 Log.i("gazinotification", "DB_MAX_DUYURU = " + DB_MAX_DUYURU + " and DB_MAX_POSSIBLE_DUYURU = " + DB_MAX_POSSIBLE_DUYURU);
 
                                 ArrayList<Integer> updateList = new ArrayList<>();
@@ -191,7 +195,8 @@ public class PlusNotificationService extends IntentService {
                                 int updatedFirstRow = -1;
                                 // check if user has loaded "any" new item
                                 for (int j = DB_MAX_POSSIBLE_DUYURU; j >= 1; j--) {
-                                    Log.i("gazinotification", "last item is " + db2.fetchMeMyDuyuru(j, generalMode).get(0));
+                                    //Log.i("gazinotification", "last item is " + db2.fetchMeMyDuyuru(j, generalMode).get(0));
+                                    // checking from last item for "new" duyuru
                                     if (db2.fetchMeMyDuyuru(j, generalMode).get(5).equals("new")) { //db max duyuru+1??
                                         updatedFirstRow = j;
                                         break;
@@ -283,30 +288,40 @@ public class PlusNotificationService extends IntentService {
                                         getApplicationContext().startService(intent);
                                     }
                                 }
-                            if (generalMode.equals("bolum")) {
-                                updatedBolumDuyuruCount += LOADED_ITEM_COUNT;
-                                //bolumHandler.postDelayed(bolumRunnable, 300);
-                            } else if (generalMode.equals("fakulte")) {
-                                updatedFakulteDuyuruCount += LOADED_ITEM_COUNT;
-                                //fakulteHandler.postDelayed(fakulteRunnable, 300);
+                                if (generalMode.equals("bolum")) {
+                                    updatedBolumDuyuruCount += LOADED_ITEM_COUNT;
+                                    //bolumHandler.postDelayed(bolumRunnable, 300);
+                                } else if (generalMode.equals("fakulte")) {
+                                    updatedFakulteDuyuruCount += LOADED_ITEM_COUNT;
+                                    //fakulteHandler.postDelayed(fakulteRunnable, 300);
+                                }
+                            } else {
+                                Log.i("gazinotification", "db hasn't opened yet for " + generalMode);
                             }
-                        } else {
-                            Log.i("gazinotification", "db hasn't opened yet for " + generalMode);
-                        }
-                        generalMode = "nothingHasDone";
+                            generalMode = "nothingHasDone";
 
+                        }
+                        bolumHandler.postDelayed(bolumRunnable, 300);
+                        fakulteHandler.postDelayed(fakulteRunnable, 300);
+                        if (!hasAnythingDone) {
+                            //wl.release();
+                            dropWakeLock();
+                        }
+                    } else {
+                        Log.i("gazinotification", "no internet connection, closing service");
                     }
-                    bolumHandler.postDelayed(bolumRunnable, 300);
-                    fakulteHandler.postDelayed(fakulteRunnable, 300);
-                    if (!hasAnythingDone)
-                    wl.release();
-                } else {
-                    Log.i("gazinotification", "no internet connection, closing service");
+
+                } catch (Exception e) {
+                    Log.i("gazinotification", "exception in notification service " + e.toString());
+                    Toast.makeText(getApplicationContext(), "Hata kodu #003", Toast.LENGTH_SHORT).show();
+                    dropWakeLock();
+                    }
                 }
-            }
+
         };
         Thread a = new Thread(r);
         a.start();
+
 
         return START_STICKY;
     }
@@ -453,8 +468,10 @@ public class PlusNotificationService extends IntentService {
         }
 
         // and, at last, save the list to retrieve later for updating
-        wl.release();
+        //wl.release();
+        dropWakeLock();
         // save those to db and retrieve for upcoming notifications
+
 
     }
 
@@ -473,5 +490,20 @@ public class PlusNotificationService extends IntentService {
                 = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void dropWakeLock() {
+        // sanity check for null as this is a public method
+        if (wl != null) {
+            Log.v("gazinotification", "Releasing wakelock");
+            try {
+                wl.release();
+            } catch (Throwable th) {
+                // ignoring this exception, probably wakeLock was already released
+            }
+        } else {
+            // should never happen during normal workflow
+            Log.e("gazinotification", "Wakelock reference is null");
+        }
     }
 }

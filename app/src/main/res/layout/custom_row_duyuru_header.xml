@@ -12,12 +12,15 @@
         android:layout_height="wrap_content"
         android:elevation="2dp"
         card_view:cardElevation="0dp"
-        card_view:cardMaxElevation="0dp">
+        card_view:cardMaxElevation="0dp"
+        card_view:cardPreventCornerOverlap="false">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp">
+            android:layout_height="240dp"
+
+            >
 
             <ImageView
                 android:id="@+id/bolum_image"

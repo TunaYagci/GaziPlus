@@ -59,7 +59,7 @@ public class DownloadService4 extends IntentService {
                 if (!duyuruH3Elements.get(i2).text().isEmpty()) {
                     //a += duyuruElements.get(i2).text();
                     //a += "\n\n";
-                    builder.append(duyuruH3Elements.get(i2).text());
+                    builder.append(duyuruH3Elements.get(i2).text().trim());
                     builder.append("\n\n");
                 }
             }
@@ -70,7 +70,7 @@ public class DownloadService4 extends IntentService {
                 if (!duyuruH4Elements.get(i2).text().isEmpty()) {
                     //a += duyuruElements.get(i2).text();
                     //a += "\n\n";
-                    builder.append(duyuruH4Elements.get(i2).text());
+                    builder.append(duyuruH4Elements.get(i2).text().trim());
                     builder.append("\n\n");
                 }
             }
@@ -80,7 +80,7 @@ public class DownloadService4 extends IntentService {
                 if (!duyuruElements.get(i2).text().isEmpty()) {
                     //a += duyuruElements.get(i2).text();
                     //a += "\n\n";
-                    builder.append(duyuruElements.get(i2).text());
+                    builder.append(duyuruElements.get(i2).text().trim());
                     builder.append("\n\n");
                 }
             }
@@ -116,7 +116,7 @@ public class DownloadService4 extends IntentService {
                 if (!duyuruLiElement.get(i2).text().isEmpty()) {
                     //a += duyuruElements.get(i2).text();
                     //a += "\n\n";
-                    builder.append(duyuruLiElement.get(i2).text());
+                    builder.append(duyuruLiElement.get(i2).text().trim());
                     builder.append("\n\n");
                 }
             }

@@ -138,21 +138,24 @@ public class DuyuruDB extends SQLiteOpenHelper {
 
     // Tarihe gore yemek ekle
     public void addDuyuru(DuyuruGetSet duyuru, String generalMode) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_TITLE, duyuru.getTitle());
-        contentValues.put(COLUMN_CONTENT, duyuru.getContent());
-        contentValues.put(COLUMN_TARIH, duyuru.getTarih());
-        contentValues.put(COLUMN_CONTENTLINKS, duyuru.getContentLinks());
-        contentValues.put(COLUMN_NEWSLINKS, duyuru.getNewsLinks());
-        contentValues.put(COLUMN_NEWOROLD, duyuru.getNewORold());
-        contentValues.put(COLUMN_IMAGELINKS, duyuru.getImageLinks());
-        SQLiteDatabase db = getWritableDatabase();
-        if (generalMode.equals("bolum"))
-            db.insert(TABLE_BOLUM, null, contentValues);
-        else
-            db.insert(TABLE_FAKULTE, null, contentValues);
-        //db.update(TABLE_DUYURU, contentValues, COLUMNN_ID + "=" + 5, null);
-        db.close();
+        Integer i = new Integer(1); // im not really sure
+        synchronized (i) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COLUMN_TITLE, duyuru.getTitle());
+            contentValues.put(COLUMN_CONTENT, duyuru.getContent());
+            contentValues.put(COLUMN_TARIH, duyuru.getTarih());
+            contentValues.put(COLUMN_CONTENTLINKS, duyuru.getContentLinks());
+            contentValues.put(COLUMN_NEWSLINKS, duyuru.getNewsLinks());
+            contentValues.put(COLUMN_NEWOROLD, duyuru.getNewORold());
+            contentValues.put(COLUMN_IMAGELINKS, duyuru.getImageLinks());
+            SQLiteDatabase db = getWritableDatabase();
+            if (generalMode.equals("bolum"))
+                db.insert(TABLE_BOLUM, null, contentValues);
+            else
+                db.insert(TABLE_FAKULTE, null, contentValues);
+            //db.update(TABLE_DUYURU, contentValues, COLUMNN_ID + "=" + 5, null);
+            db.close();
+        }
     }
 
     public ArrayList<String> fetchMeMyDuyuru(int row, String generalMode) { // 1 is title, 2 is content
