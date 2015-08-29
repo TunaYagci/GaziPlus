@@ -163,9 +163,15 @@ public class WelcomeActivity extends AppCompatActivity {
                         bolumHint = "cengazi";
                         bolumImg = R.drawable.lowres2_2;
                         break;
+                    case "30":
+                        defaultBolumLink = "http://mf-im.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Ýnþaat Mühendisliði";
+                        bolumHint = "muh_im";
+                        bolumImg = R.drawable.gazi_im_2;
+                        break;
                     case "20":
                         defaultBolumLink = "http://mf-em.gazi.edu.tr/posts?type=news";
-                        bolumAdi = "ENDÜSTRÝ MÜHENDÝSLÝÐÝ";
+                        bolumAdi = "Endüstri Mühendisliði";
                         bolumHint = "ent";
                         bolumImg = R.drawable.gazi_ent_1;
                         break;
