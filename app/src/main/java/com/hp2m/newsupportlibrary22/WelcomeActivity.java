@@ -131,7 +131,20 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://esef.gazi.edu.tr/posts?type=news";
                 break;
             case "05":
-                defaultFakulteLink = "http://fef.gazi.edu.tr/posts?type=news";
+                //defaultFakulteLink = "http://fef.gazi.edu.tr/posts?type=news";
+                defaultFakulteLink = "http://gef.gazi.edu.tr/posts?type=news";
+                fakulteAdi = "EÐÝTÝM FAKÜLTESÝ";
+                fakulteImg = R.drawable.gef_1_edited;
+                switch (bolumNo) {
+                    case "11":
+                        defaultBolumLink = "http://gef-ilkogretim-okuloncesi.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Okulöncesi Eðitim";
+                        bolumHint = "okuloncesi_egitim";
+                        bolumImg = R.drawable.okuloncesi_1_edited;
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case "06":
                 defaultFakulteLink = "http://gef.gazi.edu.tr/posts?type=news";
