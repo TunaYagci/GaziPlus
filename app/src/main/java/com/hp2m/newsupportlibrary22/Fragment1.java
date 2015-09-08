@@ -218,6 +218,8 @@ public class Fragment1 extends Fragment {
                 }
             });
         }
+        NotificationzDB notificationzDB = new NotificationzDB(getActivity());
+        notificationzDB.deleteAllNotificationz();
         return rootView;
     }
 

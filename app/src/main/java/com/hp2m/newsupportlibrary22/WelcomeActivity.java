@@ -153,7 +153,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://gsf.gazi.edu.tr/posts?type=news";
                 break;
             case "08":
-                defaultFakulteLink = "none";
+                defaultFakulteLink = "none"; // gazi iletiþim
                         defaultBolumLink = "http://ilet.gazi.edu.tr/posts?type=news";
                         bolumAdi = "ÝLETÝÞÝM FAKÜLTESÝ";
                         bolumHint = "nofab";
@@ -162,8 +162,24 @@ public class WelcomeActivity extends AppCompatActivity {
             case "09":
                 defaultFakulteLink = "http://iibf.gazi.edu.tr/posts?type=news";
                 break;
-            case "10":
-                defaultFakulteLink = "http://ilet.gazi.edu.tr/posts?type=news";
+            case "10": // mimarlýk
+                defaultFakulteLink = "http://mim.gazi.edu.tr/posts?type=news";
+                fakulteAdi = "MÝMARLIK FAKÜLTESÝ";
+                fakulteImg = R.drawable.mf_fakulte3;
+                switch (bolumNo){
+                    case "60": // mimarlýk
+                        defaultBolumLink = "http://mim-mim.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Mimarlýk Bölümü";
+                        bolumHint = "mimar_sinan";
+                        bolumImg = R.drawable.gazi_mimarlik1;
+                        break;
+                    case "70": //þbp
+                        defaultBolumLink = "http://mim-sbp.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Þehir ve Bölge Planlama";
+                        bolumHint = "mimar_sbp";
+                        bolumImg = R.drawable.gazi_sbp1;
+                        break;
+                }
                 break;
             case "11":
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
@@ -176,6 +192,18 @@ public class WelcomeActivity extends AppCompatActivity {
                         bolumHint = "cengazi";
                         bolumImg = R.drawable.lowres2_2;
                         break;
+                    case "50":
+                        defaultBolumLink = "http://mf-mm.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Makina Mühendisliði";
+                        bolumHint = "muh_mak";
+                        bolumImg = R.drawable.muh_makina3;
+                        break;
+                    case "40":
+                        defaultBolumLink = "http://mf-km.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Kimya Mühendisliði";
+                        bolumHint = "muh_kim";
+                        bolumImg = R.drawable.muh_kimya3;
+                        break;
                     case "30":
                         defaultBolumLink = "http://mf-im.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Ýnþaat Mühendisliði";
@@ -185,14 +213,19 @@ public class WelcomeActivity extends AppCompatActivity {
                     case "20":
                         defaultBolumLink = "http://mf-em.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Endüstri Mühendisliði";
-                        bolumHint = "ent";
+                        bolumHint = "muh_ent";
                         bolumImg = R.drawable.gazi_ent_1;
                         break;
+                    case "10":
+                        defaultBolumLink = "http://mf-eem.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Elektrik-Elektronik Mühendisliði";
+                        bolumHint = "muh_eem";
+                        bolumImg = R.drawable.muh_eem_1;
+                        break;
+
                     default:
                         break;
                 }
-
-
                 break;
             case "12":
                 defaultFakulteLink = "http://mim.gazi.edu.tr/posts?type=news";
@@ -335,7 +368,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 editor.commit();
 
                 //extra
-                sP = getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+                sP = getSharedPreferences("user", Context.MODE_PRIVATE);
                 editor = sP.edit();
                 editor.putString("checkbox", "checked");
                 editor.putString("ogrNo", "141180068");

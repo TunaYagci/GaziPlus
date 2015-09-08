@@ -114,7 +114,7 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     .build();*/
 
             Log.i("tuna", "gonna use picasso");
-            SharedPreferences sharedPreferences = context.getSharedPreferences("avatar", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
 
             Picasso.with(((NotHeaderViewHolder) holder).sahip.getContext())
                     .load(current.imageLink)

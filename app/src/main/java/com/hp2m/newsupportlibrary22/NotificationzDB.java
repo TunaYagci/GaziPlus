@@ -27,13 +27,14 @@ public class NotificationzDB extends SQLiteOpenHelper {
 
     public int getBildirimSayisi(String generalMode) {
         SQLiteDatabase db = this.getReadableDatabase();
+        int idMax = 0;
         String query;
         if (generalMode.equals("bolum"))
             query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_BOLUM;
         else
             query = "SELECT MAX(" + COLUMNN_ID + ") FROM " + TABLE_FAKULTE;
         Cursor c = db.rawQuery(query, null);
-        int idMax = 0;
+        idMax = 0;
         if (c.moveToFirst())
             do {
                 idMax = c.getInt((0));
@@ -46,15 +47,13 @@ public class NotificationzDB extends SQLiteOpenHelper {
     }
 
     public void deleteAllNotificationz() {
-        try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            db.delete(TABLE_BOLUM, null, null);
-            db.delete(TABLE_FAKULTE, null, null);
-            db.close();
-        } catch (Exception e) {
-            Log.i("gazinotifications", e.toString());
-        }
-
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        db.delete(TABLE_BOLUM, null, null);
+        db.delete(TABLE_FAKULTE, null, null);
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
     }
 
 

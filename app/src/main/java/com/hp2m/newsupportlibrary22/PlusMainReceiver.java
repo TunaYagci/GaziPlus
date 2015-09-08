@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-/**
- * Created by Tuna on 8/17/2015.
- */
+
 public class PlusMainReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -22,7 +20,7 @@ public class PlusMainReceiver extends BroadcastReceiver {
         Intent i = new Intent(context, PlusMainReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, 0, 5 * 60 * 1000, pi); // Millisec * Second * Minute
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, 0, 10 * 60 * 1000, pi); // Millisec * Second * Minute
         Log.i("TAG", "alarm is set");
 
 

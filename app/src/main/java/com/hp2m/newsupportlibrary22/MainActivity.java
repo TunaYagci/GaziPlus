@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
 
         // clear notifications DB
-        NotificationzDB notificationzDB = new NotificationzDB(this);
-        notificationzDB.deleteAllNotificationz();
+
 
         mPager = (ViewPager) findViewById(R.id.viewPager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());

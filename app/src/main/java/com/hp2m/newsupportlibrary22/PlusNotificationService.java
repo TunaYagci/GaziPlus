@@ -104,6 +104,18 @@ public class PlusNotificationService extends IntentService {
             @Override
             public void run() {
                 try {
+                    /*DuyuruDB dbTEST = new DuyuruDB(getApplicationContext());
+                    DuyuruGetSet duyuruTEST = new DuyuruGetSet("TEK DERS SINAVLARI",
+                            " ",
+                            "2015-09-10 15:40",
+                            " ",
+                            " ",
+                            "firstTime",
+                            " "
+                    );
+                    dbTEST.addDuyuru(duyuruTEST, "bolum");*/
+
+
                     updatedBolumDuyuruCount = 0;
                     updatedFakulteDuyuruCount = 0;
                     reportingBolumDuyuruCount = 0;
@@ -126,7 +138,7 @@ public class PlusNotificationService extends IntentService {
                         int LOADED_ITEM_COUNT = 0;
                         sP = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
                         String URL = null, generalMode = "nothingHasDone";
-                        final EventBus bus = EventBus.getDefault();
+                        //final EventBus bus = EventBus.getDefault();
                         boolean isBolumNotificationsAllowed = sP.getBoolean("isBolumNotificationsAllowed", false);
                         boolean isFakulteNotificationsAllowed = sP.getBoolean("isFakulteNotificationsAllowed", false);
                         //boolean isNotNotificationsAllowed = sP.getBoolean("isNotNotificationsAllowed", false);
@@ -206,7 +218,8 @@ public class PlusNotificationService extends IntentService {
                                     Log.i("gazinotification", "user hasnt loaded any new item, check for firstTime items");
                                     // user hasnt loaded any new item, check for firstTime items
                                     for (int i = 0; i < NET_MAX_DUYURU; i++) {
-                                        Log.i("gazinotification", "duyuruHeaderElementsGet(i) = " + duyuruHeaderElements.get(i).text().substring(17));
+                                        //Log.i("gazinotification", "duyuruHeaderElementsGet(i) = " + duyuruHeaderElements.get(i).text().substring(17));
+                                        //Log.i("gazinotification", "db2.fetchMeMyDuyuru(1, generalMode).get(0) = " + db2.fetchMeMyDuyuru(1, generalMode).get(0));
                                         if (db2.fetchMeMyDuyuru(1, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
                                             break;
                                         else {
@@ -218,6 +231,8 @@ public class PlusNotificationService extends IntentService {
                                     // user HAS loaded new items
                                     for (int i = 0; i < NET_MAX_DUYURU; i++) {
                                         // check if item is same or not
+                                        Log.i("gazinotification", db2.fetchMeMyDuyuru(updatedFirstRow, generalMode).get(0));
+                                        Log.i("gazinotification", duyuruHeaderElements.get(i).text().substring(17));
                                         if (db2.fetchMeMyDuyuru(updatedFirstRow, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
                                             break;
                                         else {
@@ -243,7 +258,7 @@ public class PlusNotificationService extends IntentService {
                                     }
                                     DuyuruDB db = new DuyuruDB(getApplicationContext());
 
-                                    for (int i = 0; i < updateList.size(); i++) {
+                                    for (int i = updateList.size()-1; i>-1; i--) {
                                         if (generalMode.equals("bolum")) {
                                             bolumHeaderList.add(duyuruHeaderElements.get(i).text().substring(17));
                                         } else {
@@ -346,7 +361,7 @@ public class PlusNotificationService extends IntentService {
         Log.i("gazinotification", "createNotification");
         NotificationzDB db = new NotificationzDB(getApplicationContext());
         for (int i = 0; i < bolumHeaderList.size(); i++) {
-            db.addNotification(bolumHeaderList.get(i), "bolum");
+                db.addNotification(bolumHeaderList.get(i), "bolum");
         }
         for (int i = 0; i < fakulteHeaderList.size(); i++) {
             db.addNotification(fakulteHeaderList.get(i), "fakulte");
@@ -355,10 +370,14 @@ public class PlusNotificationService extends IntentService {
         fakulteHeaderList.clear();
 
         for (int i = db.getBildirimSayisi("bolum"); i > 0; i--) {
+            if(db.fetchMeNotificationz(i,"bolum").equals("none"))
+                break;
             bolumHeaderList.add(db.fetchMeNotificationz(i, "bolum"));
         }
 
         for (int i = db.getBildirimSayisi("fakulte"); i > 0; i--) {
+            if(db.fetchMeNotificationz(i,"fakulte").equals("none"))
+                break;
             fakulteHeaderList.add(db.fetchMeNotificationz(i, "fakulte"));
         }
         Log.i("gazinotification", "bolumHeaderList size is " + bolumHeaderList.size());

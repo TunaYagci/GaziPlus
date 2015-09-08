@@ -183,7 +183,7 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
             }
 
 
-            SharedPreferences sharedPreferences = context.getSharedPreferences("avatar", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
             if (!sharedPreferences.getBoolean("IsAvatarDownloadedFor" + number, false)) {
                 Log.i("tuna", "gonna download image");
                 String idMightyURL = "https://ogrenci.gazi.edu.tr/ogrenci/htmlNavigate.php?ReqID=OGR_BILGI_EKR&myID="

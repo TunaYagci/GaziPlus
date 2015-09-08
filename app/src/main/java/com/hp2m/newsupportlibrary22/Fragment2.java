@@ -72,7 +72,7 @@ public class Fragment2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment2, container, false);
-        sharedP = this.getActivity().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+        sharedP = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         editor = sharedP.edit();
         bus.register(this);
 
@@ -358,9 +358,10 @@ public class Fragment2 extends Fragment {
             // first, add header
             current.name = event.idList.get(0);
             current.ogrNo = event.idList.get(1);
-            SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("currentOgrNo", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor2 = sharedPreferences.edit();
             editor2.putString("currentOgrNo", event.idList.get(1));
+            editor2.putString("currentOgrName", event.idList.get(0));
             editor2.commit();
             current.imageLink = event.idList.get(2);
             current.genelOrtNumber = event.genelOrt;

@@ -46,13 +46,13 @@ public class UserActivity extends AppCompatActivity {
 
 
         final String number = "141180068"; // default number'ý sharedPref ile çek
-        final SharedPreferences sharedPreferences = getSharedPreferences("avatar", Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         if (sharedPreferences.getBoolean("IsAvatarDownloadedFor" + number, false)) {
             avatar.setVisibility(View.VISIBLE);
             name.setVisibility(View.VISIBLE);
             bolum.setVisibility(View.VISIBLE);
-            bolum.setText("Bilgisayar Mühendisliði");
-            name.setText("Sadýk Tuna Yaðcý");
+            bolum.setText(sharedPreferences.getString("bolumAdi", "-"));
+            name.setText(sharedPreferences.getString("currentOgrName", "-"));
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
@@ -67,7 +67,7 @@ public class UserActivity extends AppCompatActivity {
                             .postProcessor(new BitmapProcessor() {
                                 @Override
                                 public Bitmap process(Bitmap bmp) {
-                                    return Bitmap.createScaledBitmap(bmp, 650, 700, false);
+                                    return Bitmap.createScaledBitmap(bmp, 650, 400, false);
                                 }
                             })
                             .cacheInMemory(true)
