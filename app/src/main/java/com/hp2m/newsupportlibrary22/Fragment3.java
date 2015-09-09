@@ -153,8 +153,11 @@ public class Fragment3 extends Fragment {
                 yemekList = new ArrayList<>();
                 YemekInformation current = new YemekInformation();
                 yemekList.addAll(db.fetchMeMyFood(i + 1));
+                Log.i("tuna", "yemek sayisi= " + db.getYemekSayisi());
                 current.header = yemekList.get(0);
                 current.yemek1 = yemekList.get(1);
+                Log.i("tuna","yemekList.get(1)= "  +yemekList.get(1));
+
                 current.yemek2 = yemekList.get(2);
                 current.yemek3 = yemekList.get(3);
                 current.yemek4 = yemekList.get(4);
@@ -221,7 +224,7 @@ public class Fragment3 extends Fragment {
                 swipeLayout.setRefreshing(true);
             }
         });
-        new YemekTask(this, true).execute();
+        new YemekTask(this, false).execute();
     }
 
 }

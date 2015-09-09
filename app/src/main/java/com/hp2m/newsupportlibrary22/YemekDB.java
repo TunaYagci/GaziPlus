@@ -60,10 +60,8 @@ public class YemekDB extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i("tuna", "onUpgrade");
-        if (newVersion != 2) {
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_YEMEK);
-            onCreate(db);
-        }
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_YEMEK);
+        onCreate(db);
     }
 
     @Override
@@ -72,16 +70,24 @@ public class YemekDB extends SQLiteOpenHelper {
     }
 
     // Tarihe gore yemek ekle
-    public void addHaftalikYemek(YemekGetSet yemek) {
+    public void addHaftalikYemek(YemekGetSet yemek, int id, boolean isUpdating) {
         Log.i("tuna", "addHaftalikYemek " + yemek.getYemek1());
+        Log.i("tuna", "yemek sayisi= " + getYemekSayisi());
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_TARIH, yemek.getTarih());
         contentValues.put(COLUMN_YEMEK1, yemek.getYemek1());
         contentValues.put(COLUMN_YEMEK2, yemek.getYemek2());
         contentValues.put(COLUMN_YEMEK3, yemek.getYemek3());
         contentValues.put(COLUMN_YEMEK4, yemek.getYemek4());
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_YEMEK, null, contentValues);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        if (isUpdating) {
+            db.update(TABLE_YEMEK, contentValues, COLUMNN_ID + "=" + id, null);
+        } else {
+            db.insert(TABLE_YEMEK, null, contentValues);
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
         db.close();
     }
 
@@ -106,6 +112,17 @@ public class YemekDB extends SQLiteOpenHelper {
         //Log.i("tuna", "goodbye");
         // Log.i("tuna", "this is 0 " + yemekListFromDB.get(0));
         return yemekListFromDB;
+    }
+
+
+    public void clearYemekDB() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        db.delete(TABLE_YEMEK, null, null);
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
     }
 
 }

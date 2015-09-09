@@ -20,6 +20,8 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
 
 
     final EventBus bus = EventBus.getDefault();
+    // url http://mediko.gazi.edu.tr/posts/view/title/yemek-listesi-20412
+    // home url http://192.168.1.8/yemek/index.htm
     private final String URL = "http://mediko.gazi.edu.tr/posts/view/title/yemek-listesi-20412";
     Fragment3 fragment;
     ProgressDialog progressDialog;
@@ -89,11 +91,13 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
 
             YemekDB dbHandler = new YemekDB(fragment.getActivity());
             Log.i("tuna", "about to add");
-            dbHandler.addHaftalikYemek(yemekGetSet);
-            dbHandler.addHaftalikYemek(yemekGetSet2);
-            dbHandler.addHaftalikYemek(yemekGetSet3);
-            dbHandler.addHaftalikYemek(yemekGetSet4);
-            dbHandler.addHaftalikYemek(yemekGetSet5);
+            //dbHandler.clearYemekDB();
+            //dbHandler = new YemekDB(fragment.getActivity());
+            dbHandler.addHaftalikYemek(yemekGetSet,1, isUpdating);
+            dbHandler.addHaftalikYemek(yemekGetSet2,2, isUpdating);
+            dbHandler.addHaftalikYemek(yemekGetSet3,3, isUpdating);
+            dbHandler.addHaftalikYemek(yemekGetSet4,4, isUpdating);
+            dbHandler.addHaftalikYemek(yemekGetSet5,5, isUpdating);
 
             /* AYRICA KALORÝYÝ ÇEKMEK ÝÇÝN
             YemekGetSet yemekGetSet = new YemekGetSet(yemekList.get(1), yemekList.get(6),
@@ -127,10 +131,13 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
             } else {
                 bus.post(new YemekDownloadComplated("goodToGo"));
             }
-            if (isUpdating) {
                 fragment.swipeLayout.setRefreshing(false);
+            /*if(isUpdating){
+                YoYo.with(Techniques.Bounce)
+                        .duration(100)
+                        .playOn(fragment.motherLayout);
+            }*/
                 //lowerBrightness(fragment.motherLayout);
-            }
         } catch (Exception e) {
             Log.i("tuna", "exception in yemektask post execute " + e.toString());
         }
