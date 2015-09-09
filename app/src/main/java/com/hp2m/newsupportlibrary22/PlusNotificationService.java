@@ -258,7 +258,7 @@ public class PlusNotificationService extends IntentService {
                                     }
                                     DuyuruDB db = new DuyuruDB(getApplicationContext());
 
-                                    for (int i = updateList.size()-1; i>-1; i--) {
+                                    for (int i = updateList.size() - 1; i > -1; i--) {
                                         if (generalMode.equals("bolum")) {
                                             bolumHeaderList.add(duyuruHeaderElements.get(i).text().substring(17));
                                         } else {
@@ -335,8 +335,8 @@ public class PlusNotificationService extends IntentService {
                         Log.i("gazinotification", e1.toString());
                     }
                     dropWakeLock();
-                    }
                 }
+            }
 
         };
         Thread a = new Thread(r);
@@ -361,7 +361,7 @@ public class PlusNotificationService extends IntentService {
         Log.i("gazinotification", "createNotification");
         NotificationzDB db = new NotificationzDB(getApplicationContext());
         for (int i = 0; i < bolumHeaderList.size(); i++) {
-                db.addNotification(bolumHeaderList.get(i), "bolum");
+            db.addNotification(bolumHeaderList.get(i), "bolum");
         }
         for (int i = 0; i < fakulteHeaderList.size(); i++) {
             db.addNotification(fakulteHeaderList.get(i), "fakulte");
@@ -370,13 +370,13 @@ public class PlusNotificationService extends IntentService {
         fakulteHeaderList.clear();
 
         for (int i = db.getBildirimSayisi("bolum"); i > 0; i--) {
-            if(db.fetchMeNotificationz(i,"bolum").equals("none"))
+            if (db.fetchMeNotificationz(i, "bolum").equals("none"))
                 break;
             bolumHeaderList.add(db.fetchMeNotificationz(i, "bolum"));
         }
 
         for (int i = db.getBildirimSayisi("fakulte"); i > 0; i--) {
-            if(db.fetchMeNotificationz(i,"fakulte").equals("none"))
+            if (db.fetchMeNotificationz(i, "fakulte").equals("none"))
                 break;
             fakulteHeaderList.add(db.fetchMeNotificationz(i, "fakulte"));
         }
@@ -384,7 +384,6 @@ public class PlusNotificationService extends IntentService {
 
         // then add them to DB to retrieve later
         // done. ---WE NEED TO DELETE ALL TABLES OF THIS DB WHENEVER MAINACTIVITY IS OPENED !!!
-
 
 
         int size = bolumHeaderList.size() + fakulteHeaderList.size();

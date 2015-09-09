@@ -187,6 +187,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 fakulteImg = R.drawable.mf_fakulte3;
                 switch (bolumNo) {
                     case "80":
+                        // home server ip: http://192.168.1.8/gazi/index.htm
                         defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
                         bolumAdi = "CENGAZÝ";
                         bolumHint = "cengazi";
