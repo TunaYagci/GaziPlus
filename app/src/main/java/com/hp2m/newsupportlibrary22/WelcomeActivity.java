@@ -118,11 +118,19 @@ public class WelcomeActivity extends AppCompatActivity {
         String bolumNo = ogrNo.substring(4, 6);
 
         switch (fakulteNo) {
-            case "01":
-                defaultFakulteLink = "http://dent.gazi.edu.tr/posts?type=news";
+            case "01": // DÝÞ
+                defaultFakulteLink = "none";
+                    defaultBolumLink = "http://dent.gazi.edu.tr/posts?type=news";
+                    bolumAdi = "Diþ Hekimliði Fakültesi";
+                    bolumHint = "nofab";
+                    bolumImg = R.drawable.gazi_dent;
                 break;
-            case "02":
-                defaultFakulteLink = "http://pharmacy.gazi.edu.tr/posts?type=news";
+            case "02": // ECZACILIK
+                defaultFakulteLink = "none";
+                defaultBolumLink = "http://pharmacy.gazi.edu.tr/posts?type=news";
+                bolumAdi = "Eczacýlýk Fakültesi";
+                bolumHint = "nofab";
+                bolumImg = R.drawable.gazi_pharm;
                 break;
             case "03":
                 defaultFakulteLink = "http://edebiyat.gazi.edu.tr/posts?type=news";
@@ -185,39 +193,39 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
                 fakulteAdi = "MÜHENDÝSLÝK FAKÜLTESÝ";
                 fakulteImg = R.drawable.mf_fakulte3;
-                switch (bolumNo) {
-                    case "80":
+                switch (bolumNo.substring(0,1)) {
+                    case "8":
                         // home server ip: http://192.168.1.8/gazi/index.htm
                         defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
                         bolumAdi = "CENGAZÝ";
                         bolumHint = "cengazi";
                         bolumImg = R.drawable.lowres2_2;
                         break;
-                    case "50":
+                    case "5":
                         defaultBolumLink = "http://mf-mm.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Makina Mühendisliði";
                         bolumHint = "muh_mak";
                         bolumImg = R.drawable.muh_makina3;
                         break;
-                    case "40":
+                    case "4":
                         defaultBolumLink = "http://mf-km.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Kimya Mühendisliði";
                         bolumHint = "muh_kim";
                         bolumImg = R.drawable.muh_kimya3;
                         break;
-                    case "30":
+                    case "3":
                         defaultBolumLink = "http://mf-im.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Ýnþaat Mühendisliði";
                         bolumHint = "muh_im";
                         bolumImg = R.drawable.gazi_im_2;
                         break;
-                    case "20":
+                    case "2":
                         defaultBolumLink = "http://mf-em.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Endüstri Mühendisliði";
                         bolumHint = "muh_ent";
                         bolumImg = R.drawable.gazi_ent_1;
                         break;
-                    case "10":
+                    case "1":
                         defaultBolumLink = "http://mf-eem.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Elektrik-Elektronik Mühendisliði";
                         bolumHint = "muh_eem";
@@ -248,6 +256,36 @@ public class WelcomeActivity extends AppCompatActivity {
                 break;
             case "18":
                 defaultFakulteLink = "http://tf.gazi.edu.tr/posts?type=news";
+                fakulteAdi = "TEKNOLOJÝ FAKÜLTESÝ";
+                fakulteImg = R.drawable.tf_fakulte_1;
+                switch (bolumNo) {
+                    case "02":
+                        defaultBolumLink = "http://tf-imalat.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Elektrik-Elektronik Mühendisliði";
+                        bolumHint = "tf-eem";
+                        bolumImg = R.drawable.tf_eem;
+                        break;
+                    case "06":
+                        defaultBolumLink = "http://tf-imalat.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Ýmalat Mühendisliði";
+                        bolumHint = "tf-imalat";
+                        bolumImg = R.drawable.tf_imalat_1;
+                        break;
+                    case "10":
+                        defaultBolumLink = "http://tf-metalurji.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Metalurji ve Malzeme Mühendisliði";
+                        bolumHint = "tf-metmal";
+                        bolumImg = R.drawable.tf_metmal;
+                        break;
+                    case "12":
+                        defaultBolumLink = "http://tf-metalurji.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Otomativ Mühendisliði";
+                        bolumHint = "tf-otomativ";
+                        bolumImg = R.drawable.tf_otomativ;
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case "19":
                 defaultFakulteLink = "http://med.gazi.edu.tr/posts?type=news";
@@ -298,8 +336,39 @@ public class WelcomeActivity extends AppCompatActivity {
             case "32":
                 defaultFakulteLink = "http://ydyo.gazi.edu.tr/posts?type=news";
                 break;
-            case "33":
-                defaultFakulteLink = "http://bankacilik.gazi.edu.tr/posts?type=news";
+            case "33": // EDEBÝYAT
+                defaultFakulteLink = "http://edebiyat.gazi.edu.tr/";
+                fakulteAdi = "Edebiyat Fakültesi";
+                fakulteImg = R.drawable.gazi_edebiyat;
+                switch (bolumNo) {
+                    case "70":
+                        defaultBolumLink = "http://tarih.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Tarih";
+                        bolumHint = "edb-tarih";
+                        bolumImg = R.drawable.edeb_tarih;
+                        break;
+                    case "75":
+                        defaultBolumLink = "http://tarih.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Tarih";
+                        bolumHint = "edb-tarih";
+                        bolumImg = R.drawable.edeb_tarih;
+                        break;
+                    case "90":
+                        defaultBolumLink = "http://felsefe.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Felsefe";
+                        bolumHint = "edb-felsefe";
+                        bolumImg = R.drawable.gazi_felsefe;
+                        break;
+                    case "93":
+                        defaultBolumLink = "http://sosyoloji.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Sosyoloji";
+                        bolumHint = "edb-sosyoloji";
+                        bolumImg = R.drawable.edeb_sosyoloji;
+                        break;
+
+                    default:
+                        break;
+                }
                 break;
             case "34":
                 defaultFakulteLink = "http://tkyo.gazi.edu.tr/posts?type=news";
