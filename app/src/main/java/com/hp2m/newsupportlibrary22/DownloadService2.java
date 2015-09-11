@@ -41,6 +41,9 @@ public class DownloadService2 extends IntentService {
         String link = intent.getStringExtra("link");
         boolean exceptioner = intent.getBooleanExtra("exceptioner", false);
 
+        if(generalModeForNotificationz!=null){
+            generalMode=generalModeForNotificationz;
+        }
 
         String icerik = "", icerikLink = "";
 
@@ -155,6 +158,8 @@ public class DownloadService2 extends IntentService {
                 builder.append("\n");
             }
             String imageLinks = builder.toString();
+
+
 
             DuyuruDB db = new DuyuruDB(getBaseContext());
             DuyuruGetSet duyuru = new DuyuruGetSet(null,

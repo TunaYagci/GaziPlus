@@ -41,7 +41,9 @@ public class DownloadService4 extends IntentService {
         String link = intent.getStringExtra("link");
         boolean exceptioner = intent.getBooleanExtra("exceptioner", false);
         String icerik = "", icerikLink = "";
-
+        if(generalModeForNotificationz!=null){
+            generalMode=generalModeForNotificationz;
+        }
         Log.i("tuna", "inner side parsing 1");
         //headerList.add(duyuruHeaderElements.get(i).text().substring(17));
         //String a = "";

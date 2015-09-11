@@ -185,6 +185,7 @@ public class DuyuruAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }*/
 
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position, String title);
     }

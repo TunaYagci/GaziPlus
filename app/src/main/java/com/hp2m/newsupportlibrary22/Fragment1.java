@@ -177,7 +177,9 @@ public class Fragment1 extends Fragment {
         });
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
+        // update duyuru on onCreate
+        Log.i("tuna", "onCreate Fragment1");
+        adapter = new DuyuruAdapter(getActivity(), getData(true), new DuyuruAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, String title) {
                 handleCardClicks(view, position, title);
@@ -371,7 +373,7 @@ public class Fragment1 extends Fragment {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
+                    adapter = new DuyuruAdapter(getActivity(), getData(false), new DuyuruAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position, String title) {
                             handleCardClicks(view, position, title);
@@ -385,7 +387,7 @@ public class Fragment1 extends Fragment {
             getActivity().runOnUiThread(r);
             ImageLoader.getInstance().clearMemoryCache();
             ImageLoader.getInstance().clearDiskCache();
-            LoadDuyuruForFirstTime();
+            //LoadDuyuruForFirstTime();
         } else {
             Snackbar.make(coordinator, "Ýnternete baðlanýlamýyor", Snackbar.LENGTH_LONG)
                     .setAction("Tekrar Dene", new View.OnClickListener() {
@@ -445,7 +447,7 @@ public class Fragment1 extends Fragment {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
+                    adapter = new DuyuruAdapter(getActivity(), getData(false), new DuyuruAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position, String title) {
                             handleCardClicks(view, position, title);
@@ -485,7 +487,7 @@ public class Fragment1 extends Fragment {
     }
 
 
-    public List<DuyuruInformation> getData() {
+    public List<DuyuruInformation> getData(boolean needUpdate) {
         boolean needUpdateForEmergency = false;
         String generalMode = sP.getString("generalMode", "");
         DuyuruDB db = new DuyuruDB(getActivity());
@@ -603,6 +605,7 @@ public class Fragment1 extends Fragment {
                             LoadDuyuruForFirstTime();
                         }
                     } else {
+                        if(needUpdate)
                         duyuruGuncelle();
                     }
                 } else
@@ -616,6 +619,7 @@ public class Fragment1 extends Fragment {
                             LoadDuyuruForFirstTime();
                         }
                     } else {
+                        if(needUpdate)
                         duyuruGuncelle();
                     }
                 } else
@@ -812,11 +816,12 @@ public class Fragment1 extends Fragment {
         recyclerView.setVisibility(View.VISIBLE);
 
         dataSize = data.size();
+        final List<DuyuruInformation> data2 = data;
         if (event.mode == "updating" || event.mode == "firstTime") {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
+                    adapter = new DuyuruAdapter(getActivity(), data2, new DuyuruAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position, String title) {
                             handleCardClicks(view, position, title);
@@ -825,16 +830,17 @@ public class Fragment1 extends Fragment {
                     //adapter.notifyItemInserted(data2.size()-1);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
+                   // new DuyuruAdapter(getActivity(), null, null).update();
                 }
             };
             getActivity().runOnUiThread(r);
         } else {
             // if user has downloaded history, scroll to down
-            final List<DuyuruInformation> data2 = data;
+            //final List<DuyuruInformation> data2 = data;
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    adapter = new DuyuruAdapter(getActivity(), getData(), new DuyuruAdapter.OnItemClickListener() {
+                    adapter = new DuyuruAdapter(getActivity(), data2, new DuyuruAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position, String title) {
                             handleCardClicks(view, position, title);
@@ -843,6 +849,7 @@ public class Fragment1 extends Fragment {
                     //adapter.notifyItemInserted(data2.size()-1);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
+                    //new DuyuruAdapter(getActivity(), null, null).update();
                     recyclerView.scrollToPosition(data2.size() - 6);
                 }
             };

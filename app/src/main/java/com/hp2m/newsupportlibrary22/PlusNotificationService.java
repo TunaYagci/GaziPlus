@@ -64,6 +64,12 @@ public class PlusNotificationService extends IntentService {
         public void run() {
             Log.i("gazinotification", "fakulteRunnable and updatedFakulteCont is " + updatedFakulteDuyuruCount);
             if (updatedFakulteDuyuruCount != 0) {
+                Log.i("gazinotification", "eventedFakulteDuyuruCount and reportingFakulteDuyuruCount and eventedFakulteDuyuruCount=  "
+                        + eventedFakulteDuyuruCount
+                        + " "
+                + eventedFakulteDuyuruCount
+                        + " "
+                + eventedFakulteDuyuruCount );
                 if (eventedFakulteDuyuruCount == reportingFakulteDuyuruCount && eventedFakulteDuyuruCount != 0) {
                     if (isBolumReadyToNotificate || updatedBolumDuyuruCount == 0) {
                         // bolum has already downloaded, or nothing to download
@@ -145,6 +151,7 @@ public class PlusNotificationService extends IntentService {
 
                         boolean fakulteUpdate = false;
                         for (int counter = 0; counter < 2; counter++) {
+                            LOADED_ITEM_COUNT = 0;
                             if (counter == 0) { // check for bolum duyuru
                                 if (isBolumNotificationsAllowed) {
                                     generalMode = "bolum";
@@ -199,19 +206,23 @@ public class PlusNotificationService extends IntentService {
                                 final int NET_MAX_DUYURU = duyuruHeaderElements.size() - 4;
                                 final int MIN_ITEM_TO_LOAD = 4;
 
-                                final int DB_MAX_POSSIBLE_DUYURU = DB_MAX_DUYURU;
-                                Log.i("gazinotification", "DB_MAX_DUYURU = " + DB_MAX_DUYURU + " and DB_MAX_POSSIBLE_DUYURU = " + DB_MAX_POSSIBLE_DUYURU);
+                               // final int DB_MAX_POSSIBLE_DUYURU = DB_MAX_DUYURU;
+                               // Log.i("gazinotification", "DB_MAX_DUYURU = " + DB_MAX_DUYURU + " and DB_MAX_POSSIBLE_DUYURU = " + DB_MAX_POSSIBLE_DUYURU);
 
                                 ArrayList<Integer> updateList = new ArrayList<>();
                                 //checking db if this element is new or not
                                 int updatedFirstRow = -1;
+                                int updatedSecondRow = -1;
                                 // check if user has loaded "any" new item
-                                for (int j = DB_MAX_POSSIBLE_DUYURU; j >= 1; j--) {
+                                for (int j = DB_MAX_DUYURU; j >= 1; j--) {
                                     //Log.i("gazinotification", "last item is " + db2.fetchMeMyDuyuru(j, generalMode).get(0));
                                     // checking from last item for "new" duyuru
-                                    if (db2.fetchMeMyDuyuru(j, generalMode).get(5).equals("new")) { //db max duyuru+1??
+                                    if (db2.fetchMeMyDuyuru(j, generalMode).get(5).equals("new")) {
+                                        if( updatedFirstRow!=-1) {
+                                            updatedSecondRow = j;
+                                            break;
+                                        }
                                         updatedFirstRow = j;
-                                        break;
                                     }
                                 }
                                 if (updatedFirstRow == -1) {
@@ -223,6 +234,12 @@ public class PlusNotificationService extends IntentService {
                                         if (db2.fetchMeMyDuyuru(1, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
                                             break;
                                         else {
+                                            // ------------
+                                            // DELETE CHECK
+                                            if (db2.fetchMeMyDuyuru(2, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
+                                                break;
+                                            // DELETE CHECK
+                                            // ------------
                                             updateList.add(i);
                                         }
                                     }
@@ -237,6 +254,14 @@ public class PlusNotificationService extends IntentService {
                                             break;
                                         else {
                                             // add it coz it is new
+                                            // ------------
+                                            // DELETE CHECK
+                                            if(updatedSecondRow!=-1) {
+                                                if (db2.fetchMeMyDuyuru(updatedSecondRow, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
+                                                    break;
+                                            }
+                                            // DELETE CHECK
+                                            // ------------
                                             updateList.add(i);
                                         }
 
@@ -426,19 +451,19 @@ public class PlusNotificationService extends IntentService {
             if (bolumHeaderList.size() == 0 && fakulteHeaderList.size() != 0) {
                 mLoad.inboxStyle(notificationList.toArray(hey),
                         "Gazi+",
-                        fakulteHeaderList.size() + " fakülte duyurusu")
+                        fakulteHeaderList.size() + " yeni fakülte duyurusu")
                         .simple()
                         .build();
             } else if (fakulteHeaderList.size() == 0 && bolumHeaderList.size() != 0) {
                 mLoad.inboxStyle(notificationList.toArray(hey),
                         "Gazi+",
-                        bolumHeaderList.size() + " bölüm duyurusu")
+                        bolumHeaderList.size() + " yeni bölüm duyurusu")
                         .simple()
                         .build();
             } else if (fakulteHeaderList.size() != 0 && bolumHeaderList.size() != 0) {
                 mLoad.inboxStyle(notificationList.toArray(hey),
                         "Gazi+",
-                        bolumHeaderList.size() + " bölüm ve " +
+                        bolumHeaderList.size() + " yeni bölüm ve " +
                                 fakulteHeaderList.size() + " fakülte duyurusu")
                         .simple()
                         .build();
@@ -451,10 +476,14 @@ public class PlusNotificationService extends IntentService {
             } else {
                 title = fakulteHeaderList.get(0);
                 generalMode = "fakulte";
+                SharedPreferences.Editor editor = sP.edit();
+                editor.putString("generalMode", "fakulte");
+                editor.commit();
             }
             DuyuruDB duyuruDB = new DuyuruDB(getApplicationContext());
             int position = duyuruDB.fetchMeDuyuruPosition(title, generalMode);
             StringBuilder stringBuilder = new StringBuilder();
+            Log.i("gazinotification", "save generalMode is " + generalMode);
             stringBuilder.append(duyuruDB.fetchMeMyDuyuru(position, generalMode).get(1).trim());
             if (stringBuilder.toString().trim().isEmpty()) {
                 stringBuilder = new StringBuilder();

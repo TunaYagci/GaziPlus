@@ -18,6 +18,7 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -74,6 +75,12 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_duyuru_detailed);
@@ -97,7 +104,6 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
             POSITION = db.fetchMeDuyuruPosition(title, generalMode);
         }
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         progressBar = (ProgressBar) findViewById(R.id.loadingBar);
         goToOriginalSourceButton = (Button) findViewById(R.id.showOriginal);
@@ -344,6 +350,16 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.i("tuna", "unnecessary exception in DetailedActivity " + e.toString());
         }*/
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 
 

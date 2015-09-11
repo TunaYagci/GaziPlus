@@ -190,11 +190,14 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
                 break;
             case "11":
+                // web link http://mf.gazi.edu.tr/posts?type=news
+                // home server ip: http://192.168.1.8/gazi/mfgazi.htm
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
                 fakulteAdi = "MÜHENDÝSLÝK FAKÜLTESÝ";
                 fakulteImg = R.drawable.mf_fakulte3;
                 switch (bolumNo.substring(0,1)) {
                     case "8":
+                        // web link http://mf-bm.gazi.edu.tr/posts?type=news
                         // home server ip: http://192.168.1.8/gazi/index.htm
                         defaultBolumLink = "http://mf-bm.gazi.edu.tr/posts?type=news";
                         bolumAdi = "CENGAZÝ";

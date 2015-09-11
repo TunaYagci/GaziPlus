@@ -37,16 +37,18 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
         this.fragment = fragment;
         this.mode = mode;
         /* MODES: (we have 3 modes)
-        updating
+        new(updating)
         firstTime
         old
          */
     }
 
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         try {
+
             sharedPreferences = this.fragment.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
             URL = sharedPreferences.getString("duyuruLink", "");
             generalMode = sharedPreferences.getString("generalMode", "");
@@ -105,20 +107,24 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
             // Log.i("tuna", "Net Max Duyuru = "+ NET_MAX_DUYURU);
             // Log.i("tuna", "DB Max Duyuru = "+ DB_MAX_DUYURU);
 
-            final int DB_MAX_POSSIBLE_DUYURU = DB_MAX_DUYURU - 1;
-            Log.i("tuna", "DB_MAX_DUYURU = " + DB_MAX_DUYURU + " and DB_MAX_POSSIBLE_DUYURU = " + DB_MAX_POSSIBLE_DUYURU);
+            //final int DB_MAX_POSSIBLE_DUYURU = DB_MAX_DUYURU - 1;
+           // Log.i("tuna", "DB_MAX_DUYURU = " + DB_MAX_DUYURU + " and DB_MAX_POSSIBLE_DUYURU = " + DB_MAX_POSSIBLE_DUYURU);
 
             if (mode.equals("updating")) {
                 Log.i("tuna", "on Update DuyuruTask");
                 ArrayList<Integer> updateList = new ArrayList<>();
                 //checking db if this element is new or not
                 int updatedFirstRow = -1;
+                int updatedSecondRow = -1;
                 // check if user has loaded "any" new item
-                for (int j = DB_MAX_POSSIBLE_DUYURU; j >= 1; j--) {
+                for (int j = DB_MAX_DUYURU; j >= 1; j--) {
                     Log.i("tuna", "last item is " + db2.fetchMeMyDuyuru(j, generalMode).get(0));
                     if (db2.fetchMeMyDuyuru(j, generalMode).get(5).equals("new")) { //db max duyuru+1??
+                        if( updatedFirstRow!=-1) {
+                            updatedSecondRow = j;
+                            break;
+                        }
                         updatedFirstRow = j;
-                        break;
                     }
                 }
                 if (updatedFirstRow == -1) {
@@ -126,9 +132,16 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                     // user hasnt loaded any new item, check for firstTime items
                     for (int i = 0; i < NET_MAX_DUYURU; i++) {
                         Log.i("tuna", "duyuruHeaderElementsGet(i) = " + duyuruHeaderElements.get(i).text().substring(17));
+                        Log.i("tuna", "db2.fetchMeMyDuyuru(1, generalMode).get(0)= " + db2.fetchMeMyDuyuru(1, generalMode).get(0));
                         if (db2.fetchMeMyDuyuru(1, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
                             break;
                         else {
+                            // ------------
+                            // DELETE CHECK
+                            if (db2.fetchMeMyDuyuru(2, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
+                                break;
+                            // DELETE CHECK
+                            // ------------
                             updateList.add(i);
                         }
                     }
@@ -136,11 +149,21 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                     Log.i("tuna", "user HAS loaded new items, compare with new items");
                     // user HAS loaded new items
                     for (int i = 0; i < NET_MAX_DUYURU; i++) {
+                        Log.i("gazinotification", db2.fetchMeMyDuyuru(updatedFirstRow, generalMode).get(0));
+                        Log.i("gazinotification", duyuruHeaderElements.get(i).text().substring(17));
                         // check if item is same or not
                         if (db2.fetchMeMyDuyuru(updatedFirstRow, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
                             break;
                         else {
                             // add it coz it is new
+                            // ------------
+                            // DELETE CHECK
+                            if(updatedSecondRow!=-1) {
+                                if (db2.fetchMeMyDuyuru(updatedSecondRow, generalMode).get(0).equals(duyuruHeaderElements.get(i).text().substring(17)))
+                                    break;
+                            }
+                            // DELETE CHECK
+                            // ------------
                             updateList.add(i);
                         }
 
@@ -155,7 +178,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                     bus.post(new ReportingThreadNumbers(LOADED_ITEM_COUNT));
                     DuyuruDB db = new DuyuruDB(fragment.getActivity());
 
-                    for (int i = 0; i < updateList.size(); i++) {
+                    for (int i = updateList.size() - 1; i > -1; i--) {
                         headerList.add(duyuruHeaderElements.get(i).text().substring(17));
                         tarihList.add(duyuruHeaderElements.get(i).text().substring(0, 16));
                     }
@@ -297,7 +320,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                         //intent.putExtra("iStart", DB_MAX_DUYURU);
                         intent.putExtra("link", duyuruHeaderElements.get(i).attr("abs:href"));
                         fragment.getActivity().startService(intent);
-                        Log.i("tuna", "service fired, old duyuru loading");
+                        Log.i("tuna", "service fired, firstTime duyuru loading");
                     }
                 }
 
@@ -311,7 +334,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
             Log.i("tuna", "General Exception " + e.toString());
         }*/
         return null;
-        }
+    }
 
     @Override
     protected void onPostExecute(Void aVoid) {
@@ -361,7 +384,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
         if (mode.equals("firstTime")) {
             fragment.progressBar.setVisibility(View.GONE);
             if (LOADED_ITEM_COUNT == 0) {
-             // demek ki bir hata oldu, ioException vs.
+                // demek ki bir hata oldu, ioException vs.
                 fragment.reload.setVisibility(View.VISIBLE);
                 fragment.reloadText.setVisibility(View.VISIBLE);
                 fragment.reload.setOnClickListener(new View.OnClickListener() {
@@ -373,12 +396,12 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                     }
                 });
             }
-            if(sharedPreferences.getBoolean("needListUpdate", false))
+            if (sharedPreferences.getBoolean("needListUpdate", false))
                 fragment.recyclerView.setAlpha(1F);
 
             bus.post(new DuyuruDownloadComplated("letsGo", mode));
             return;
-            }
+        }
 
         // mod old veya updating
         if (LOADED_ITEM_COUNT > 0) {
@@ -388,7 +411,7 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                 lowerBrightness(fragment.motherLayout);
             }
 
-            } else {
+        } else {
             if (sharedPreferences.getBoolean("needListUpdate", false))
                 bus.post(new DuyuruDownloadComplated("letsGo", mode));
             else
@@ -396,16 +419,23 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
 
         }
         // updating ise swipeLayout'u durdur
-        if (mode == "updating") {
-            fragment.swipeLayout.setRefreshing(false);
+        if (mode.equals("updating")) {
+            Log.i("tuna", "setRefreshing to --> false");
+           fragment.swipeLayout.post(new Runnable() {
+               @Override
+               public void run() {
+                   fragment.swipeLayout.setRefreshing(false);
+               }
+           });
+
            /* if (LOADED_ITEM_COUNT == 0) {
                 Snackbar.make(fragment.motherLayout, "Duyurular güncel", Snackbar.LENGTH_SHORT)
                         .show();
             }*/
-            }
+        }
         //hata varsa
 
-        if (mode == "old") { // limit duyuru reached
+        if (mode.equals("old")) { // limit duyuru reached
             if (LOADED_ITEM_COUNT == 0) {
                 fragment.recyclerView.setAdapter(fragment.adapter);
                 fragment.recyclerView.scrollToPosition(fragment.dataSize);
@@ -413,7 +443,6 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
                         .show();
             }
         }
-
 
 
     }

@@ -39,7 +39,9 @@ public class DownloadService3 extends IntentService {
         // int iSize=intent.getIntExtra("iSize", 0);
         String link = intent.getStringExtra("link");
         boolean exceptioner = intent.getBooleanExtra("exceptioner", false);
-
+        if(generalModeForNotificationz!=null){
+            generalMode=generalModeForNotificationz;
+        }
         String icerik = "", icerikLink = "";
 
         Log.i("tuna", "inner side parsing 1");
