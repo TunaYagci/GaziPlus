@@ -91,7 +91,7 @@ public class NotlarDB extends SQLiteOpenHelper {
 
     // Tarihe gore yemek ekle
     public void addorUpdateNot(NotInformation not) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("currentOgrNo", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         if (!not.ogrNo.equals(sharedPreferences.getString("currentOgrNo", "0"))) {
             deleteAll();
         }
@@ -122,7 +122,7 @@ public class NotlarDB extends SQLiteOpenHelper {
         Log.i("tuna", "dersKodu= " + dersKodu);
         ArrayList<String> fetchMeDers = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NOTLAR + " WHERE " + COLUMN_DERSKODU + "=" + dersKodu;
+        //String query = "SELECT * FROM " + TABLE_NOTLAR + " WHERE " + COLUMN_DERSKODU + "=" + dersKodu;
 
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NOTLAR + " WHERE " + COLUMN_DERSKODU + "=?", new String[]{dersKodu});
         //Cursor c = db.rawQuery(query, null);
@@ -130,6 +130,7 @@ public class NotlarDB extends SQLiteOpenHelper {
         while (!c.isAfterLast()) {
             for (int i = 1; i < 9; i++) { // 0=_id, 1=dersKodu 2=dersAdi 3=vize 4=final 5=but 6=basariNotu 7=kredi 8=sinifOrt 9=ogrNo
                 fetchMeDers.add(c.getString(i));
+                Log.i("tuna", "c.getString= " + c.getString(i));
                 //Log.i("tuna", "is this a loop");
             }
             c.moveToNext();
