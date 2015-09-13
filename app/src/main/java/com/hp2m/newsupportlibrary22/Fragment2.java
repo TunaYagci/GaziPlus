@@ -57,7 +57,6 @@ public class Fragment2 extends Fragment {
     private RecyclerView.Adapter adapter;
     private ImageButton clearParola, clearOgrNo;
     private FloatingActionButton fab;
-
     public Fragment2() {
         // Required empty public constructor
     }
@@ -296,7 +295,7 @@ public class Fragment2 extends Fragment {
             topLine.animate().setDuration(3000).translationY(value);
             bottomLine.animate().setDuration(3000).translationY(-value).setListener(new AnimatorListenerAdapter() {
                 @Override
-                public void onAnimationEnd(Animator animation) {
+                public void onAnimationEnd(final Animator animation) {
                     super.onAnimationEnd(animation);
                     Runnable r = new Runnable() {
                         @Override
@@ -307,6 +306,7 @@ public class Fragment2 extends Fragment {
                             topLine.setY(origy1);
                             topLine.clearAnimation();
                             bottomLine.clearAnimation();
+                            animation.cancel();
                         }
                     };
                     getActivity().runOnUiThread(r);

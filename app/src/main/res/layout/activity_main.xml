@@ -22,13 +22,13 @@
         style="@style/tabStayla"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_below="@+id/toolbar"
         android:layout_marginTop="@dimen/defaultPadding"
         android:background="?attr/colorPrimary"
         android:scrollbars="horizontal"
 
         app:layout_scrollFlags="scroll|enterAlways"
-        app:tabTextColor="@color/tab_selected_text_color" />
+        app:tabTextColor="@color/tab_selected_text_color"
+        />
 
             <ImageButton
                 android:id="@+id/userButton"
@@ -38,8 +38,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/tabLayout"
-                android:layout_marginRight="8dp"
                 android:background="@android:color/transparent"
+                android:padding="8dp"
                 android:src="@drawable/ic_person_white_24dp" />
         </RelativeLayout>
 

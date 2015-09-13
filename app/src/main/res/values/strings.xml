@@ -17,4 +17,5 @@
     <string name="title_activity_duyuru_detailed">DuyuruDetailedActivity</string>
     <string name="title_activity_notlar_detailed">NotlarDetailed</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="notlar_login_error">Giriş başarısız</string>
 </resources>

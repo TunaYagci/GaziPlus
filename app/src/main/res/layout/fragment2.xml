@@ -157,7 +157,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="Kullanıcı girişi hatalı"
+            android:text="@string/notlar_login_error"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@color/error_color"
             android:visibility="gone" />

@@ -192,7 +192,7 @@ public class Fragment1 extends Fragment {
         //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        if (!sP.getString("bolumHint", "nofab").equals("nofab")) {
+        //if (!sP.getString("bolumHint", "nofab").equals("nofab")) {
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 boolean hideToolBar = false;
 
@@ -219,7 +219,7 @@ public class Fragment1 extends Fragment {
                     }
                 }
             });
-        }
+       // }
         NotificationzDB notificationzDB = new NotificationzDB(getActivity());
         notificationzDB.deleteAllNotificationz();
         return rootView;
