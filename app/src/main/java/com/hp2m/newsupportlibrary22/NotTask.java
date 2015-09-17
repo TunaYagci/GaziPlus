@@ -25,6 +25,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.net.URL;
+import java.net.URLDecoder;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
@@ -162,10 +163,11 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                         notList.add(b);
                         i++;
                         continue;
-                    } else if (b.contains("Genel Ortalama : ")) {
+                    } else if ( b.contains("Genel Ortalama : ")) {
                         if (!haveYouFoundGenelOrt) {
                             int c = b.indexOf("Genel Ortalama :");
-                            String x2 = b.substring(c + 18, c + 22);
+                            String x2 = URLDecoder.decode(b.substring(c + 18, c + 22), "UTF-8");
+                            Log.i("tuna", "x2= " + x2);
                             if (!x2.equals("-")) {
                                 genelOrt = x2;
                                 haveYouFoundGenelOrt = true;
@@ -179,6 +181,21 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                     if (b.startsWith("MD- MUAF") || b.startsWith("(WEB")) break;
                 }
                 // sondaki o Dönem'i alma
+                //String a = b.substring(0, b.length() - 15);
+                /*Log.i("tuna", "a= " + a);
+                Log.i("tuna", "isDigit1= " + Character.isWhitespace(a.charAt(a.length() - 1)));
+                Log.i("tuna", "digitAt1= " + a.charAt(a.length()-1));
+                Log.i("tuna", "isDigit2= " + Character.isWhitespace(a.charAt(a.length() - 2)));
+                Log.i("tuna", "digitAt2= " + a.charAt(a.length() - 2));
+
+                Log.i("tuna", "isDigitNORMAL= " + Character.isDigit('5'));*/
+
+
+                /*if(Character.isDigit(a.charAt(a.length()-1)) &&
+                        !(Character.isDigit(a.charAt(a.length()-2))) ){
+                    a+="  -";
+                }*/
+                //notList.add(b.substring(0, b.length() - 15));
                 notList.add(b.substring(0, b.length() - 15));
             }
 
