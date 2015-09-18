@@ -52,11 +52,12 @@ public class ActivityUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((BodyHolder) holder).c.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // ayarlar intent
+                        Intent i = new Intent(activity, Settings.class);
+                        activity.startActivity(i);
                     }
                 });
                 return;
-            case 1:
+            /*case 1:
                 ((BodyHolder) holder).c.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -71,8 +72,8 @@ public class ActivityUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         // kütüphane intent
                     }
                 });
-                return;
-            case 3:
+                return;*/
+            case 1:
                 ((BodyHolder) holder).c.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -110,7 +111,6 @@ public class ActivityUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     }
                 });
-                return;
         }
 
 

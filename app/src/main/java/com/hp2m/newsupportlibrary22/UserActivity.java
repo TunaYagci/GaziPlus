@@ -122,11 +122,11 @@ public class UserActivity extends AppCompatActivity {
 
         ArrayList<String> bodyList = new ArrayList<>();
         bodyList.add("Ayarlar");
-        bodyList.add("Hakkýnda");
-        bodyList.add("Açýk Kaynak Kütüphaneleri");
+        //bodyList.add("Hakkýnda");
+       // bodyList.add("Açýk Kaynak Kütüphaneleri");
         bodyList.add("Çýkýþ Yap");
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             current = new ActivityUserInfo();
             current.body = bodyList.get(i);
             if (i == 0)

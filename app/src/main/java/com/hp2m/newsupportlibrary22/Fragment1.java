@@ -236,6 +236,21 @@ public class Fragment1 extends Fragment {
             public void onMenuToggle(boolean b) {
                 if (b) {
                     dimLayout.setVisibility(View.VISIBLE);
+                    if (sP.getString("generalMode", "bolum").equals("bolum")) {
+                        fab2.setLabelText("Bölüm bildirimleri");
+                        if (sP.getBoolean("isBolumNotificationsAllowed", false)) {
+                            fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
+                        } else {
+                            fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+                        }
+                    } else {
+                        fab2.setLabelText("Fakülte bildirimleri");
+                        if (sP.getBoolean("isFakulteNotificationsAllowed", false)) {
+                            fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
+                        } else {
+                            fab2.setImageResource(R.mipmap.ic_notifications_off_white_24dp);
+                        }
+                    }
                 } else {
                     dimLayout.setVisibility(View.GONE);
                 }

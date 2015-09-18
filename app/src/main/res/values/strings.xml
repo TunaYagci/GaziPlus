@@ -18,4 +18,5 @@
     <string name="title_activity_notlar_detailed">NotlarDetailed</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="notlar_login_error">Giriş başarısız</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

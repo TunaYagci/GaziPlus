@@ -42,19 +42,23 @@ public class PlusNotificationService extends IntentService {
     private Runnable bolumRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.i("gazinotification", "bolumRunnable and updatedBolumDuyuruCount is " + updatedBolumDuyuruCount);
-            if (updatedBolumDuyuruCount != 0) {
-                if (eventedBolumDuyuruCount == reportingBolumDuyuruCount && eventedBolumDuyuruCount != 0) {
-                    if (isFakulteReadyToNotificate || updatedFakulteDuyuruCount == 0) {
-                        // fakulte has already ended, or nothing to download
-                        createNotification();
+            try {
+                Log.i("gazinotification", "bolumRunnable and updatedBolumDuyuruCount is " + updatedBolumDuyuruCount);
+                if (updatedBolumDuyuruCount != 0) {
+                    if (eventedBolumDuyuruCount == reportingBolumDuyuruCount && eventedBolumDuyuruCount != 0) {
+                        if (isFakulteReadyToNotificate || updatedFakulteDuyuruCount == 0) {
+                            // fakulte has already ended, or nothing to download
+                            createNotification();
+                        } else {
+                            // fakulte is still downloading
+                            isBolumReadyToNotificate = true;
+                        }
                     } else {
-                        // fakulte is still downloading
-                        isBolumReadyToNotificate = true;
+                        bolumHandler.postDelayed(bolumRunnable, 500);
                     }
-                } else {
-                    bolumHandler.postDelayed(bolumRunnable, 500);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } // do nothing if no item has downloaded for bolum
     };
@@ -62,25 +66,29 @@ public class PlusNotificationService extends IntentService {
     private Runnable fakulteRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.i("gazinotification", "fakulteRunnable and updatedFakulteCont is " + updatedFakulteDuyuruCount);
-            if (updatedFakulteDuyuruCount != 0) {
-                Log.i("gazinotification", "eventedFakulteDuyuruCount and reportingFakulteDuyuruCount and eventedFakulteDuyuruCount=  "
-                        + eventedFakulteDuyuruCount
-                        + " "
-                + eventedFakulteDuyuruCount
-                        + " "
-                + eventedFakulteDuyuruCount );
-                if (eventedFakulteDuyuruCount == reportingFakulteDuyuruCount && eventedFakulteDuyuruCount != 0) {
-                    if (isBolumReadyToNotificate || updatedBolumDuyuruCount == 0) {
-                        // bolum has already downloaded, or nothing to download
-                        createNotification();
+            try {
+                Log.i("gazinotification", "fakulteRunnable and updatedFakulteCont is " + updatedFakulteDuyuruCount);
+                if (updatedFakulteDuyuruCount != 0) {
+                    Log.i("gazinotification", "eventedFakulteDuyuruCount and reportingFakulteDuyuruCount and eventedFakulteDuyuruCount=  "
+                            + eventedFakulteDuyuruCount
+                            + " "
+                    + eventedFakulteDuyuruCount
+                            + " "
+                    + eventedFakulteDuyuruCount );
+                    if (eventedFakulteDuyuruCount == reportingFakulteDuyuruCount && eventedFakulteDuyuruCount != 0) {
+                        if (isBolumReadyToNotificate || updatedBolumDuyuruCount == 0) {
+                            // bolum has already downloaded, or nothing to download
+                            createNotification();
+                        } else {
+                            // bolum hasn't downloaded yet
+                            isFakulteReadyToNotificate = true;
+                        }
                     } else {
-                        // bolum hasn't downloaded yet
-                        isFakulteReadyToNotificate = true;
+                        fakulteHandler.postDelayed(fakulteRunnable, 500);
                     }
-                } else {
-                    fakulteHandler.postDelayed(fakulteRunnable, 500);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } // do nothing if no item has downloaded for fakulte
     };
@@ -383,156 +391,165 @@ public class PlusNotificationService extends IntentService {
 
     private void createNotification() {
 
-        Log.i("gazinotification", "createNotification");
-        NotificationzDB db = new NotificationzDB(getApplicationContext());
-        for (int i = 0; i < bolumHeaderList.size(); i++) {
-            db.addNotification(bolumHeaderList.get(i), "bolum");
-        }
-        for (int i = 0; i < fakulteHeaderList.size(); i++) {
-            db.addNotification(fakulteHeaderList.get(i), "fakulte");
-        }
-        bolumHeaderList.clear();
-        fakulteHeaderList.clear();
 
-        for (int i = db.getBildirimSayisi("bolum"); i > 0; i--) {
-            if (db.fetchMeNotificationz(i, "bolum").equals("none"))
-                break;
-            bolumHeaderList.add(db.fetchMeNotificationz(i, "bolum"));
-        }
-
-        for (int i = db.getBildirimSayisi("fakulte"); i > 0; i--) {
-            if (db.fetchMeNotificationz(i, "fakulte").equals("none"))
-                break;
-            fakulteHeaderList.add(db.fetchMeNotificationz(i, "fakulte"));
-        }
-        Log.i("gazinotification", "bolumHeaderList size is " + bolumHeaderList.size());
-
-        // then add them to DB to retrieve later
-        // done. ---WE NEED TO DELETE ALL TABLES OF THIS DB WHENEVER MAINACTIVITY IS OPENED !!!
-
-
-        int size = bolumHeaderList.size() + fakulteHeaderList.size();
-        Log.i("gazinotification", "size is " + size);
-        if (size > 1) {
-
-            /*Intent resultIntent = new Intent(this, MainActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-// Adds the back stack for the Intent (but not the Intent itself)
-            stackBuilder.addParentStack(MainActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );*/
-
-            Load mLoad = PugNotification.with(this).load()
-                    .smallIcon(R.drawable.ic_stat_testlogo2_foricon)
-                    .autoCancel(true)
-                    .click(MainActivity.class)
-                    .largeIcon(R.mipmap.ic_launcher)
-                    .title("Gazi+")
-                    .message("Yeni duyurular")
-                    .flags(Notification.DEFAULT_ALL);
-
-
-            String[] hey = new String[size];
-            List<String> notificationList = new ArrayList<>();
-
+        try {
+            Log.i("gazinotification", "createNotification");
+            NotificationzDB db = new NotificationzDB(getApplicationContext());
             for (int i = 0; i < bolumHeaderList.size(); i++) {
-                notificationList.add(bolumHeaderList.get(i));
+                db.addNotification(bolumHeaderList.get(i), "bolum");
             }
             for (int i = 0; i < fakulteHeaderList.size(); i++) {
-                notificationList.add(fakulteHeaderList.get(i));
+                db.addNotification(fakulteHeaderList.get(i), "fakulte");
+            }
+            bolumHeaderList.clear();
+            fakulteHeaderList.clear();
+
+            for (int i = db.getBildirimSayisi("bolum"); i > 0; i--) {
+                if (db.fetchMeNotificationz(i, "bolum").equals("none"))
+                    break;
+                bolumHeaderList.add(db.fetchMeNotificationz(i, "bolum"));
             }
 
-            // then rewrite here
-            if (bolumHeaderList.size() == 0 && fakulteHeaderList.size() != 0) {
-                mLoad.inboxStyle(notificationList.toArray(hey),
-                        "Gazi+",
-                        fakulteHeaderList.size() + " yeni fakülte duyurusu")
-                        .simple()
-                        .build();
-            } else if (fakulteHeaderList.size() == 0 && bolumHeaderList.size() != 0) {
-                mLoad.inboxStyle(notificationList.toArray(hey),
-                        "Gazi+",
-                        bolumHeaderList.size() + " yeni bölüm duyurusu")
-                        .simple()
-                        .build();
-            } else if (fakulteHeaderList.size() != 0 && bolumHeaderList.size() != 0) {
-                mLoad.inboxStyle(notificationList.toArray(hey),
-                        "Gazi+",
-                        bolumHeaderList.size() + " yeni bölüm ve " +
-                                fakulteHeaderList.size() + " fakülte duyurusu")
-                        .simple()
-                        .build();
+            for (int i = db.getBildirimSayisi("fakulte"); i > 0; i--) {
+                if (db.fetchMeNotificationz(i, "fakulte").equals("none"))
+                    break;
+                fakulteHeaderList.add(db.fetchMeNotificationz(i, "fakulte"));
             }
-        } else {
-            String title = null, generalMode = null;
-            if (bolumHeaderList.size() == 1) {
-                title = bolumHeaderList.get(0);
-                generalMode = "bolum";
+            Log.i("gazinotification", "bolumHeaderList size is " + bolumHeaderList.size());
+
+            // then add them to DB to retrieve later
+            // done. ---WE NEED TO DELETE ALL TABLES OF THIS DB WHENEVER MAINACTIVITY IS OPENED !!!
+
+
+            int size = bolumHeaderList.size() + fakulteHeaderList.size();
+            Log.i("gazinotification", "size is " + size);
+            if (size > 1) {
+
+                /*Intent resultIntent = new Intent(this, MainActivity.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+    // Adds the back stack for the Intent (but not the Intent itself)
+                stackBuilder.addParentStack(MainActivity.class);
+    // Adds the Intent that starts the Activity to the top of the stack
+                stackBuilder.addNextIntent(resultIntent);
+                PendingIntent resultPendingIntent =
+                        stackBuilder.getPendingIntent(
+                                0,
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                        );*/
+
+                Load mLoad = PugNotification.with(this).load()
+                        .smallIcon(R.drawable.ic_stat_testlogo2_foricon)
+                        .autoCancel(true)
+                        .click(MainActivity.class)
+                        .largeIcon(R.mipmap.ic_launcher)
+                        .title("Gazi+")
+                        .message("Yeni duyurular")
+                        .flags(Notification.DEFAULT_ALL);
+
+
+                String[] hey = new String[size];
+                List<String> notificationList = new ArrayList<>();
+
+                for (int i = 0; i < bolumHeaderList.size(); i++) {
+                    notificationList.add(bolumHeaderList.get(i));
+                }
+                for (int i = 0; i < fakulteHeaderList.size(); i++) {
+                    notificationList.add(fakulteHeaderList.get(i));
+                }
+
+                // then rewrite here
+                if (bolumHeaderList.size() == 0 && fakulteHeaderList.size() != 0) {
+                    mLoad.inboxStyle(notificationList.toArray(hey),
+                            "Gazi+",
+                            fakulteHeaderList.size() + " yeni fakülte duyurusu")
+                            .simple()
+                            .build();
+                } else if (fakulteHeaderList.size() == 0 && bolumHeaderList.size() != 0) {
+                    mLoad.inboxStyle(notificationList.toArray(hey),
+                            "Gazi+",
+                            bolumHeaderList.size() + " yeni bölüm duyurusu")
+                            .simple()
+                            .build();
+                } else if (fakulteHeaderList.size() != 0 && bolumHeaderList.size() != 0) {
+                    mLoad.inboxStyle(notificationList.toArray(hey),
+                            "Gazi+",
+                            bolumHeaderList.size() + " yeni bölüm ve " +
+                                    fakulteHeaderList.size() + " fakülte duyurusu")
+                            .simple()
+                            .build();
+                }
             } else {
-                title = fakulteHeaderList.get(0);
-                generalMode = "fakulte";
-                SharedPreferences.Editor editor = sP.edit();
-                editor.putString("generalMode", "fakulte");
-                editor.commit();
+                String title = null, generalMode = null;
+                if (bolumHeaderList.size() == 1) {
+                    title = bolumHeaderList.get(0);
+                    generalMode = "bolum";
+                } else {
+                    title = fakulteHeaderList.get(0);
+                    generalMode = "fakulte";
+                    SharedPreferences.Editor editor = sP.edit();
+                    editor.putString("generalMode", "fakulte");
+                    editor.commit();
+                }
+                DuyuruDB duyuruDB = new DuyuruDB(getApplicationContext());
+                int position = duyuruDB.fetchMeDuyuruPosition(title, generalMode);
+                StringBuilder stringBuilder = new StringBuilder();
+                Log.i("gazinotification", "save generalMode is " + generalMode);
+                stringBuilder.append(duyuruDB.fetchMeMyDuyuru(position, generalMode).get(1).trim());
+                if (stringBuilder.toString().trim().isEmpty()) {
+                    stringBuilder = new StringBuilder();
+                    stringBuilder.append("Resmi görüntülemek için týklayýn");
+                }
+
+                Intent resultIntent = new Intent(this, DuyuruDetailedActivity.class);
+                resultIntent.putExtra("title", title);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+    // Adds the back stack for the Intent (but not the Intent itself)
+                stackBuilder.addParentStack(MainActivity.class);
+    // Adds the Intent that starts the Activity to the top of the stack
+                stackBuilder.addNextIntent(resultIntent);
+                PendingIntent resultPendingIntent =
+                        stackBuilder.getPendingIntent(
+                                0,
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                        );
+
+                Load mLoad = PugNotification.with(this).load()
+                        .smallIcon(R.drawable.ic_stat_testlogo2_foricon)
+                        .autoCancel(true)
+                        .click(resultPendingIntent)
+                        .largeIcon(R.mipmap.ic_launcher)
+                        .title("Gazi+")
+                        .message("Yeni duyuru")
+                        .flags(Notification.DEFAULT_ALL);
+
+                mLoad.bigTextStyle(stringBuilder.toString(), title)
+                        .simple()
+                        .build();
+
+
             }
-            DuyuruDB duyuruDB = new DuyuruDB(getApplicationContext());
-            int position = duyuruDB.fetchMeDuyuruPosition(title, generalMode);
-            StringBuilder stringBuilder = new StringBuilder();
-            Log.i("gazinotification", "save generalMode is " + generalMode);
-            stringBuilder.append(duyuruDB.fetchMeMyDuyuru(position, generalMode).get(1).trim());
-            if (stringBuilder.toString().trim().isEmpty()) {
-                stringBuilder = new StringBuilder();
-                stringBuilder.append("Resmi görüntülemek için týklayýn");
-            }
 
-            Intent resultIntent = new Intent(this, DuyuruDetailedActivity.class);
-            resultIntent.putExtra("title", title);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-// Adds the back stack for the Intent (but not the Intent itself)
-            stackBuilder.addParentStack(MainActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-
-            Load mLoad = PugNotification.with(this).load()
-                    .smallIcon(R.drawable.ic_stat_testlogo2_foricon)
-                    .autoCancel(true)
-                    .click(resultPendingIntent)
-                    .largeIcon(R.mipmap.ic_launcher)
-                    .title("Gazi+")
-                    .message("Yeni duyuru")
-                    .flags(Notification.DEFAULT_ALL);
-
-            mLoad.bigTextStyle(stringBuilder.toString(), title)
-                    .simple()
-                    .build();
-
-
+            // and, at last, save the list to retrieve later for updating
+            //wl.release();
+            dropWakeLock();
+            // save those to db and retrieve for upcoming notifications
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // and, at last, save the list to retrieve later for updating
-        //wl.release();
-        dropWakeLock();
-        // save those to db and retrieve for upcoming notifications
 
 
     }
 
 
     public void onEvent(ThreadResult event) {
-        if (event.generalMode.equals("bolum")) {
-            eventedBolumDuyuruCount++;
-        } else if (event.generalMode.equals("fakulte")) {
-            eventedFakulteDuyuruCount++;
+        try {
+            if (event.generalMode.equals("bolum")) {
+                eventedBolumDuyuruCount++;
+            } else if (event.generalMode.equals("fakulte")) {
+                eventedFakulteDuyuruCount++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -545,17 +562,21 @@ public class PlusNotificationService extends IntentService {
     }
 
     private void dropWakeLock() {
-        // sanity check for null as this is a public method
-        if (wl != null) {
-            Log.v("gazinotification", "Releasing wakelock");
-            try {
-                wl.release();
-            } catch (Throwable th) {
-                // ignoring this exception, probably wakeLock was already released
+        try {
+            // sanity check for null as this is a public method
+            if (wl != null) {
+                Log.v("gazinotification", "Releasing wakelock");
+                try {
+                    wl.release();
+                } catch (Throwable th) {
+                    // ignoring this exception, probably wakeLock was already released
+                }
+            } else {
+                // should never happen during normal workflow
+                Log.e("gazinotification", "Wakelock reference is null");
             }
-        } else {
-            // should never happen during normal workflow
-            Log.e("gazinotification", "Wakelock reference is null");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
