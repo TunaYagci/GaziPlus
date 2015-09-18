@@ -30,14 +30,14 @@ public class UserActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private ImageView avatar, background;
     private TextView name, bolum;
-    private Context context;
+   // private Context context;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        context = this;
+        //context = this;
 
         background = (ImageView) findViewById(R.id.background);
         avatar = (ImageView) findViewById(R.id.avatar);
@@ -45,14 +45,14 @@ public class UserActivity extends AppCompatActivity {
         bolum = (TextView) findViewById(R.id.bolum);
 
 
-        final String number = "141180068"; // default number'ý sharedPref ile çek
         final SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        final String number = sharedPreferences.getString("defaultOgrNo", "hata"); // default number'ý sharedPref ile çek
         if (sharedPreferences.getBoolean("IsAvatarDownloadedFor" + number, false)) {
             avatar.setVisibility(View.VISIBLE);
             name.setVisibility(View.VISIBLE);
             bolum.setVisibility(View.VISIBLE);
             bolum.setText(sharedPreferences.getString("bolumAdi", "-"));
-            name.setText(sharedPreferences.getString("currentOgrName", "-"));
+            name.setText(sharedPreferences.getString("defaultOgrName", "-"));
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
@@ -62,12 +62,12 @@ public class UserActivity extends AppCompatActivity {
                             .showImageForEmptyUri(R.drawable.detailed_duyuru_error)
                             .showImageOnLoading(R.drawable.detailed_duyuru_loading)
                             .bitmapConfig(Bitmap.Config.RGB_565)
-                            .displayer(new RoundedBitmapDisplayer(1000))
+                            .displayer(new RoundedBitmapDisplayer(500))
                             .imageScaleType(ImageScaleType.EXACTLY)
                             .postProcessor(new BitmapProcessor() {
                                 @Override
                                 public Bitmap process(Bitmap bmp) {
-                                    return Bitmap.createScaledBitmap(bmp, 650, 400, false);
+                                    return Bitmap.createScaledBitmap(bmp, 450, 200, false);
                                 }
                             })
                             .cacheInMemory(true)

@@ -271,11 +271,11 @@ public class Fragment2 extends Fragment {
         // unless this is a visitor login
         // do this after created the first screen
 
-        if (getSharedPrefData("checkbox", "firstTime") == "checked") {
+        if (getSharedPrefData("checkbox", "firstTime") .equals( "checked")) {
             //Log.i("tuna", "in CHECKED, getting data");
             ((EditText) getView().findViewById(R.id.ogrenci_numarasi)).setText(getSharedPrefData("ogrNo", "ERROR"));
             ((EditText) getView().findViewById(R.id.parola)).setText(getSharedPrefData("parola", ""));
-        } else if (getSharedPrefData("checkbox", "firstTime") == "unchecked") {
+        } else if (getSharedPrefData("checkbox", "firstTime") .equals( "unchecked")) {
             //Log.i("tuna", "in unchecked, clearing data");
             ((EditText) getView().findViewById(R.id.ogrenci_numarasi)).setText("");
             ((EditText) getView().findViewById(R.id.parola)).setText("");
@@ -358,11 +358,14 @@ public class Fragment2 extends Fragment {
             // first, add header
             current.name = event.idList.get(0);
             current.ogrNo = event.idList.get(1);
-            SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor2 = sharedPreferences.edit();
-            editor2.putString("currentOgrNo", event.idList.get(1));
-            editor2.putString("currentOgrName", event.idList.get(0));
-            editor2.commit();
+            //SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+            //SharedPreferences.Editor editor2 = sharedPreferences.edit();
+            editor.putString("currentOgrNo", event.idList.get(1));
+            editor.putString("currentOgrName", event.idList.get(0));
+            if(event.idList.get(1).equals(sharedP.getString("defaultOgrNo", "hata"))){
+                editor.putString("defaultOgrName", event.idList.get(0));
+            }
+            editor.commit();
             current.imageLink = event.idList.get(2);
             current.genelOrtNumber = event.genelOrt;
             // 0=name 1=ogrNo 2=imageLink

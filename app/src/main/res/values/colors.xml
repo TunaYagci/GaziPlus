@@ -51,5 +51,7 @@
 
     <color name="fabColor">#d31010</color>
 
+    <color name="notlar_exit_fab">#5B2B5A</color>
+
 
 </resources>

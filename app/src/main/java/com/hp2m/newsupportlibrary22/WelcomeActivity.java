@@ -438,11 +438,11 @@ public class WelcomeActivity extends AppCompatActivity {
                 editor.putString("duyuruLink", defaultBolumLink);
                 editor.putString("generalMode", "bolum");
                 editor.putBoolean("isLoginSuccessful", true);
-                editor.commit();
+                //editor.commit();
 
                 //extra
-                sP = getSharedPreferences("user", Context.MODE_PRIVATE);
-                editor = sP.edit();
+               // sP = getSharedPreferences("user", Context.MODE_PRIVATE);
+                //editor = sP.edit();
                 editor.putString("checkbox", "checked");
                 editor.putString("ogrNo", "141180068");
                 editor.putString("parola", "tuna124");
@@ -467,7 +467,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     .playOn(ogrenciLoginEditText);
         } else {
             ogrenciLoginErrorText.setVisibility(View.GONE);
-            String ogrNo = ogrenciLoginEditText.getText().toString();
+            final String ogrNo = ogrenciLoginEditText.getText().toString();
             switcher(ogrNo);
 
             if (bolumHint.equals("none")) {
@@ -505,6 +505,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     editor.putString("duyuruLink", defaultBolumLink);
                     editor.putString("generalMode", "bolum");
                     editor.putBoolean("isLoginSuccessful", true);
+                    // new
+                    editor.putString("ogrNo", ogrNo);
+                    editor.putString("defaultOgrNo", ogrNo);
+                    // ---
                     editor.commit();
                     Intent i = new Intent(getBaseContext(), MainActivity.class);
                     startActivity(i);

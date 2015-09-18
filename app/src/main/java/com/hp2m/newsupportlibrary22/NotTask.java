@@ -25,7 +25,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.net.URL;
-import java.net.URLDecoder;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
@@ -115,15 +114,19 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
             Log.i("tuna", "onDoInBackground");
 
 
+            Log.i("tuna", "pass is " + password);
+
             enableSSLSocket();
             Log.i("tuna", "about to work");
             String url = "https://ogrenci.gazi.edu.tr/ogrenci/";
             Connection.Response res2 = Jsoup.connect(url)
                     .data("kullanici", username)
-                    .data("sifre", password)
+                            .data("sifre", password)
                     .data("login", "  Baðlan  ")
+                    //.header("Content-Type", "windows-1254")
                     .method(Connection.Method.POST)
-                    .timeout(10000)
+                                            //.timeout(10000)
+                    .timeout(0)
                     .execute();
             Log.i("tuna", "jsoup 2 passed");
 
@@ -166,9 +169,12 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                     } else if ( b.contains("Genel Ortalama : ")) {
                         if (!haveYouFoundGenelOrt) {
                             int c = b.indexOf("Genel Ortalama :");
-                            String x2 = URLDecoder.decode(b.substring(c + 18, c + 22), "UTF-8");
+                            String x2 = b.substring(c + 18, c + 19);
                             Log.i("tuna", "x2= " + x2);
+                            String x3 =  b.substring(c + 19, c + 20);
+                            Log.i("tuna", "x3= " + x3);
                             if (!x2.equals("-")) {
+                                x2 = b.substring(c + 18, c +22);
                                 genelOrt = x2;
                                 haveYouFoundGenelOrt = true;
                             }
