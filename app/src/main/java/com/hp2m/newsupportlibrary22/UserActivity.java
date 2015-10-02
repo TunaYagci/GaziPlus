@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -78,6 +79,16 @@ public class UserActivity extends AppCompatActivity {
                             avatar,
                             defaultOptions);
 
+                    avatar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            FragmentManager fm = getSupportFragmentManager();
+                            ProfilePhotoFragment popup = new ProfilePhotoFragment();
+                            popup.show(fm, "fragment_edit_name");
+
+                        }
+                    });
+
                     /*Picasso.with(context)
                             .load(sharedPreferences.getString("avatarLinkFor"+number, ""))
                             .placeholder(R.drawable.loading_notlar_avatar_2)
@@ -122,11 +133,11 @@ public class UserActivity extends AppCompatActivity {
 
         ArrayList<String> bodyList = new ArrayList<>();
         bodyList.add("Ayarlar");
-        //bodyList.add("Hakkýnda");
+        bodyList.add("Hakkýmýzda");
        // bodyList.add("Açýk Kaynak Kütüphaneleri");
         bodyList.add("Çýkýþ Yap");
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             current = new ActivityUserInfo();
             current.body = bodyList.get(i);
             if (i == 0)

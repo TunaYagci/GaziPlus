@@ -54,4 +54,9 @@
     <color name="notlar_exit_fab">#5B2B5A</color>
 
 
+    <color name="gradient_start">#ffffff</color>
+    <color name="gradient_end">#B2FFA9</color>
+    <color name="gradient_center">#73BA9B</color>
+
+
 </resources>

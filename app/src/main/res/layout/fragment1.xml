@@ -121,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_refresh_white_24dp"
-                    fab:fab_label="Yenile"
+                    fab:fab_label="Hepsini yenile"
                     fab:fab_size="mini" />
 
             </com.github.clans.fab.FloatingActionMenu>

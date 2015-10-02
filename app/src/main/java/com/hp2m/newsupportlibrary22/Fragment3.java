@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -113,6 +114,9 @@ public class Fragment3 extends Fragment {
                 yemekGuncelle();
                 dataHolder.alreadyShownFragment3 = true;
             }
+            else{
+                scrollToDay(recyclerView);
+            }
             return data;
         } else {
             List<YemekInformation> data = Collections.emptyList();
@@ -171,6 +175,7 @@ public class Fragment3 extends Fragment {
                     adapter = new YemekAdapter(getActivity(), data2);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    scrollToDay(recyclerView);
                 }
             };
             getActivity().runOnUiThread(r);
@@ -199,6 +204,33 @@ public class Fragment3 extends Fragment {
 
     }
 
+    private void scrollToDay(RecyclerView recyclerView) {
+        // scroll to day
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (day) {
+            case Calendar.MONDAY:
+                recyclerView.scrollToPosition(0);
+                break;
+            case Calendar.TUESDAY:
+                recyclerView.scrollToPosition(1);
+                break;
+            case Calendar.WEDNESDAY:
+                recyclerView.scrollToPosition(2);
+                break;
+            case Calendar.THURSDAY:
+                recyclerView.scrollToPosition(3);
+                break;
+            case Calendar.FRIDAY:
+                recyclerView.scrollToPosition(4);
+                break;
+            default:
+                break;
+
+        }
+    }
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -214,6 +246,9 @@ public class Fragment3 extends Fragment {
                 }
             });
             new YemekTask(this, true).execute();
+        }
+        else{
+            scrollToDay(recyclerView);
         }
     }
 

@@ -292,8 +292,8 @@ public class Fragment2 extends Fragment {
             final float y1 = topLine.getY();
             final float y3 = loginErrorText.getY();
             final float value = (float) ((y3 - y1) / 1.4);
-            topLine.animate().setDuration(3000).translationY(value);
-            bottomLine.animate().setDuration(3000).translationY(-value).setListener(new AnimatorListenerAdapter() {
+            topLine.animate().setDuration(5000).translationY(value);
+            bottomLine.animate().setDuration(5000).translationY(-value).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(final Animator animation) {
                     super.onAnimationEnd(animation);

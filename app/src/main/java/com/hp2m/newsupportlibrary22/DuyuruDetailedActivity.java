@@ -60,9 +60,12 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         public void run() {
             if (db.fetchMeMyDuyuru(POSITION, generalMode).get(4).length() < 2) {
                 circleCount++;
-                if (circleCount > 20) {
+                if (circleCount > 60) { // 300*60/1000 = 18 seconds
                     Toast.makeText(getApplicationContext(), "Sunucu yanýt vermiyor", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
+                    Fragment1 f1 = new Fragment1();
+                    f1.handleMenuFab3Click();
+                    finish();
                     return;
                 }
                 handler.postDelayed(runnable, 300);

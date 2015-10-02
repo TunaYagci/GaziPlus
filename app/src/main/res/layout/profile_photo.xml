@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/black"
+    >
+
+    <RelativeLayout
+        android:id="@+id/ppContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/profilePhotoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:src="@drawable/gazi1"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/ppContainer"
+        android:alpha="0.75"
+        android:background="#ffffffff">
+
+        <ImageButton
+            android:id="@+id/downloadImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:src="@drawable/ic_file_download_black_24dp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

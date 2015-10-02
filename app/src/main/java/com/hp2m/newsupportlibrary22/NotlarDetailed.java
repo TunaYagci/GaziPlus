@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -48,8 +49,24 @@ public class NotlarDetailed extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 }

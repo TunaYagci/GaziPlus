@@ -1,0 +1,146 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/about_gradle_color"
+    tools:context="com.hp2m.newsupportlibrary22.About">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/my_primary"
+        android:paddingTop="@dimen/defaultPadding"
+        android:theme="@style/Base.Theme.HMKCodeApp"
+        />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="50dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/newlogo15" />
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/logo"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="26dp"
+        android:layout_toEndOf="@+id/logo"
+        android:layout_toRightOf="@+id/logo"
+        android:text="HP2M"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        android:textColor="@color/material_blue_grey_900" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="24dp"
+        android:text="Sadık Tuna Yağcı"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        android:textColor="@color/material_blue_grey_900"
+        android:textSize="21sp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView5"
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_alignRight="@+id/textView5"
+        android:layout_alignStart="@+id/textView5"
+        android:layout_below="@+id/textView5"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:text="Ahmet Kapkiç"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        android:textColor="@color/material_blue_grey_900"
+        android:textSize="21sp" />
+
+    <ImageView
+        android:id="@+id/twitterLogo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView6"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="77dp"
+        android:src="@drawable/twitter_logo" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@+id/twitterLogo"
+        android:layout_alignStart="@+id/twitterLogo"
+        android:layout_below="@+id/twitterLogo"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/email_icon" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageView5"
+        android:layout_alignLeft="@+id/textView8"
+        android:layout_alignStart="@+id/textView8"
+        android:layout_alignTop="@+id/twitterLogo"
+        android:gravity="center"
+        android:text="GaziPlus"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        android:textColor="@color/material_blue_grey_900"
+        android:textSize="21sp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView5"
+        android:layout_alignTop="@+id/imageView5"
+        android:layout_marginLeft="16dp"
+        android:layout_toEndOf="@+id/imageView5"
+        android:layout_toRightOf="@+id/imageView5"
+        android:gravity="center"
+        android:text="yagcituna@gmail.com"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        android:textColor="@color/material_blue_grey_900"
+        android:textSize="21sp" />
+
+    <TextView
+        android:id="@+id/devTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/textView5"
+        android:layout_marginLeft="24dp"
+        android:gravity="center"
+        android:text="Geliştirici Ekip:"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+        android:textColor="@color/material_blue_grey_900"
+        android:textSize="21sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/devTeam"
+        android:layout_marginTop="30dp"
+        android:background="@android:color/darker_gray" />
+
+</RelativeLayout>

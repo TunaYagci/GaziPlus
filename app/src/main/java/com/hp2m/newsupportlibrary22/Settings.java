@@ -59,7 +59,7 @@ public class Settings extends AppCompatActivity {
 
         ActivityUserInfo current;
         current = new ActivityUserInfo();
-        current.body = "Bildirimler";
+        current.body = "BÝLDÝRÝMLER";
         data.add(current);
         if (sP.getString("bolumHint", "none").equals("nofab")) {
             current = new ActivityUserInfo();

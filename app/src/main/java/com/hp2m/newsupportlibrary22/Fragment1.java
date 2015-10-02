@@ -377,7 +377,7 @@ public class Fragment1 extends Fragment {
 
     }
 
-    private void handleMenuFab3Click() {
+    public void handleMenuFab3Click() {
         hideReloadThings();
         fabMenu.close(false);
         setFabToLoading();

@@ -17,6 +17,7 @@
     <string name="title_activity_duyuru_detailed">DuyuruDetailedActivity</string>
     <string name="title_activity_notlar_detailed">NotlarDetailed</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
-    <string name="notlar_login_error">Giriş başarısız</string>
+    <string name="notlar_login_error">Giriş başarısız\nŞimdilik Türkçe karakter destekleyemiyoruz</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_about">About</string>
 </resources>
