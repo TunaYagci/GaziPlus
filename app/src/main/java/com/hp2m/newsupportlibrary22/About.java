@@ -33,10 +33,10 @@ public class About extends AppCompatActivity {
         logo = (ImageView) findViewById(R.id.logo);
         header = (TextView) findViewById(R.id.header);
         YoYo.with(Techniques.FadeIn)
-                .duration(1000)
+                .duration(2000)
                 .playOn(header);
         YoYo.with(Techniques.SlideInLeft)
-                .duration(1000)
+                .duration(2000)
                 .playOn(logo);
         twitterLogo = (ImageView) findViewById(R.id.twitterLogo);
         twitterLogo.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +44,22 @@ public class About extends AppCompatActivity {
             public void onClick(View view) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/GaziPlus"));
                 startActivity(browserIntent);
+            }
+        });
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                YoYo.with(Techniques.Shake)
+                        .duration(500)
+                        .playOn(logo);
+            }
+        });
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                YoYo.with(Techniques.Shake)
+                        .duration(500)
+                        .playOn(header);
             }
         });
     }

@@ -7,7 +7,6 @@
     <color name="my_primary_dark">#143E51</color>
     <color name="my_primary_light">#B3E5FC</color>
     <color name="my_accent">#B70003</color>
-    B5B520 A5B452 B70003 D35B06 990002 B70003
     <!-- checkbox checked color, fab color -->
     <color name="my_primary_text">#FFFFFF</color>
     <color name="my_secondary_text">#ED0004</color>
@@ -55,7 +54,7 @@
 
 
     <color name="gradient_start">#ffffff</color>
-    <color name="gradient_end">#B2FFA9</color>
+    <color name="gradient_end">#C9C0AB</color>
     <color name="gradient_center">#73BA9B</color>
 
 

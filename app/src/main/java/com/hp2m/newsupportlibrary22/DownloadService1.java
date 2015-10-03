@@ -124,6 +124,19 @@ public class DownloadService1 extends IntentService {
                     builder.append("\n\n");
                 }
             }
+
+            // ENDUSTRI FIX --------------------------------
+            if(builder.toString().isEmpty()){
+                Elements duyuruElements2 = insideDocs.select("div.post-content");
+                for (int i2 = 0; i2 < duyuruElements2.size(); i2++) {
+                    if (!duyuruElements2.get(i2).text().isEmpty()) {
+                        builder.append(duyuruElements2.get(i2).text());
+                        builder.append("\n\n");
+                    }
+                }
+            }
+            // ENDUSTRI FIX --------------------------------
+
             icerik = builder.toString();
             builder = new StringBuilder();
             //Log.i("tuna", "gonna parse links");
