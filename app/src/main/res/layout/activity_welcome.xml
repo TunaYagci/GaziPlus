@@ -104,6 +104,8 @@
         android:onClick="ogrenciLoginFinal"
         android:visibility="gone">
 
+
+
         <TextView
             android:id="@+id/login"
             android:layout_width="wrap_content"
@@ -122,6 +124,26 @@
             android:layout_marginLeft="16dp"
             android:src="@drawable/ic_school_white_24dp" />
     </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/ogrenciLoginAgreement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/betaTesterLayout"
+        android:layout_alignLeft="@+id/betaTesterLayout"
+        android:layout_alignRight="@+id/betaTesterLayout"
+        android:layout_alignStart="@+id/betaTesterLayout"
+        android:layout_below="@id/betaTesterLayout"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="48dp"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="Devam ederek şartları okumuş kabul edilirsiniz."
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textStyle="italic"
+        android:visibility="visible" />
+
 
     <TextView
         android:id="@+id/ogrenciLoginErrorText"

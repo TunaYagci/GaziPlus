@@ -29,7 +29,6 @@ public class About extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
         logo = (ImageView) findViewById(R.id.logo);
         header = (TextView) findViewById(R.id.header);
         YoYo.with(Techniques.FadeIn)

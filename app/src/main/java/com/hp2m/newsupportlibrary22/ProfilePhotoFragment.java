@@ -35,11 +35,13 @@ import java.io.OutputStream;
  */
 public class ProfilePhotoFragment extends DialogFragment {
 
+    private final String OGRENCI_NO = "ogrNoKey";
     private ImageView profilePhotoImageView;
     private ImageButton downloadImageButton;
     private Bitmap showedImage;
     private boolean hasImageDownloadedSuccessfully = false;
     private SharedPreferences sharedPreferences;
+    private String ogrNo;
 
     public static final String insertImage(ContentResolver cr,
                                            Bitmap source,
@@ -139,11 +141,14 @@ public class ProfilePhotoFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.profile_photo, container, false);
 
+        ogrNo = getArguments().getString(OGRENCI_NO);
+
         profilePhotoImageView = (ImageView) rootView.findViewById(R.id.profilePhotoImageView);
         downloadImageButton = (ImageButton) rootView.findViewById(R.id.downloadImageButton);
 
        sharedPreferences = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-        final String number = sharedPreferences.getString("defaultOgrNo", "hata"); // default number'ý sharedPref ile çek
+        //final String number = sharedPreferences.getString("defaultOgrNo", "hata"); // default number'ý sharedPref ile çek
+        final String number = ogrNo;
 
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .showImageOnFail(R.drawable.detailed_duyuru_error)

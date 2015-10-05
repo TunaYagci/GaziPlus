@@ -27,11 +27,12 @@ import de.greenrobot.event.EventBus;
 public class UserActivity extends AppCompatActivity {
 
     final EventBus bus = EventBus.getDefault();
+    private final String OGRENCI_NO = "ogrNoKey";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ImageView avatar, background;
     private TextView name, bolum;
-   // private Context context;
+    // private Context context;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +85,13 @@ public class UserActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             FragmentManager fm = getSupportFragmentManager();
                             ProfilePhotoFragment popup = new ProfilePhotoFragment();
+
+                            // set ogrenci no, send to bundle
+                            Bundle bdl = new Bundle(1);
+                            bdl.putString(OGRENCI_NO, number);
+                            popup.setArguments(bdl);
+                            // ------------------------------
+
                             popup.show(fm, "fragment_edit_name");
 
                         }
@@ -135,9 +143,10 @@ public class UserActivity extends AppCompatActivity {
         bodyList.add("Ayarlar");
         bodyList.add("Hakkýmýzda");
        // bodyList.add("Açýk Kaynak Kütüphaneleri");
+        bodyList.add("Kullanýcý Sözleþmesi");
         bodyList.add("Çýkýþ Yap");
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             current = new ActivityUserInfo();
             current.body = bodyList.get(i);
             if (i == 0)

@@ -79,6 +79,10 @@
             android:name=".About"
             android:label="@string/title_activity_about" >
         </activity>
+        <activity
+            android:name=".Agreement"
+            android:label="@string/title_activity_agreement" >
+        </activity>
     </application>
 
 </manifest>

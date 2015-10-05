@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -32,15 +35,18 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_SUBHEADER = 1;
     private static final int TYPE_ITEM = 2;
     private static final int EMPTY_VIEW = 10;
+    private final String OGRENCI_NO = "ogrNoKey";
     List<NotInformation> data = Collections.emptyList();
     private LayoutInflater inflater;
     private Context context;
+    private FragmentManager fm;
 
 
-    public NotAdapter(Context context, List<NotInformation> data) {
+    public NotAdapter(Context context, List<NotInformation> data, FragmentManager fm) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.data = data;
+        this.fm = fm;
     }
 
 
@@ -87,7 +93,7 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
             //Log.i("tuna", (((NotItemViewHolder) holder).topLayout.getVisibility()==View.VISIBLE) + " binding notItemViewHolder");
         } else if (holder instanceof NotHeaderViewHolder) {
-            NotInformation current = data.get(position);
+            final NotInformation current = data.get(position);
             ((NotHeaderViewHolder) holder).name.setText(current.name);
             ((NotHeaderViewHolder) holder).ogrNo.setText(current.ogrNo);
             ((NotHeaderViewHolder) holder).genelOrtNumber.setText(current.genelOrtNumber);
@@ -116,12 +122,36 @@ public class NotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Log.i("tuna", "gonna use picasso");
             SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
 
+            final NotHeaderViewHolder holder2 =((NotHeaderViewHolder) holder);
             Picasso.with(((NotHeaderViewHolder) holder).sahip.getContext())
                     .load(current.imageLink)
                     .placeholder(R.drawable.loading_notlar_avatar_2)
                     .error(R.drawable.loading_error_1)
                     .transform(new CircleTransform())
-                    .into(((NotHeaderViewHolder) holder).sahip);
+                    .into(((NotHeaderViewHolder) holder).sahip, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            ((NotHeaderViewHolder) holder2).sahip.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ProfilePhotoFragment popup = new ProfilePhotoFragment();
+
+                                    // set ogrenci no, send to bundle
+                                    Bundle bdl = new Bundle(1);
+                                    bdl.putString(OGRENCI_NO, current.ogrNo);
+                                    popup.setArguments(bdl);
+                                    // ------------------------------
+
+                                    popup.show(fm, "fragment_edit_name");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
             /*DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
                     .cacheOnDisk(true)

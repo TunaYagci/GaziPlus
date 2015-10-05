@@ -17,7 +17,65 @@
     <string name="title_activity_duyuru_detailed">DuyuruDetailedActivity</string>
     <string name="title_activity_notlar_detailed">NotlarDetailed</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
-    <string name="notlar_login_error">Giriş başarısız\nŞimdilik Türkçe karakter destekleyemiyoruz</string>
+    <string name="notlar_login_error">Giriş başarısız\n\nŞimdilik Türkçe karakter destekleyemiyoruz</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_about">About</string>
+    <string name="title_activity_agreement">Agreement</string>
+
+
+
+    <string name="user_agreement">"Gazi+" Uygulaması Genel Kullanım Hüküm ve Koşulları\n\n
+
+<b>Kapsam</b>\n\n
+
+Buradaki genel hüküm ve koşullar biz belirtmemiş olsak bile size sağladığımız
+ve sağlayacağımız bütün hizmetler için geçerli olacaktır. Gazi+ uygulamasını
+yükleyerek veya kullanarak bu koşulları kabul etmiş sayılıyorsunuz.\n\n
+
+HP2M ekibi olarak size sağladığımız hizmetleri genişletme ve sınırlama haklarını saklı tutmak durumundayız.
+Zamanla ilave özellikler de gelecek tabi, şu an okuduğunuz Hüküm ve Koşullar bu özellikleri de kapsayacaktır.\n\n
+
+HP2M olarak yaptığımız işleri özenle, olabildiğince güvenilir bir şekilde kullanılabilecek şekilde yürütüyoruz.
+Tabi ne yazık ki bu hizmeti ve bağlantılarını kesintisiz bir şekilde sağlayacağımızı veya aktardığımız bilgilerin
+daima doğru, kesin ve eksiksiz olduğunu garanti edemiyoruz.\n\n
+
+Gazi+, yalnızca şahsi ve ticari olmayan amaçlar için, belirtmiş olduğumuz Hüküm ve Koşullar\'a uygun bir şekilde
+kullanıma yöneliktir ve (süreyle ve yerle sınırlı olmaksızın) yazılımı ile ilgili hiçbir hak talebinde
+bulunmamanızı gerektirir.\n\n
+
+Hazırlamak ve şu ana kadar getirmek için emek harcadığımız bu uygulamayı veya bu uygulamayla ilgili bilgileri
+kaynak koduna dönüştürme veya bundan kaynak kodu oluşturma hakkına sahip değilsiniz.
+Aynı şekilde bu yazılımın, program mantığının veya bunların bölümlerinin vs. yeniden oluşturulması da yasaktır.
+Gazi+ yazılımının uyarlanması, transkripsiyonu veya değiştirilmesi ya da Gazi+ yazılımının özellikle değiştirilmek
+veya diğer programlarla birleştirmek suretiyle işlenmesi yasaktır.\n\n
+
+Gazi+ ile ilgili görünür veya olası ihlal/kötüye kullanımları en erken şekilde HP2M\'ye bildirmeniz gerekir.\n\n
+
+Yazılımımızın tarafınızca kullanımından kaynaklı olarak Gazi+\‘a yöneltilecek tazminat talepleri dahil tüm davalara karşı, Gazi+\‘ı tazmin etmeniz ve Gazi+’ı bunlardan muaf tutmanız gerekir.\n\n
+
+Gazi+ yazılımını kullanırken, yürürlükteki tüm mevzuatlara ve ayrıca bu Hüküm ve Koşullar’ın bütün hükümlerine uymak zorundasınız.\n\n
+
+Gazi+ hizmetiyle ilgili olarak Gazi+ uygulamasına aktaracağınız tüm verilerin yanlış veya hatalı olmadığını temin edersiniz.\n\n
+
+Gazi+, kendisinin veya temsilcilerinin kasti amacı veya ağır ihmalinden kaynaklanmadığı sürece, oluşabilecek hasarlardan sorumlu değildir. Kişisel yaralanmalara ilişkin yükümlülükler bundan etkilenmeyecektir. Üçüncü taraflara verilen hasarlar, dolaylı hasarlar ve kâr kayıpları hariç tutulacaktır.\n\n
+
+“Gazi+” yazılımını yüklediğinizde veya çalıştırdığınızda, yazılımı amaçlandığı biçimde kullanmanız için size basit bir lisans verilecektir. İlave yazılım kullanma hakları hariç tutulacaktır.
+
+Servislerimizi sürekli güncellediğimiz ve sizlere daha iyi hizmet sunabilmek üzere çalıştığımız için şartlar, gizlilik politikaları ve veri kullanma kuralları sürekli değişmektedir. İleriye dönük olarak güncellenecek hususlar da bu sözleşme ile kabul edilmektedir. Kullanım şartlarımızın en güncel hali hp2m.com internet sitesinde yayınlanmaktadır. İhtilaflı hallerde hp2m.com internet sitesinde yayınlanan kullanım şartları, veri kullanma kuralları ve gizlilik politikaları geçerlidir.\n\n
+
+Uygulamayı kaldırarak dilediğiniz zaman “Gazi+“ hizmetini sonlandırma hakkına sahipsiniz. Gazi+, hizmetinin kullanım hakkını dilediği zaman sonlandırma hakkına sahiptir.\n\n
+
+<b>İçerik</b>\n\n
+
+“Gazi+” hizmetiyle ilgili olarak tarafınızca sağlanan veya kullanılan metin, görüntü, fotoğraf vb. içerikler telif hakkı kanununa veya benzeri hükümlere tabi olabilir. Belirtilen kullanımına göre Gazi+ tarafından yeniden kullanım hakları dahil, gerekli tüm haklara sahip olduğunuz “Gazi+” hizmetlerine içerik katkısında bulunmayı açık bir şekilde kabul edersiniz. Başta yeniden üretim hakkı ve içeriği kamu tarafından indirilmeye uygun tutma hakkı olmak üzere “Gazi+” hizmetlerinin kullanımı için gerekli hakları Gazi+’a devretmeyi kabul edersiniz. Hakların tarafınızdan Gazi+ ’ye devri şu anda Gazi+ tarafından sağlanan tüm hizmetlerle ilgilidir ve gelecekte Gazi+ tarafından sağlanacak tüm eşit veya benzer hizmetlerle ilgilidir.\n\n
+
+<b>Diğer hükümler</b>\n\n
+
+Herhangi bir ihtilaf halinde, Ankara’daki yerel yargı yetkisine veya konu ile ilgili yargı yetkisine sahip mahkeme, yargılama yetkisine sahip olacaktır; Türk hukukunun uygulanması kabul edilmiş sayılır ve BM Satış Kanunu, özel uluslararası hukukun kanuni ihtilaf kuralları hariç tutulacaktır. Bir tüketici olarak Gazi+ hizmetlerini kullandıysanız, bulunduğunuz yerdeki genel yargı yetkisine sahip mahkemeniz yargı yetkisine sahip olacaktır.
+\n\n
+Son Güncelleme: Haziran 2015\n\n</string>
+
+
+
+
 </resources>

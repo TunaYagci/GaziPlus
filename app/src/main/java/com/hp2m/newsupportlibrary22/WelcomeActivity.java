@@ -5,6 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,7 +24,7 @@ import com.daimajia.androidanimations.library.YoYo;
 public class WelcomeActivity extends AppCompatActivity {
 
     private RelativeLayout ogrenciLoginLayout, betaTesterLoginLayout, ogrenciLoginFinal;
-    private TextView ogrenciLoginErrorText;
+    private TextView ogrenciLoginErrorText, ogrenciLoginAgreement;
     private EditText ogrenciLoginEditText;
     private ImageView logo;
     private boolean onGoBack = false;
@@ -39,6 +44,7 @@ public class WelcomeActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        ogrenciLoginAgreement = (TextView) findViewById(R.id.ogrenciLoginAgreement);
         ogrenciLoginLayout = (RelativeLayout) findViewById(R.id.ogrenciLoginLayout);
         betaTesterLoginLayout = (RelativeLayout) findViewById(R.id.betaTesterLayout);
         ogrenciLoginFinal = (RelativeLayout) findViewById(R.id.ogrenciLoginFinal);
@@ -48,6 +54,21 @@ public class WelcomeActivity extends AppCompatActivity {
         YoYo.with(Techniques.DropOut)
                 .duration(300)
                 .playOn(logo);
+
+        ogrenciLoginAgreement.setMovementMethod(LinkMovementMethod.getInstance());
+        SpannableString mySpannableString = new SpannableString(ogrenciLoginAgreement.getText());
+        int index1 = ogrenciLoginAgreement.getText().toString().indexOf("þartlarý");
+        mySpannableString.setSpan(new UnderlineSpan(), index1, index1 + 8, 0);
+        //ogrenciLoginAgreement.setText(mySpannableString);
+        ClickableSpan myClickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(WelcomeActivity.this, Agreement.class);
+                startActivity(i);
+            }
+        };
+        mySpannableString.setSpan(myClickableSpan, index1, index1+8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ogrenciLoginAgreement.setText(mySpannableString);
 
     }
 
@@ -62,6 +83,7 @@ public class WelcomeActivity extends AppCompatActivity {
             YoYo.with(Techniques.SlideOutLeft)
                     .duration(250)
                     .playOn(ogrenciLoginFinal);
+
             if (ogrenciLoginErrorText.getVisibility() == View.VISIBLE)
                 YoYo.with(Techniques.FadeOut)
                         .duration(250)
@@ -79,7 +101,9 @@ public class WelcomeActivity extends AppCompatActivity {
             YoYo.with(Techniques.BounceIn)
                     .duration(250)
                     .playOn(betaTesterLoginLayout);
-
+            YoYo.with(Techniques.BounceIn)
+                    .duration(250)
+                    .playOn(ogrenciLoginAgreement);
 
             onGoBack = false;
             return;
@@ -99,6 +123,9 @@ public class WelcomeActivity extends AppCompatActivity {
         YoYo.with(Techniques.SlideOutDown)
                 .duration(250)
                 .playOn(betaTesterLoginLayout);
+        YoYo.with(Techniques.SlideOutDown)
+                .duration(250)
+                .playOn(ogrenciLoginAgreement);
 
         ogrenciLoginEditText.setVisibility(View.VISIBLE);
         ogrenciLoginFinal.setVisibility(View.VISIBLE);
@@ -263,10 +290,16 @@ public class WelcomeActivity extends AppCompatActivity {
                 fakulteImg = R.drawable.tf_fakulte_1;
                 switch (bolumNo) {
                     case "02":
-                        defaultBolumLink = "http://tf-imalat.gazi.edu.tr/posts?type=news";
+                        defaultBolumLink = "http://tf-eem.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Elektrik-Elektronik Mühendisliði";
                         bolumHint = "tf-eem";
                         bolumImg = R.drawable.tf_eem;
+                        break;
+                    case "04":
+                        defaultBolumLink = "http://tf-esm.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Enerji Sistemleri Mühendisliði";
+                        bolumHint = "tf-esm";
+                        bolumImg = R.drawable.tf_esm1;
                         break;
                     case "06":
                         defaultBolumLink = "http://tf-imalat.gazi.edu.tr/posts?type=news";

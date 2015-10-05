@@ -86,6 +86,15 @@ public class ActivityUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((BodyHolder) holder).c.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Intent i = new Intent(activity, Agreement.class);
+                        activity.startActivity(i);
+                    }
+                });
+                return;
+            case 3:
+                ((BodyHolder) holder).c.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         // çýkýþ yap intent
                         new AlertDialog.Builder(activity)
                                 .setTitle("Çýkýþ yap")

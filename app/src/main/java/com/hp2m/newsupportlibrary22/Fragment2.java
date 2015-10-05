@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -57,6 +58,7 @@ public class Fragment2 extends Fragment {
     private RecyclerView.Adapter adapter;
     private ImageButton clearParola, clearOgrNo;
     private FloatingActionButton fab;
+    private FragmentManager fm;
     public Fragment2() {
         // Required empty public constructor
     }
@@ -75,12 +77,12 @@ public class Fragment2 extends Fragment {
         editor = sharedP.edit();
         bus.register(this);
 
-
+        fm = this.getFragmentManager();
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         clearParola = (ImageButton) rootView.findViewById(R.id.clearParola);
         clearOgrNo = (ImageButton) rootView.findViewById(R.id.clearOgrNo);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.not_list);
-        adapter = new NotAdapter(getActivity(), getNotData());
+        adapter = new NotAdapter(getActivity(), getNotData(), fm);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setVisibility(View.GONE);
@@ -292,8 +294,8 @@ public class Fragment2 extends Fragment {
             final float y1 = topLine.getY();
             final float y3 = loginErrorText.getY();
             final float value = (float) ((y3 - y1) / 1.4);
-            topLine.animate().setDuration(5000).translationY(value);
-            bottomLine.animate().setDuration(5000).translationY(-value).setListener(new AnimatorListenerAdapter() {
+            topLine.animate().setDuration(3500).translationY(value);
+            bottomLine.animate().setDuration(3500).translationY(-value).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(final Animator animation) {
                     super.onAnimationEnd(animation);
@@ -417,7 +419,7 @@ public class Fragment2 extends Fragment {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    adapter = new NotAdapter(getActivity(), data2);
+                    adapter = new NotAdapter(getActivity(), data2, fm);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     recyclerView.setVisibility(View.VISIBLE);
