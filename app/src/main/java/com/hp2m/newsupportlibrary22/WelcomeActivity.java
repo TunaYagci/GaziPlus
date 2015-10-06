@@ -67,7 +67,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(i);
             }
         };
-        mySpannableString.setSpan(myClickableSpan, index1, index1+8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mySpannableString.setSpan(myClickableSpan, index1, index1 + 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         ogrenciLoginAgreement.setText(mySpannableString);
 
     }
@@ -147,10 +147,10 @@ public class WelcomeActivity extends AppCompatActivity {
         switch (fakulteNo) {
             case "01": // DÝÞ
                 defaultFakulteLink = "none";
-                    defaultBolumLink = "http://dent.gazi.edu.tr/posts?type=news";
-                    bolumAdi = "Diþ Hekimliði Fakültesi";
-                    bolumHint = "nofab";
-                    bolumImg = R.drawable.gazi_dent;
+                defaultBolumLink = "http://dent.gazi.edu.tr/posts?type=news";
+                bolumAdi = "Diþ Hekimliði Fakültesi";
+                bolumHint = "nofab";
+                bolumImg = R.drawable.gazi_dent;
                 break;
             case "02": // ECZACILIK
                 defaultFakulteLink = "none";
@@ -189,11 +189,11 @@ public class WelcomeActivity extends AppCompatActivity {
                 break;
             case "08":
                 defaultFakulteLink = "none"; // gazi iletiþim
-                        defaultBolumLink = "http://ilet.gazi.edu.tr/posts?type=news";
-                        bolumAdi = "ÝLETÝÞÝM FAKÜLTESÝ";
-                        bolumHint = "nofab";
-                        bolumImg = R.drawable.gazi_iletisim_2;
-                        break;
+                defaultBolumLink = "http://ilet.gazi.edu.tr/posts?type=news";
+                bolumAdi = "ÝLETÝÞÝM FAKÜLTESÝ";
+                bolumHint = "nofab";
+                bolumImg = R.drawable.gazi_iletisim_2;
+                break;
             case "09":
                 defaultFakulteLink = "http://iibf.gazi.edu.tr/posts?type=news";
                 break;
@@ -201,7 +201,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://mim.gazi.edu.tr/posts?type=news";
                 fakulteAdi = "MÝMARLIK FAKÜLTESÝ";
                 fakulteImg = R.drawable.mf_fakulte3;
-                switch (bolumNo){
+                switch (bolumNo) {
                     case "60": // mimarlýk
                         defaultBolumLink = "http://mim-mim.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Mimarlýk Bölümü";
@@ -222,7 +222,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://mf.gazi.edu.tr/posts?type=news";
                 fakulteAdi = "MÜHENDÝSLÝK FAKÜLTESÝ";
                 fakulteImg = R.drawable.mf_fakulte3;
-                switch (bolumNo.substring(0,1)) {
+                switch (bolumNo.substring(0, 1)) {
                     case "8":
                         // web link http://mf-bm.gazi.edu.tr/posts?type=news
                         // home server ip: http://192.168.1.8/gazi/index.htm
@@ -307,6 +307,12 @@ public class WelcomeActivity extends AppCompatActivity {
                         bolumHint = "tf-imalat";
                         bolumImg = R.drawable.tf_imalat_1;
                         break;
+                    case "08":
+                        defaultBolumLink = "http://tf-insaat.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Ýnþaat Mühendisliði";
+                        bolumHint = "tf-ins";
+                        bolumImg = R.drawable.gazi_im_2;
+                        break;
                     case "10":
                         defaultBolumLink = "http://tf-metalurji.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Metalurji ve Malzeme Mühendisliði";
@@ -319,12 +325,34 @@ public class WelcomeActivity extends AppCompatActivity {
                         bolumHint = "tf-otomativ";
                         bolumImg = R.drawable.tf_otomativ;
                         break;
+                    case "14":
+                        defaultBolumLink = "http://tf-aiem.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Aðaçiþleri Endüstri Mühendisliði";
+                        bolumHint = "tf-aiem";
+                        bolumImg = R.drawable.tf_aiem1;
+                        break;
+                    case "16":
+                        defaultBolumLink = "http://tf-bm.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Bilgisayar Mühendisliði";
+                        bolumHint = "tf-bm";
+                        bolumImg = R.drawable.tf_bm1;
+                        break;
+                    case "18":
+                        defaultBolumLink = "http://tf-etm.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Endüstriyel Tasarým Mühendisliði";
+                        bolumHint = "tf-etm";
+                        bolumImg = R.drawable.tf_etm1;
+                        break;
                     default:
                         break;
                 }
                 break;
             case "19":
-                defaultFakulteLink = "http://med.gazi.edu.tr/posts?type=news";
+                defaultFakulteLink = "none"; // gazi iletiþim
+                defaultBolumLink = "http://med.gazi.edu.tr/posts?type=news";
+                bolumAdi = "Týp Fakültesi";
+                bolumHint = "nofab";
+                bolumImg = R.drawable.gazi_med;
                 break;
             case "20":
                 defaultFakulteLink = "http://ttef.gazi.edu.tr/posts?type=news";
@@ -474,11 +502,11 @@ public class WelcomeActivity extends AppCompatActivity {
                 //editor.commit();
 
                 //extra
-               // sP = getSharedPreferences("user", Context.MODE_PRIVATE);
+                // sP = getSharedPreferences("user", Context.MODE_PRIVATE);
                 //editor = sP.edit();
-                editor.putString("checkbox", "checked");
-                editor.putString("ogrNo", "141180068");
-                editor.putString("parola", "tuna124");
+                //editor.putString("checkbox", "checked");
+                //editor.putString("ogrNo", "141180068");
+                //editor.putString("parola", "tuna124");
                 editor.commit();
 
                 Intent i = new Intent(getBaseContext(), MainActivity.class);
@@ -507,7 +535,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 Toast.makeText(this, "Bölümün henüz desteklenmiyor, lütfen öðrenci numaraný bize yolla", Toast.LENGTH_LONG).show();
                 return;
             }
-
 
 
             // Login successful
@@ -540,6 +567,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     editor.putBoolean("isLoginSuccessful", true);
                     // new
                     editor.putString("ogrNo", ogrNo);
+                    editor.putString("checkbox", "checked");
                     editor.putString("defaultOgrNo", ogrNo);
                     // ---
                     editor.commit();

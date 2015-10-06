@@ -58,8 +58,10 @@ public class Fragment3 extends Fragment {
                 R.layout.fragment3, container, false);
         bus.register(this);
 
-        motherLayout = (FrameLayout) rootView.findViewById(R.id.fragment3_motherLayout);
+        reload = (ImageButton) rootView.findViewById(R.id.reload);
+        reloadText = (TextView) rootView.findViewById(R.id.reloadText);
 
+        motherLayout = (FrameLayout) rootView.findViewById(R.id.fragment3_motherLayout);
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         /*swipeLayout.setProgressBackgroundColorSchemeColor(
                 getResources().getColor(R.color.shadow_end_color)*
@@ -71,8 +73,10 @@ public class Fragment3 extends Fragment {
 
             }
         });
-        swipeLayout.setColorSchemeColors(R.color.my_primary_dark);
-
+        swipeLayout.setColorSchemeResources(R.color.card_color_1,
+                R.color.card_color_2,
+                R.color.card_color_4,
+                R.color.card_color_5);
         sharedPreferences = getActivity().getSharedPreferences("db", Context.MODE_PRIVATE);
         //YemekDB db = new YemekDB(getActivity(), null, null, sharedPreferences.getInt("version", 1));
         //Log.i("tuna", "this is " + isDBExists(db.getDatabaseName()));
@@ -81,8 +85,7 @@ public class Fragment3 extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        reload = (ImageButton) rootView.findViewById(R.id.reload);
-        reloadText = (TextView) rootView.findViewById(R.id.reloadText);
+
         return rootView;
     }
 
@@ -124,6 +127,16 @@ public class Fragment3 extends Fragment {
                 dataHolder.alreadyShownFragment3 = true;
                 yemekYukle();
             } else {
+                reload.setVisibility(View.VISIBLE);
+                reloadText.setVisibility(View.VISIBLE);
+                reload.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        reload.setVisibility(View.GONE);
+                        reloadText.setVisibility(View.GONE);
+                        getData();
+                    }
+                });
                 Snackbar.make(motherLayout, "Ýnternete eriþilemiyor", Snackbar.LENGTH_SHORT)
                         .setAction("Yeniden dene", new View.OnClickListener() {
                             @Override
@@ -248,7 +261,16 @@ public class Fragment3 extends Fragment {
             new YemekTask(this, true).execute();
         }
         else{
+            swipeLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeLayout.setRefreshing(false);
+                }
+            });
             scrollToDay(recyclerView);
+            if(DataHolder.alreadyShownFragment3){
+                Snackbar.make(motherLayout, "Ýnternete eriþilemiyor", Snackbar.LENGTH_SHORT);
+            }
         }
     }
 
