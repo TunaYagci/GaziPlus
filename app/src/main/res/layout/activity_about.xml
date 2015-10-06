@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/about_gradle_color"
-    tools:context="com.hp2m.newsupportlibrary22.About">
+    tools:context="com.hp2m.GaziPlus.About">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
 
@@ -213,7 +213,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="20dp"
         android:gravity="right"
-        android:text="v0.36 BETA"
+        android:text="v0.37 BETA"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
         android:textColor="@color/material_blue_grey_800"
         android:textSize="21sp"

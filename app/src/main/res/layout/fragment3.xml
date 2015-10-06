@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fragment3_backgroundcolor"
-    tools:context="com.hp2m.newsupportlibrary22.Fragment3">
+    tools:context="com.hp2m.GaziPlus.Fragment3">
 
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -4,7 +4,7 @@
     android:id="@+id/fragment2_motherLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hp2m.newsupportlibrary22.Fragment2"
+    tools:context="com.hp2m.GaziPlus.Fragment2"
 
     >
 

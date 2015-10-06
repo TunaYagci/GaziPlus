@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fragment1_backgroundcolor"
-    tools:context="com.hp2m.newsupportlibrary22.Fragment1">
+    tools:context="com.hp2m.GaziPlus.Fragment1">
 
 
 

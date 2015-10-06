@@ -3,7 +3,7 @@
     android:id="@+id/detailedNotLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hp2m.newsupportlibrary22.NotlarDetailed">
+    tools:context="com.hp2m.GaziPlus.NotlarDetailed">
 
     <include
         android:id="@+id/toolbar"
