@@ -3,6 +3,8 @@ package com.hp2m.GaziPlus;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
@@ -39,10 +41,42 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sP = getSharedPreferences("user", Context.MODE_PRIVATE);
-        if (sP.getBoolean("isLoginSuccessful", false)) {
+
+        if(!(sP.getBoolean("isVersion2UpdateSuccessful",false))){
+
+            SharedPreferences.Editor editor = sP.edit();
+            editor.clear();
+
+            if(sP.getBoolean("isLoginSuccessful", false)) {
+
+                try {
+                    new PlusMainReceiver().CancelAlarm(this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                DuyuruDB db = null;
+                try {
+                    db = new DuyuruDB(this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    db.clearForLogOut();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                editor.commit();
+            }
+        }
+        else if (sP.getBoolean("isLoginSuccessful", false)) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         ogrenciLoginAgreement = (TextView) findViewById(R.id.ogrenciLoginAgreement);
@@ -736,6 +770,21 @@ public class WelcomeActivity extends AppCompatActivity {
                 //editor.putString("checkbox", "checked");
                 //editor.putString("ogrNo", "141180068");
                 //editor.putString("parola", "tuna124");
+
+                PackageInfo pInfo = null;
+                int verCode = 1;
+                try {
+                    pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                verCode = pInfo.versionCode;
+
+                editor.putBoolean("isVersion2UpdateSuccessful", true);
+                editor.putInt("versionCode", verCode);
+
+
+
                 editor.commit();
 
                 Intent i = new Intent(getBaseContext(), MainActivity.class);
@@ -804,6 +853,18 @@ public class WelcomeActivity extends AppCompatActivity {
                         editor.putInt(DataHolder.MIN_ITEM_TO_LOAD, min_item_to_load);
                     }
 
+
+                    PackageInfo pInfo = null;
+                    int verCode = 1;
+                    try {
+                        pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    verCode = pInfo.versionCode;
+
+                    editor.putBoolean("isVersion2UpdateSuccessful", true);
+                    editor.putInt("versionCode", verCode);
 
                     editor.commit();
                     Intent i = new Intent(getBaseContext(), MainActivity.class);
