@@ -213,7 +213,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="20dp"
         android:gravity="right"
-        android:text="v0.38 BETA"
+        android:text="v0.39 BETA"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
         android:textColor="@color/material_blue_grey_800"
         android:textSize="21sp"
