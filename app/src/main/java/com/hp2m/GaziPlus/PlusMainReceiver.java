@@ -11,7 +11,7 @@ import android.util.Log;
 public class PlusMainReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("TAG", "onReceive's if and intent is " + intent.toString());
+        Log.i("TAG", "onReceive");
         Intent i = new Intent(context, PlusNotificationService.class);
         context.startService(i);
     }

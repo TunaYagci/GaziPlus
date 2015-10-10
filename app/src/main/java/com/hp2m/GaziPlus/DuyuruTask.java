@@ -102,8 +102,22 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
             DuyuruDB db2 = new DuyuruDB(fragment.getActivity());
 
             final int DB_MAX_DUYURU = db2.getDuyuruSayisi(generalMode);
-            final int NET_MAX_DUYURU = duyuruHeaderElements.size() - 4;
-            final int MIN_ITEM_TO_LOAD = 4;
+
+            // finding max news number on the web page
+            // checking index of '<'
+            int NET_MAX_DUYURU=4;
+            for(int i=0; i<duyuruHeaderElements.size(); i++){
+                if(duyuruHeaderElements.get(i).text().charAt(0) == '<'){
+                    NET_MAX_DUYURU = i;
+                    break;
+                }
+            }
+            // over -------------------------------
+
+
+            //final int MIN_ITEM_TO_LOAD = 4;
+            final int MIN_ITEM_TO_LOAD = sharedPreferences.getInt(DataHolder.MIN_ITEM_TO_LOAD, 4);
+
             // Log.i("tuna", "Net Max Duyuru = "+ NET_MAX_DUYURU);
             // Log.i("tuna", "DB Max Duyuru = "+ DB_MAX_DUYURU);
 

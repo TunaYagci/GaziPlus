@@ -33,7 +33,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private String bolumAdi, fakulteAdi;
     private String bolumHint = "none";
     private int bolumImg, fakulteImg;
-
+    private int min_item_to_load = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,18 +171,242 @@ public class WelcomeActivity extends AppCompatActivity {
                 fakulteAdi = "EÐÝTÝM FAKÜLTESÝ";
                 fakulteImg = R.drawable.gef_1_edited;
                 switch (bolumNo) {
+                    case "21":
+                        defaultBolumLink = "http://gef-guzelsanatlar-muzik.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Müzik Eðitimi Anabilim Dalý";
+                        bolumHint = "gef_muzik";
+                        bolumImg = R.drawable.gef_muzik1;
+                        min_item_to_load = 2;
+                        break;
+                    case "35":
+                        defaultBolumLink = "http://gef-bote.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "BÖTE";
+                        bolumHint = "gef_bote";
+                        bolumImg = R.drawable.tf_bm1;
+                        break;
+
+
+                    // Tarih ----------------
+                    case "44":
+                        defaultBolumLink = "http://tarih.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Tarih";
+                        bolumHint = "gef_tarih";
+                        bolumImg = R.drawable.gef_tarih1;
+                        min_item_to_load = 1;
+                        break;
+                    case "24":
+                        defaultBolumLink = "http://tarih.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Tarih";
+                        bolumHint = "gef_tarih";
+                        bolumImg = R.drawable.gef_tarih1;
+                        min_item_to_load = 1;
+                        break;
+                    // Tarih ----------------
+
+
+                    // Coðrafya ----------------
+                    case "45":
+                        defaultBolumLink = "http://gefcografya.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Coðrafya";
+                        bolumHint = "gef_cog";
+                        bolumImg = R.drawable.gef_cografya1;
+                        break;
+                    case "25":
+                        defaultBolumLink = "http://gefcografya.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Coðrafya";
+                        bolumHint = "gef_cog";
+                        bolumImg = R.drawable.gef_cografya1;
+                        break;
+                    // Coðrafya ----------------
+
+
+                    // Felsefe ----------------
+                    case "46":
+                        defaultBolumLink = "http://geffelsefe.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Felsefe";
+                        bolumHint = "gef_felsefe";
+                        bolumImg = R.drawable.gef_felsefe1;
+                        break;
+                    case "26":
+                        defaultBolumLink = "http://geffelsefe.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Felsefe";
+                        bolumHint = "gef_felsefe";
+                        bolumImg = R.drawable.gef_felsefe1;
+                        break;
+                    // Felsefe ----------------
+
+                    // Türk Dili ----------------
+                    case "47":
+                        defaultBolumLink = "http://geftde.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Türk Dili";
+                        bolumHint = "gef_turk_dili";
+                        bolumImg = R.drawable.gef_td1;
+                        min_item_to_load = 2;
+                        break;
+                    case "27":
+                        defaultBolumLink = "http://geftde.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Türk Dili";
+                        bolumHint = "gef_turk_dili";
+                        bolumImg = R.drawable.gef_muzik1;
+                        min_item_to_load = 2;
+                        break;
+                    // Türk Dili ----------------
+
+                    case "65":
+                        defaultBolumLink = "http://gef-yabancidiller-ingilizdili.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Ýngilizce";
+                        bolumHint = "gef_ing";
+                        bolumImg = R.drawable.gef_ing1;
+                        break;
+
+                    case "66":
+                        defaultBolumLink = "http://gef-yabancidiller-almandili.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Almanca";
+                        bolumHint = "gef_alm";
+                        bolumImg = R.drawable.gef_alm1;
+                        min_item_to_load = 1;
+                        break;
+
+                    case "67":
+                        defaultBolumLink = "http://gef-yabancidiller-fransizdili.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Fransýzca";
+                        bolumHint = "gef_french";
+                        bolumImg = R.drawable.gef_fransizca1;
+                        break;
+
+                    case "68":
+                        defaultBolumLink = "http://gef-yabancidiller-arapdili.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Arapça";
+                        bolumHint = "gef_arabic";
+                        bolumImg = R.drawable.gef_arapca1;
+                        break;
+
+                    case "75":
+                        defaultBolumLink = "http://gef-egitimbilimleri-pdr.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "PDR";
+                        bolumHint = "gef_pdr";
+                        bolumImg = R.drawable.gef_pdr1;
+                        break;
+
+                    case "94":
+                        defaultBolumLink = "http://gef-ozelegitim-zihinselengelliler.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Zihinsel Engelliler Eðitimi";
+                        bolumHint = "gef_zihinsel";
+                        bolumImg = R.drawable.gef_zihinsel_engelliler1;
+                        break;
+
+                    case "95":
+                        defaultBolumLink = "http://gef-ozelegitim-gormeengelliler.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Görme Engelliler Eðitimi";
+                        bolumHint = "gef_gorme";
+                        bolumImg = R.drawable.gef_gorme_engelliler1;
+                        break;
+
+                    case "14":
+                        defaultBolumLink = "http://gef-ilkogretim-matematikegitimi.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Ýlköðretim Matematik Eðitimi";
+                        bolumHint = "gef_ilkogretim_mat";
+                        bolumImg = R.drawable.gef_ilk_mat1;
+                        break;
+
+                    case "22":
+                        defaultBolumLink = "http://gef-guzelsanatlar-resimis.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Resim-Ýþ Eðitimi";
+                        bolumHint = "gef_resim_is";
+                        bolumImg = R.drawable.gef_resim_is1;
+                        break;
+
+                    case "15":
+                        defaultBolumLink = "http://gef-ilkogretim-sosyalbilgiler.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Sosyal Bilgiler";
+                        bolumHint = "gef_sosyal_bilgiler";
+                        bolumImg = R.drawable.gef_sosyal_bilgiler;
+                        break;
+
+
+                    // Kimya --------------------
+                    case "30":
+                        defaultBolumLink = "http://gef-ortaogretim-fenmatematik-kimya.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Kimya Öðretmenliði";
+                        bolumHint = "gef_kimya";
+                        bolumImg = R.drawable.gef_kimya1;
+                        min_item_to_load = 2;
+                        break;
+                    case "58":
+                        defaultBolumLink = "http://gef-ortaogretim-fenmatematik-kimya.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Kimya Öðretmenliði";
+                        bolumHint = "gef_kimya";
+                        bolumImg = R.drawable.gef_kimya1;
+                        min_item_to_load = 2;
+                        break;
+                    // Kimya --------------------
+
+                    case "13":
+                        defaultBolumLink = "http://gef-fenbilgisi.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Fen Bilgisi Öðretmenliði";
+                        bolumHint = "gef_fen_bilgisi";
+                        bolumImg = R.drawable.gef_fen_bilgisi1;
+                        break;
+
+                    case "31":
+                        defaultBolumLink = "http://gef-ortaogretim-fenmatematik-biyoloji.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Biyoloji Öðretmenliði";
+                        bolumHint = "gef_fen_bilgisi";
+                        bolumImg = R.drawable.gef_biyoloji1;
+                        min_item_to_load = 1;
+                        break;
+
+
+                    case "12":
+                        defaultBolumLink = "http://gef-ilkogretim-sinifogretmenligi.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Sýnýf Öðretmenliði";
+                        bolumHint = "gef_sinif_ogr";
+                        bolumImg = R.drawable.gef_sinif_ogrt1;
+                        break;
+
+                    case "57":
+                        defaultBolumLink = "http://gef-ortaogretim-fenmatematik-fizik.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Fizik Öðretmenliði";
+                        bolumHint = "gef_fizik";
+                        bolumImg = R.drawable.gef_fizik1;
+                        min_item_to_load = 1;
+                        break;
+
+                    // BUNUN KODU YOK !!
+                    /*case "57":
+                        defaultBolumLink = "http://gef-ortaogretim-fenmatematik-fizik.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Fizik";
+                        bolumHint = "gef_fizik";
+                        bolumImg = R.drawable.okuloncesi_1_edited;
+                        min_item_to_load = 1;
+                        break;*/
+
+                    // Okulöncesi
                     case "11":
                         defaultBolumLink = "http://gef-ilkogretim-okuloncesi.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Okulöncesi Eðitim";
                         bolumHint = "okuloncesi_egitim";
                         bolumImg = R.drawable.okuloncesi_1_edited;
                         break;
+                    case "20":
+                        defaultBolumLink = "http://gef-ilkogretim-okuloncesi.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Okulöncesi Eðitim";
+                        bolumHint = "okuloncesi_egitim";
+                        bolumImg = R.drawable.okuloncesi_1_edited;
+                        break;
+                    // ----------
+
+
                     default:
                         break;
                 }
                 break;
             case "06":
-                defaultFakulteLink = "http://gef.gazi.edu.tr/posts?type=news";
+                defaultFakulteLink = "none"; // gazi hukuk
+                defaultBolumLink = "http://hukuk.gazi.edu.tr/posts?type=news";
+                bolumAdi = "Hukuk Fakültesi";
+                bolumHint = "nofab";
+                bolumImg = R.drawable.gazi_hukuk1;
                 break;
             case "07":
                 defaultFakulteLink = "http://gsf.gazi.edu.tr/posts?type=news";
@@ -348,7 +572,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
                 break;
             case "19":
-                defaultFakulteLink = "none"; // gazi iletiþim
+                defaultFakulteLink = "none"; // gazi týp
                 defaultBolumLink = "http://med.gazi.edu.tr/posts?type=news";
                 bolumAdi = "Týp Fakültesi";
                 bolumHint = "nofab";
@@ -395,7 +619,11 @@ public class WelcomeActivity extends AppCompatActivity {
 
             // Yüksekokullar
             case "31":
-                defaultFakulteLink = "http://besyo.gazi.edu.tr/posts?type=news";
+                defaultFakulteLink = "none"; // gazi adalet
+                defaultBolumLink = "http://adalet.gazi.edu.tr/posts?type=news";
+                bolumAdi = "Adalet Meslek Yüksekokulu";
+                bolumHint = "nofab";
+                bolumImg = R.drawable.gazi_adalet1;
                 break;
             case "32":
                 defaultFakulteLink = "http://ydyo.gazi.edu.tr/posts?type=news";
@@ -570,6 +798,12 @@ public class WelcomeActivity extends AppCompatActivity {
                     editor.putString("checkbox", "checked");
                     editor.putString("defaultOgrNo", ogrNo);
                     // ---
+
+                    if (min_item_to_load != -1) {
+                        editor.putInt(DataHolder.MIN_ITEM_TO_LOAD, min_item_to_load);
+                    }
+
+
                     editor.commit();
                     Intent i = new Intent(getBaseContext(), MainActivity.class);
                     startActivity(i);

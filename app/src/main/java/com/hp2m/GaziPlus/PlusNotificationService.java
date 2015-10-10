@@ -211,8 +211,20 @@ public class PlusNotificationService extends IntentService {
 
 
                                 final int DB_MAX_DUYURU = db2.getDuyuruSayisi(generalMode);
-                                final int NET_MAX_DUYURU = duyuruHeaderElements.size() - 4;
-                                final int MIN_ITEM_TO_LOAD = 4;
+                                // finding max news number on the web page
+                                // checking index of '<'
+                                int NET_MAX_DUYURU=0;
+                                for(int i=0; i<duyuruHeaderElements.size(); i++){
+                                    if(duyuruHeaderElements.get(i).text().charAt(0) == '<'){
+                                        NET_MAX_DUYURU = i;
+                                        break;
+                                    }
+                                }
+                                // over -------------------------------
+
+
+                                //final int MIN_ITEM_TO_LOAD = 4;
+                                //final int MIN_ITEM_TO_LOAD = sP.getInt(DataHolder.MIN_ITEM_TO_LOAD, 4);
 
                                // final int DB_MAX_POSSIBLE_DUYURU = DB_MAX_DUYURU;
                                // Log.i("gazinotification", "DB_MAX_DUYURU = " + DB_MAX_DUYURU + " and DB_MAX_POSSIBLE_DUYURU = " + DB_MAX_POSSIBLE_DUYURU);

@@ -115,6 +115,26 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
 
 
             Log.i("tuna", "pass is " + password);
+            //OutputStream os = new ByteArrayOutputStream(password.getBytes("ISO-8859-9").);
+
+
+            /*Document doc = Jsoup.parse(password);
+
+            Document.OutputSettings settings = doc.outputSettings();
+
+            settings.prettyPrint(false);
+            settings.escapeMode(Entities.EscapeMode.extended);
+            settings.charset("ISO-8859-9");
+
+            String modifiedFileHtmlStr = doc.body().toString().substring(6,13);
+
+            Log.i("tuna", modifiedFileHtmlStr);
+*/
+
+
+            //Log.i("tuna", Jsoup.parse(new ByteArrayInputStream(password.getBytes()), "windows-1253", password).text());
+           // password = Jsoup.parse(new ByteArrayInputStream(password.getBytes()), "windows-1253", password).text();
+            //password = password.replace("t", URLDecoder.decode("0x0074", "ISO-8859-9"));
 
             enableSSLSocket();
             Log.i("tuna", "about to work");
