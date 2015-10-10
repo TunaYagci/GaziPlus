@@ -34,7 +34,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private String bolumHint = "none";
     private int bolumImg, fakulteImg;
     private int min_item_to_load = -1;
-    // test ///
+    // test /// //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
