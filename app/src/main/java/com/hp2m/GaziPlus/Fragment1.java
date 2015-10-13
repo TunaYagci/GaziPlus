@@ -119,6 +119,7 @@ public class Fragment1 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment test test2
         // ooo
+        // uuu
         final View rootView = inflater.inflate(R.layout.fragment1, container, false);
         bus.register(this);
 
