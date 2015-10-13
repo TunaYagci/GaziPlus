@@ -120,7 +120,7 @@ public class Fragment1 extends Fragment {
         // Inflate the layout for this fragment test test2
         // ooo
         // uuu
-        // --- jnj
+        // --- jnj ed
         // yyy
         final View rootView = inflater.inflate(R.layout.fragment1, container, false);
         bus.register(this);
