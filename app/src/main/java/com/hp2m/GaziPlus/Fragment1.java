@@ -119,7 +119,7 @@ public class Fragment1 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment test test2
         // ooo
-        // gg
+        // gg jj
         // uuu
         // --- jnj ed
         // yyy
