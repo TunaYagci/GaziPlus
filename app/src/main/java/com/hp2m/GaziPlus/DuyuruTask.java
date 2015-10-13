@@ -114,9 +114,15 @@ public class DuyuruTask extends AsyncTask<Void, Void, Void> {
             }
             // over -------------------------------
 
-
+            int MIN_ITEM_TO_LOAD;
             //final int MIN_ITEM_TO_LOAD = 4;
-            final int MIN_ITEM_TO_LOAD = sharedPreferences.getInt(DataHolder.MIN_ITEM_TO_LOAD, 4);
+            if(generalMode.equals("bolum")) {
+                MIN_ITEM_TO_LOAD = sharedPreferences.getInt(DataHolder.MIN_ITEM_TO_LOAD, 4);
+            }
+            else{
+                // coz no fakulte has items below 4
+                MIN_ITEM_TO_LOAD = 4;
+            }
 
             // Log.i("tuna", "Net Max Duyuru = "+ NET_MAX_DUYURU);
             // Log.i("tuna", "DB Max Duyuru = "+ DB_MAX_DUYURU);

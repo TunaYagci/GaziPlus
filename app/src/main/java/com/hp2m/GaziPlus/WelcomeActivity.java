@@ -42,7 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         sP = getSharedPreferences("user", Context.MODE_PRIVATE);
 
-        if(!(sP.getBoolean("isVersion2UpdateSuccessful",false))){
+        if(!(sP.getBoolean("isVersion4UpdateSuccessful",false))){
 
             SharedPreferences.Editor editor = sP.edit();
             editor.clear();
@@ -197,8 +197,49 @@ public class WelcomeActivity extends AppCompatActivity {
             case "03":
                 defaultFakulteLink = "http://edebiyat.gazi.edu.tr/posts?type=news";
                 break;
-            case "04":
-                defaultFakulteLink = "http://esef.gazi.edu.tr/posts?type=news";
+            case "04": // FEF
+                defaultFakulteLink = "http://fef.gazi.edu.tr/posts?type=news";
+                fakulteAdi = "Fen Fakültesi";
+                fakulteImg = R.drawable.gazi_edebiyat; // i do reaize that is not fen
+                switch (bolumNo.substring(0,1)) {
+                    case "1":
+                        defaultBolumLink = "http://istatistik.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Ýstatistik";
+                        bolumHint = "fen-istatistik";
+                        bolumImg = R.drawable.fen_istatistik;
+                        break;
+
+                    case "2":
+                        defaultBolumLink = "http://matematik.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Matematik";
+                        bolumHint = "fen-mat";
+                        bolumImg = R.drawable.fen_mat;
+                        break;
+
+                    case "3":
+                        defaultBolumLink = "http://fizik.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Fizik";
+                        bolumHint = "fen-fizik";
+                        bolumImg = R.drawable.gef_fizik1; // not the actual one
+                        break;
+
+                    case "4":
+                        defaultBolumLink = "http://kimya.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Kimya";
+                        bolumHint = "fen-kimya";
+                        bolumImg = R.drawable.fen_kimya;
+                        break;
+
+                    case "5":
+                        defaultBolumLink = "http://biyoloji.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Biyoloji";
+                        bolumHint = "fen-biyoloji";
+                        bolumImg = R.drawable.fen_biyoloji;
+                        break;
+                    default:
+                        break;
+
+                }
                 break;
             case "05":
                 //defaultFakulteLink = "http://fef.gazi.edu.tr/posts?type=news";
@@ -443,8 +484,12 @@ public class WelcomeActivity extends AppCompatActivity {
                 bolumHint = "nofab";
                 bolumImg = R.drawable.gazi_hukuk1;
                 break;
-            case "07":
-                defaultFakulteLink = "http://gsf.gazi.edu.tr/posts?type=news";
+            case "07": // iibf
+                defaultFakulteLink = "none";
+                defaultBolumLink = "http://iibf.gazi.edu.tr/posts?type=news";
+                bolumAdi = "ÝÝBF";
+                bolumHint = "nofab";
+                bolumImg = R.drawable.gazi_iibf;
                 break;
             case "08":
                 defaultFakulteLink = "none"; // gazi iletiþim
@@ -472,6 +517,8 @@ public class WelcomeActivity extends AppCompatActivity {
                         bolumAdi = "Þehir ve Bölge Planlama";
                         bolumHint = "mimar_sbp";
                         bolumImg = R.drawable.gazi_sbp1;
+                        break;
+                    default:
                         break;
                 }
                 break;
@@ -537,8 +584,35 @@ public class WelcomeActivity extends AppCompatActivity {
             case "15":
                 defaultFakulteLink = "http://stf.gazi.edu.tr/posts?type=news";
                 break;
-            case "16":
-                defaultFakulteLink = "http://mef.gazi.edu.tr/posts?type=news";
+            case "16": // saðlýk
+                defaultFakulteLink = "http://sbf.gazi.edu.tr/posts?type=news";
+                fakulteAdi = "Saðlýk Bilimleri Fakültesi";
+                fakulteImg = R.drawable.gazi_saglik_bilimleri;
+                switch (bolumNo) {
+                    case "10":
+                        defaultBolumLink = "http://sbf-hem.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Hemþirelik";
+                        bolumHint = "sbf-hemsirelik";
+                        min_item_to_load = 2;
+                        bolumImg = R.drawable.sbf_hemsirelik;
+                        break;
+                    case "20":
+                        defaultBolumLink = "http://sbf-bdb.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Beslenme ve Diyetetik";
+                        bolumHint = "sbf-diyetetik";
+                        min_item_to_load = 0;
+                        bolumImg = R.drawable.sbf_beslenme_diyetetik;
+                        break;
+                    case "30":
+                        defaultBolumLink = "http://sbf-ftr.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "FTR";
+                        bolumHint = "sbf-ftr";
+                        min_item_to_load = 1;
+                        bolumImg = R.drawable.sbp_ftr;
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case "17":
                 defaultFakulteLink = "http://tef.gazi.edu.tr/posts?type=news";
@@ -664,10 +738,91 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://ydyo.gazi.edu.tr/posts?type=news";
                 break;
             case "33": // EDEBÝYAT
-                defaultFakulteLink = "http://edebiyat.gazi.edu.tr/";
+                defaultFakulteLink = "http://edebiyat.gazi.edu.tr/posts?type=news";
                 fakulteAdi = "Edebiyat Fakültesi";
                 fakulteImg = R.drawable.gazi_edebiyat;
                 switch (bolumNo) {
+
+                    // Türk Dili ------------------------------------
+                    case "60":
+                        defaultBolumLink = "http://edebiyat-turkdili.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Türk Dili ve Edebiyatý";
+                        bolumHint = "edb-turkdili";
+                        bolumImg = R.drawable.edeb_turkdili;
+                        break;
+                    case "65":
+                        defaultBolumLink = "http://edebiyat-turkdili.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Türk Dili ve Edebiyatý";
+                        bolumHint = "edb-turkdili";
+                        bolumImg = R.drawable.edeb_turkdili;
+                        break;
+                    // Türk Dili ------------------------------------
+
+
+                    /* // ÇTL ------------------------------------
+                    case "80":
+                        defaultBolumLink = "http://cagdas_turk.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Çaðdaþ Türkçe Lehçeleri";
+                        bolumHint = "edb-cts";
+                        bolumImg = R.drawable.edeb_ctl;
+                        break;
+                   case "85":
+                        defaultBolumLink = "http://cagdas_turk.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Çaðdaþ Türkçe Lehçeleri";
+                        bolumHint = "edb-cts";
+                        bolumImg = R.drawable.edeb_ctl;
+                        break;
+                    // ÇTL ------------------------------------*/
+
+
+                    /*case "96":
+                        defaultBolumLink = "http://rus_dili.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Rus Dili ve Edebiyatý";
+                        bolumHint = "edb-rus";
+                        bolumImg = R.drawable.edeb_rus_dili;*/
+
+
+                   /* case "97":
+                        defaultBolumLink = "http://sanat_tarihi.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Sanat Tarihi";
+                        bolumHint = "edb-sanat_tarihi";
+                        min_item_to_load = 3;
+                        bolumImg = R.drawable.edeb_sanat_tarihi;*/
+
+                   /* case "98":
+                        defaultBolumLink = "http://turk_halk_bilimi.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Türk Halk Bilimi";
+                        bolumHint = "edb-thb";
+                        bolumImg = R.drawable.edeb_thb;*/
+
+
+                    case "10":
+                        defaultBolumLink = "http://arkeoloji.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Arkeoloji";
+                        bolumHint = "edb-arkeoloji";
+                        min_item_to_load = 2;
+                        bolumImg = R.drawable.edeb_arkeoloji;
+                        break;
+
+                        // Batý Dilleri ------------------------------------
+                    /*case "20":
+                        defaultBolumLink = "http://bati_dilleri.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Batý Dilleri";
+                        bolumHint = "edb-bati_dilleri";
+                        min_item_to_load = 1;
+                        bolumImg = R.drawable.edeb_bati_dilleri;
+                        break;
+                    case "03":
+                        defaultBolumLink = "http://bati_dilleri.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Batý Dilleri";
+                        bolumHint = "edb-bati_dilleri";
+                        min_item_to_load = 1;
+                        bolumImg = R.drawable.edeb_bati_dilleri;
+                        break;
+                    // Batý Dilleri ------------------------------------*/
+
+
+                    // Tarih ------------------------------------
                     case "70":
                         defaultBolumLink = "http://tarih.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Tarih";
@@ -680,11 +835,13 @@ public class WelcomeActivity extends AppCompatActivity {
                         bolumHint = "edb-tarih";
                         bolumImg = R.drawable.edeb_tarih;
                         break;
+                    // Tarih ------------------------------------
+
                     case "90":
                         defaultBolumLink = "http://felsefe.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Felsefe";
                         bolumHint = "edb-felsefe";
-                        bolumImg = R.drawable.gazi_felsefe;
+                        bolumImg = R.drawable.gef_felsefe1;
                         break;
                     case "93":
                         defaultBolumLink = "http://sosyoloji.gazi.edu.tr/posts?type=news";
@@ -780,7 +937,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
                 verCode = pInfo.versionCode;
 
-                editor.putBoolean("isVersion2UpdateSuccessful", true);
+                editor.putBoolean("isVersion4UpdateSuccessful", true);
                 editor.putInt("versionCode", verCode);
 
 
@@ -861,9 +1018,14 @@ public class WelcomeActivity extends AppCompatActivity {
                     } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
                     }
-                    verCode = pInfo.versionCode;
+                    try {
+                        verCode = pInfo.versionCode;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        verCode=3;
+                    }
 
-                    editor.putBoolean("isVersion2UpdateSuccessful", true);
+                    editor.putBoolean("isVersion4UpdateSuccessful", true);
                     editor.putInt("versionCode", verCode);
 
                     editor.commit();

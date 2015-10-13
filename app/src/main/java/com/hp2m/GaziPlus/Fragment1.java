@@ -240,7 +240,12 @@ public class Fragment1 extends Fragment {
                 if (b) {
                     dimLayout.setVisibility(View.VISIBLE);
                     if (sP.getString("generalMode", "bolum").equals("bolum")) {
-                        fab2.setLabelText("Bölüm bildirimleri");
+                        if (sP.getString("bolumHint", "nofab").equals("nofab")) {
+                            fab2.setLabelText("Fakülte bildirimleri");
+                        }
+                        else {
+                            fab2.setLabelText("Bölüm bildirimleri");
+                        }
                         if (sP.getBoolean("isBolumNotificationsAllowed", false)) {
                             fab2.setImageResource(R.drawable.ic_notifications_active_white_24dp);
                         } else {
@@ -276,7 +281,7 @@ public class Fragment1 extends Fragment {
         }
 
         if (sP.getString("bolumHint", "nofab").equals("nofab")) { // gazi iletiþim
-            fabMenu.removeMenuButton(fab1);
+                fabMenu.removeMenuButton(fab1);
             fab2.setLabelText("Fakülte bildirimleri");
         } else {
             fab1.setColorNormalResId(R.color.fab_menu_1);
@@ -304,7 +309,6 @@ public class Fragment1 extends Fragment {
                 handleMenuFab3Click();
             }
         });
-
         fabMenu.hideMenuButton(false);
     }
 

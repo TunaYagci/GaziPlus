@@ -1,0 +1,8 @@
+NOFAB explanation:
+
+So, when its in noFab, "Bölüm Bildirimleri" --> "Fakülte Bildirimleri" (but only in text)
+so like our SharedPreferences settings are the same. When generalMode is equals to
+bolum, we are still dealing with isBolumNotificationsOn, not the Fakulte.
+
+Those texts affect the Settings and Fragment1.FabMenu,
+beware the strings.

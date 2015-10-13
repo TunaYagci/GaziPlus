@@ -127,11 +127,20 @@ public class Settings extends AppCompatActivity {
                 final ActivityUserInfo current = data.get(position);
                 ((Body) holder).nameOfSetting.setText(current.body);
                 if (current.body.equals(FAKULTE_BILDIRIM_AYARI)) {
-                    if (sP.getBoolean("isFakulteNotificationsAllowed", false)) {
-                        ((Body) holder).checkboxJohn.setChecked(true);
-                    } else
-                        ((Body) holder).checkboxJohn.setChecked(false);
 
+                    if (sP.getString("bolumHint", "nofab").equals("nofab")) { // nofab check
+                        if (sP.getBoolean("isBolumNotificationsAllowed", false)) {
+                            ((Body) holder).checkboxJohn.setChecked(true);
+                        } else
+                            ((Body) holder).checkboxJohn.setChecked(false);
+
+                    }
+                    else {
+                        if (sP.getBoolean("isFakulteNotificationsAllowed", false)) {
+                            ((Body) holder).checkboxJohn.setChecked(true);
+                        } else
+                            ((Body) holder).checkboxJohn.setChecked(false);
+                    }
                 } else if (current.body.equals(BOLUM_BILDIRIM_AYARI)) {
                     if (sP.getBoolean("isBolumNotificationsAllowed", false)) {
                         ((Body) holder).checkboxJohn.setChecked(true);
@@ -169,10 +178,18 @@ public class Settings extends AppCompatActivity {
                     editor.putBoolean("isBolumNotificationsAllowed", false);
                 }
             } else if (generalMode.equals(FAKULTE_BILDIRIM_AYARI)) {
-                if (state) {
-                    editor.putBoolean("isFakulteNotificationsAllowed", true);
+                if (sP.getString("bolumHint", "nofab").equals("nofab")) { //nofab check again
+                    if (state) {
+                        editor.putBoolean("isBolumNotificationsAllowed", true);
+                    } else {
+                        editor.putBoolean("isBolumNotificationsAllowed", false);
+                    }
                 } else {
-                    editor.putBoolean("isFakulteNotificationsAllowed", false);
+                    if (state) {
+                        editor.putBoolean("isFakulteNotificationsAllowed", true);
+                    } else {
+                        editor.putBoolean("isFakulteNotificationsAllowed", false);
+                    }
                 }
             }
             editor.commit();
