@@ -117,7 +117,7 @@ public class Fragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment test
+        // Inflate the layout for this fragment test test2
         final View rootView = inflater.inflate(R.layout.fragment1, container, false);
         bus.register(this);
 
