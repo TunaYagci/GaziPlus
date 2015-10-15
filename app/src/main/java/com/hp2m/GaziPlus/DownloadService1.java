@@ -105,7 +105,7 @@ public class DownloadService1 extends IntentService {
             } else {
                 Log.i("gazient", builder.toString());
             }*/
-                /*Elements duyuruInsafsizElement = insideDocs.select("div.post-content div");
+                Elements duyuruInsafsizElement = insideDocs.select("div.post-content div");
                 for (int i2 = 0; i2 < duyuruInsafsizElement.size(); i2++) {
                     if (!duyuruInsafsizElement.get(i2).text().isEmpty()) {
                         //a += duyuruElements.get(i2).text();
@@ -113,7 +113,7 @@ public class DownloadService1 extends IntentService {
                         builder.append(duyuruInsafsizElement.get(i2).text());
                         builder.append("\n\n");
                     }
-                }*/
+                }
 
             Elements duyuruLiElement = insideDocs.select("div.post-content li");
             for (int i2 = 0; i2 < duyuruLiElement.size(); i2++) {

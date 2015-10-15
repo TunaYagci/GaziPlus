@@ -101,7 +101,6 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         db = new DuyuruDB(this);
 
 
-
         if (extras != null) {
             String title = extras.getString("title");
             POSITION = db.fetchMeDuyuruPosition(title, generalMode);
@@ -139,7 +138,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
                 Log.i("tuna", "This is on Duyuru Exceptions");
                 //onEvent(new StatusForDetailedActivity("exception"));
             } else { }*/
-                handler.postDelayed(runnable, 300);
+            handler.postDelayed(runnable, 300);
         } else {
             Log.i("tuna", "gonna load duyuru detailed");
             startLoad();
@@ -182,8 +181,27 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
             //  imageLoader.clearMemoryCache();
 
             for (int i = 0; i < imageLinks.size(); i++) {
-                if (i == 0) {
+
+                switch (i) {
+                    case 0:
+                        imageClick(image1, imageLinks.get(0));
+                        break;
+                    case 1:
+                        imageClick(image2, imageLinks.get(1));
+                        break;
+                    case 2:
+                        imageClick(image3, imageLinks.get(2));
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), "Görüntülenenden daha fazla resim mevcut", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
+
+                /*if (i == 0) {
+                    final int i2 = i;
                     image1.setVisibility(View.VISIBLE);
+                    Log.i("tuna", "IMAGEY: " + imageLinks.get(i));
                     ImageLoader.getInstance().displayImage(imageLinks.get(i), image1, new ImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String imageUri, View view) {
@@ -192,20 +210,33 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
 
                         @Override
                         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+                            Log.i("tuna", failReason.toString());
+                            Toast.makeText(getApplicationContext(), "Resim yüklenemedi", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                            final Uri uri = Uri.parse(imageUri);
-                            image1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent i = new Intent(Intent.ACTION_VIEW);
-                                    i.setDataAndType(uri, "image/jpeg");
-                                    startActivity(i);
-                                }
-                            });
+                            if(imageLinks.get(i2).contains("download")){
+                                image1.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        new DuyuruDetailedPageTask(activity, imageLinks.get(i2))
+                                                .execute();
+                                    }
+                                });
+
+                            } else {
+                                final Uri uri = Uri.parse(imageUri);
+                                Log.i("tuna", "IMAGEY: " + imageUri);
+                                image1.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent i = new Intent(Intent.ACTION_VIEW);
+                                        i.setDataAndType(uri, "image/jpeg");
+                                        startActivity(i);
+                                    }
+                                });
+                            }
 
                         }
 
@@ -221,7 +252,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
                     image3.setVisibility(View.VISIBLE);
                     ImageLoader.getInstance().displayImage(imageLinks.get(i), image3);
                 } else
-                    break;
+                    break;*/
             }
         }
         originalLink = db.fetchMeMyDuyuru(POSITION, generalMode).get(4);
@@ -235,7 +266,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
                 String a = scanner.nextLine(); // first saved is link
                 scanner.hasNext();
                 String b = scanner.nextLine(); // second is the word
-                //Log.i("tuna", "first a and first b= " + a + " " + b);
+                Log.i("tuna", "first a and first b= " + a + " " + b);
                 links.add(a);
                 linkWords.add(b);
             }
@@ -258,7 +289,7 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         for (int i = 0; i < linkWords.size(); i++) {
             final int start = contentText.indexOf(linkWords.get(i));
             final int end = start + linkWords.get(i).length();
-            //Log.i("tuna", "linkWord is =" + linkWords.get(i) + "and start is " + start + " and end is " + end);
+            //Log.i("tuna", "linkWord is =" + linkWords.get(i) + " and start is " + start + " and end is " + end);
             if (links.get(i).contains("download")) {
                 final int i3 = i;
                 ClickableSpan clickableSpan = new ClickableSpan() {
@@ -355,13 +386,62 @@ public class DuyuruDetailedActivity extends AppCompatActivity {
         }*/
     }
 
+    public void imageClick(final ImageView image1, final String imageLink) {
+        image1.setVisibility(View.VISIBLE);
+        //Log.i("tuna", "IMAGEY: " + imageLink);
+        ImageLoader.getInstance().displayImage(imageLink, image1, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                Log.i("tuna", failReason.toString());
+                Toast.makeText(getApplicationContext(), "Resim yüklenemedi", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                if (imageLink.contains("download")) {
+                    image1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            new DuyuruDetailedPageTask(activity, imageLink)
+                                    .execute();
+                        }
+                    });
+
+                } else {
+                    final Uri uri = Uri.parse(imageUri);
+                    Log.i("tuna", "IMAGEY: " + imageUri);
+                    image1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setDataAndType(uri, "image/jpeg");
+                            startActivity(i);
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
-            default: return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

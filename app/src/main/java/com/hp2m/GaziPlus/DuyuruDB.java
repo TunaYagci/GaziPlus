@@ -237,6 +237,7 @@ public class DuyuruDB extends SQLiteOpenHelper {
                         ");";
                 db.execSQL(query2);
             }
+            db.close();
         } catch (SQLException e) {
             Log.i("tuna", "sqlexception " + e.toString());
             SQLiteDatabase db = this.getWritableDatabase();
@@ -265,6 +266,11 @@ public class DuyuruDB extends SQLiteOpenHelper {
                         COLUMN_IMAGELINKS + " TEXT" +
                         ");";
                 db.execSQL(query2);
+            }
+            try {
+                db.close();
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
         }
     }
