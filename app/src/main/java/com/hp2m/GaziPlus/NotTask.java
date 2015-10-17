@@ -24,7 +24,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
@@ -133,7 +132,7 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
 
 
             //Log.i("tuna", Jsoup.parse(new ByteArrayInputStream(password.getBytes()), "windows-1253", password).text());
-           // password = Jsoup.parse(new ByteArrayInputStream(password.getBytes()), "windows-1253", password).text();
+            // password = Jsoup.parse(new ByteArrayInputStream(password.getBytes()), "windows-1253", password).text();
             //password = password.replace("t", URLDecoder.decode("0x0074", "ISO-8859-9"));
 
             enableSSLSocket();
@@ -141,11 +140,12 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
             String url = "https://ogrenci.gazi.edu.tr/ogrenci/";
             Connection.Response res2 = Jsoup.connect(url)
                     .data("kullanici", username)
-                            .data("sifre", password)
+                    .data("sifre", password)
                     .data("login", "  Baðlan  ")
-                    //.header("Content-Type", "windows-1254")
+                            //.header("Content-Type", "windows-1254")
+                    .followRedirects(true)
                     .method(Connection.Method.POST)
-                                            //.timeout(10000)
+                            //.timeout(10000)
                     .timeout(0)
                     .execute();
             Log.i("tuna", "jsoup 2 passed");
@@ -154,24 +154,40 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
             int x = response.indexOf("myID") + 5;
             String myID = response.substring(x, x + 32);
 
-            /*Log.i("tuna", response);
-            Document document = res2.parse();
+            Log.i("tuna", response);
+            Log.i("tuna", res2.body());
+            /*Document document = res2.parse();
             document.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
-            Log.i("tuna", document.text());
+
             Element elem = document.select("frame[src]").first();
             String sessionLink = elem.attr("abs:src");*/
             //String myID = sessionLink.substring(57, 89);
             Log.i("tuna", myID);
             String mightyURL = "https://ogrenci.gazi.edu.tr/ogrenci/htmlNavigate.php?ReqID=NOT_GOR_EKR&myID="
                     + myID;
-            Document doc2 = Jsoup.parse(new URL(mightyURL).openStream(), "ISO-8859-9", mightyURL);
+            /*Document doc2 = Jsoup.parse(new URL(mightyURL).openStream(), "ISO-8859-9", mightyURL);*/
+
                     /*.method(Connection.Method.GET)
                     .timeout(3000)
                     .get();*/
 
+            String referrer = "https://ogrenci.gazi.edu.tr/ogrenci/htmlAnaMenu.php?myID=" + myID;
+            Document doc2 = Jsoup.connect(mightyURL)
+                    .cookies(res2.cookies())
+                    .timeout(0)
+                    .referrer(referrer)
+                    .get();
+
+            /*Connection.Response docx = Jsoup.connect(mightyURL)
+                    .cookies(res2.cookies())
+                    .timeout(0)
+                    .execute();*/
+            Log.i("tuna", "jsoup 3 passed");
+            Log.i("tuna", "doc2.body= " + doc2.body());
+
             Elements element1 = doc2.select("tbody tr");
             String whoAreYou = element1.get(1).text().replace(String.valueOf((char) 160), " ").trim();
-
+            Log.i("tuna", "arrays passed");
             String cleanA = whoAreYou.substring(0, whoAreYou.length() - 13);
             String number = cleanA.substring(0, 9);
             String name = cleanA.substring(10, cleanA.length());
@@ -186,15 +202,15 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                         notList.add(b);
                         i++;
                         continue;
-                    } else if ( b.contains("Genel Ortalama : ")) {
+                    } else if (b.contains("Genel Ortalama : ")) {
                         if (!haveYouFoundGenelOrt) {
                             int c = b.indexOf("Genel Ortalama :");
                             String x2 = b.substring(c + 18, c + 19);
                             Log.i("tuna", "x2= " + x2);
-                            String x3 =  b.substring(c + 19, c + 20);
+                            String x3 = b.substring(c + 19, c + 20);
                             Log.i("tuna", "x3= " + x3);
                             if (!x2.equals("-")) {
-                                x2 = b.substring(c + 18, c +22);
+                                x2 = b.substring(c + 18, c + 22);
                                 genelOrt = x2;
                                 haveYouFoundGenelOrt = true;
                             }
@@ -232,7 +248,12 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                 String idMightyURL = "https://ogrenci.gazi.edu.tr/ogrenci/htmlNavigate.php?ReqID=OGR_BILGI_EKR&myID="
                         + myID;
 
-                Document doc3 = Jsoup.parse(new URL(idMightyURL).openStream(), "ISO-8859-9", idMightyURL);
+                //Document doc3 = Jsoup.parse(new URL(idMightyURL).openStream(), "ISO-8859-9", idMightyURL);
+                Document doc3 = Jsoup.connect(idMightyURL)
+                        .cookies(res2.cookies())
+                        .referrer(referrer)
+                        .timeout(0)
+                        .get();
                 Log.i("tuna", "html parsed, gonna find index of link");
                 StringBuilder a = new StringBuilder("");
                 a.append(doc3.body().toString());
