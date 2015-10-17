@@ -83,6 +83,20 @@
             android:name="com.hp2m.GaziPlus.Agreement"
             android:label="@string/title_activity_agreement" >
         </activity>
+
+        <!--
+        update later
+        <receiver android:name=".widget_yemek" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_yemek_info" />
+        </receiver>
+
+        -->
     </application>
 
 </manifest>

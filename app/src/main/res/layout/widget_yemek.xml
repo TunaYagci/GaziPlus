@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#80000000" android:padding="8dp">
+
+    <TextView android:id="@+id/widgetyemek_1" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/widgetyemek_2"
+        android:layout_alignParentLeft="true" android:layout_alignParentRight="true" android:layout_alignParentTop="false"
+        android:layout_alignStart="@+id/widgetyemek_2"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:text="-"
+        android:textAppearance="@color/primary_text_default_material_light"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/widgetyemek_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/widgetyemek_1"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:text="-"
+        android:textAppearance="@color/secondary_text_default_material_light"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        android:textStyle="bold|normal" />
+
+    <TextView
+        android:id="@+id/widgetyemek_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/widgetyemek_2"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:text="@string/user_agreement"
+        android:textAppearance="@color/secondary_text_default_material_light"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        android:textStyle="normal|italic" />
+
+    <TextView
+        android:id="@+id/widgetyemek_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/widgetyemek_3"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:text="-"
+        android:textAppearance="@color/secondary_text_default_material_light"
+        android:textColor="#ffffff"
+        android:textIsSelectable="false"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/widgetyemek_gun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/widgetyemek_1"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="31dp"
+        android:autoText="false"
+        android:background="@android:color/transparent"
+        android:text="-"
+        android:textAppearance="@color/primary_text_default_material_dark"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:textStyle="bold|italic" />
+
+</RelativeLayout>

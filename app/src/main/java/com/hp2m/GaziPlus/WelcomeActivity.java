@@ -42,7 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         sP = getSharedPreferences("user", Context.MODE_PRIVATE);
 
-        if(!(sP.getBoolean("isVersion5UpdateSuccessful",false))){
+        if(!(sP.getBoolean("isVersion6UpdateSuccessful",false))){
 
             SharedPreferences.Editor editor = sP.edit();
             editor.clear();
@@ -937,7 +937,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
                 verCode = pInfo.versionCode;
 
-                editor.putBoolean("isVersion5UpdateSuccessful", true);
+                editor.putBoolean("isVersion6UpdateSuccessful", true);
                 editor.putInt("versionCode", verCode);
 
 
@@ -1025,7 +1025,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         verCode=3;
                     }
 
-                    editor.putBoolean("isVersion5UpdateSuccessful", true);
+                    editor.putBoolean("isVersion6UpdateSuccessful", true);
                     editor.putInt("versionCode", verCode);
 
                     editor.commit();

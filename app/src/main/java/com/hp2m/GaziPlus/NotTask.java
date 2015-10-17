@@ -24,6 +24,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.ByteArrayInputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
@@ -175,12 +176,26 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
             // NotTask fix
             String referrer = "https://ogrenci.gazi.edu.tr/ogrenci/htmlAnaMenu.php?myID=" + myID;
             // ----------------
-            Document doc2 = Jsoup.connect(mightyURL)
+
+
+            Connection.Response connection = Jsoup.connect(mightyURL)
+                    .referrer(referrer)
+                    .timeout(0)
+                    .cookies(res2.cookies())
+                    .method(Connection.Method.GET)
+                    .execute();
+
+            Document doc2 = Jsoup.parse(new ByteArrayInputStream(connection.bodyAsBytes()), "ISO-8859-9", mightyURL);
+
+
+
+            // below is working code
+           /* Document doc2 = Jsoup.connect(mightyURL)
                     .cookies(res2.cookies())
                     .timeout(0)
                     .referrer(referrer)
                     .get();
-
+            */
             /*Connection.Response docx = Jsoup.connect(mightyURL)
                     .cookies(res2.cookies())
                     .timeout(0)

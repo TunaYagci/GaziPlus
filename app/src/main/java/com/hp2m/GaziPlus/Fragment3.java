@@ -105,6 +105,7 @@ public class Fragment3 extends Fragment {
                 yemekList = new ArrayList<>();
                 YemekInformation current = new YemekInformation();
                 yemekList.addAll(db.fetchMeMyFood(i + 1));
+                // above code returns one "day" for food list
                 current.header = yemekList.get(0);
                 current.yemek1 = yemekList.get(1);
                 current.yemek2 = yemekList.get(2);
