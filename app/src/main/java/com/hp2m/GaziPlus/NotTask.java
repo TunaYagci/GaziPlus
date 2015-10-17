@@ -154,8 +154,8 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
             int x = response.indexOf("myID") + 5;
             String myID = response.substring(x, x + 32);
 
-            Log.i("tuna", response);
-            Log.i("tuna", res2.body());
+            //Log.i("tuna", response);
+            //Log.i("tuna", res2.body());
             /*Document document = res2.parse();
             document.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
 
@@ -171,7 +171,10 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                     .timeout(3000)
                     .get();*/
 
+            // the referrer for 17.10.15
+            // NotTask fix
             String referrer = "https://ogrenci.gazi.edu.tr/ogrenci/htmlAnaMenu.php?myID=" + myID;
+            // ----------------
             Document doc2 = Jsoup.connect(mightyURL)
                     .cookies(res2.cookies())
                     .timeout(0)
@@ -183,7 +186,7 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                     .timeout(0)
                     .execute();*/
             Log.i("tuna", "jsoup 3 passed");
-            Log.i("tuna", "doc2.body= " + doc2.body());
+            //Log.i("tuna", "doc2.body= " + doc2.body());
 
             Elements element1 = doc2.select("tbody tr");
             String whoAreYou = element1.get(1).text().replace(String.valueOf((char) 160), " ").trim();
