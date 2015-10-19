@@ -57,5 +57,8 @@
     <color name="gradient_end">#C9C0AB</color>
     <color name="gradient_center">#73BA9B</color>
 
+    <color name="turkuaz">@color/fab_menu_2</color>
+    <color name="yemek_widget_background">#FFFFFF</color>
+
 
 </resources>

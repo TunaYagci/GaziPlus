@@ -3,6 +3,8 @@ package com.hp2m.GaziPlus;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import java.util.Calendar;
@@ -77,6 +79,53 @@ public class widget_yemek extends AppWidgetProvider {
                 return 6;
 
         }
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+        int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        /*int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+        int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+*/
+
+        //Log.i("tuna", minWidth + " " + maxWidth + " " + minHeight + " " + maxHeight);
+
+        int unit = 3;
+        float size = 8f;
+
+        switch (minWidth){
+            case 128:
+                unit = 3;
+                size = 7f;
+                break;
+            case 200:
+                unit = 3;
+                break;
+            case 272:
+                unit = 3;
+                size = 9f;
+                break;
+            case 344:
+                unit = 3;
+                size = 9f;
+                break;
+        }
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_yemek);
+
+            views.setTextViewTextSize(R.id.widgetyemek_gun, unit, size);
+            views.setTextViewTextSize(R.id.widgetyemek_1, unit, size);
+            views.setTextViewTextSize(R.id.widgetyemek_2, unit, size);
+            views.setTextViewTextSize(R.id.widgetyemek_3, unit, size);
+            views.setTextViewTextSize(R.id.widgetyemek_4, unit, size);
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+        }
+
+
     }
 
     @Override

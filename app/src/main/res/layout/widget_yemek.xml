@@ -1,105 +1,124 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@drawable/layout_bg" android:padding="8dp">
-
-    <TextView
-        android:id="@+id/widgetyemek_gun"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:autoText="false"
-        android:background="@android:color/transparent"
-        android:text="GÜN"
-        android:textColor="#ffffff"
-        android:textSize="16sp"
-        android:textStyle="bold|italic"
-        android:layout_marginTop="27dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColorHighlight="#010101" />
+    android:background="@drawable/layout_bg" >
 
     <TextView
         android:id="@+id/widgetyemek_1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/gun_layout"
         android:autoText="false"
         android:background="@android:color/transparent"
-        android:text="GÜN"
-        android:textColor="#ffffff"
-        android:textSize="14sp"
-        android:textStyle="normal"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/widgetyemek_gun"
         android:ellipsize="end"
+        android:gravity="left"
         android:maxLines="1"
-        android:layout_alignParentRight="false"
-        android:gravity="center"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:padding="5dp"
+        android:text="GÜN"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="@color/material_blue_grey_800"
+        android:textSize="14sp"
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/widgetyemek_2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:autoText="false"
-        android:background="@android:color/transparent"
-        android:text="GÜN"
-        android:textColor="#ffffff"
-        android:textSize="14sp"
-        android:textStyle="normal"
-        android:layout_below="@+id/widgetyemek_1"
         android:layout_alignLeft="@+id/widgetyemek_1"
         android:layout_alignStart="@+id/widgetyemek_1"
+        android:layout_below="@+id/widgetyemek_1"
+        android:autoText="false"
+
+        android:background="@android:color/transparent"
         android:ellipsize="end"
+        android:gravity="left"
         android:maxLines="1"
-        android:gravity="center" />
+        android:padding="5dp"
+        android:text="GÜN"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="@color/material_blue_grey_800"
+        android:textSize="14sp"
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/widgetyemek_3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:autoText="false"
-        android:background="@android:color/transparent"
-        android:text="GÜN"
-        android:textColor="#ffffff"
-        android:textSize="14sp"
-        android:textStyle="normal"
-        android:layout_below="@+id/widgetyemek_2"
         android:layout_alignLeft="@+id/widgetyemek_2"
         android:layout_alignStart="@+id/widgetyemek_2"
+        android:layout_below="@+id/widgetyemek_2"
+        android:autoText="false"
+        android:background="@android:color/transparent"
         android:ellipsize="end"
+        android:gravity="left|center"
         android:maxLines="1"
-        android:gravity="center" />
+        android:padding="5dp"
+        android:text="GÜN"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="@color/material_blue_grey_800"
+        android:textSize="14sp"
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/widgetyemek_4"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:autoText="false"
-        android:background="@android:color/transparent"
-        android:text="GÜN"
-        android:textColor="#ffffff"
-        android:textSize="14sp"
-        android:textStyle="normal"
-        android:layout_below="@+id/widgetyemek_3"
         android:layout_alignLeft="@+id/widgetyemek_3"
         android:layout_alignStart="@+id/widgetyemek_3"
+        android:layout_below="@+id/widgetyemek_3"
+        android:autoText="false"
+        android:background="@android:color/transparent"
         android:ellipsize="end"
+        android:gravity="left"
         android:maxLines="1"
-        android:gravity="center" />
+        android:padding="5dp"
+        android:text="GÜN"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="@color/material_blue_grey_800"
+        android:textSize="14sp"
+        android:textStyle="normal" />
 
     <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/imageView3"
-        android:src="@mipmap/ic_launcher"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/gun_layout"
+        android:adjustViewBounds="false"
+        android:alpha="0.1"
+        android:longClickable="false"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
+        android:id="@+id/gun_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:alpha="0.2"
-        android:adjustViewBounds="false"
-        android:longClickable="false"
-        android:scaleType="fitCenter" />
+        android:background="@color/turkuaz"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/widgetyemek_gun"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/imageView3"
+            android:layout_alignLeft="@+id/imageView3"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/imageView3"
+            android:layout_alignStart="@+id/imageView3"
+            android:autoText="false"
+            android:padding="12dp"
+            android:text="GÜN"
+            android:textColor="#ffffff"
+            android:textColorHighlight="#010101"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -85,7 +85,7 @@
         </activity>
 
 
-        update later
+        <!-- update later -->
         <receiver android:name=".widget_yemek" android:label="Gazi+ Yemek Listesi" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -93,10 +93,31 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_yemek_info" />
+                android:resource="@xml/widget_yemek_info_small" />
         </receiver>
 
+        <!--
+        <receiver android:name=".widget_yemek_medium" android:label="Gazi+ Yemek Listesi" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_yemek_info_small" />
+        </receiver>
+
+        <receiver android:name=".widget_yemek_large" android:label="Gazi+ Yemek Listesi" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_yemek_info_small" />
+        </receiver>
+
+-->
     </application>
 
 </manifest>
