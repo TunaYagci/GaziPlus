@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         mPager.setAdapter(pagerAdapter);
 
 
-
         ImageButton userButton = (ImageButton) findViewById(R.id.userButton);
         userButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,8 +195,8 @@ public class MainActivity extends AppCompatActivity {
                     return new Fragment2();
                 case 2:
                     return new Fragment3();
-                //case 3:
-                // return new Fragment4();
+                /*case 3:
+                    return new Fragment4();*/
                 default:
                     return null;
             }
