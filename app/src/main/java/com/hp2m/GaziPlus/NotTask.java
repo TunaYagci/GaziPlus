@@ -206,7 +206,7 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
             //dasdsa
             //asdaasda
             //uuu
-
+            //slmcnm
             Elements element1 = doc2.select("tbody tr");
             String whoAreYou = element1.get(1).text().replace(String.valueOf((char) 160), " ").trim();
             Log.i("tuna", "arrays passed");
