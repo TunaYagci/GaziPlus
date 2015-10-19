@@ -10,13 +10,13 @@
         android:layout_alignParentRight="false"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/gun_layout"
+        android:layout_marginLeft="4dp"
         android:autoText="false"
         android:background="@android:color/transparent"
         android:ellipsize="end"
         android:gravity="left"
         android:maxLines="1"
         android:padding="5dp"
-        android:text="GÜN"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
         android:textColor="@color/material_blue_grey_800"
         android:textSize="14sp"
@@ -36,7 +36,6 @@
         android:gravity="left"
         android:maxLines="1"
         android:padding="5dp"
-        android:text="GÜN"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
         android:textColor="@color/material_blue_grey_800"
         android:textSize="14sp"
@@ -55,7 +54,6 @@
         android:gravity="left|center"
         android:maxLines="1"
         android:padding="5dp"
-        android:text="GÜN"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
         android:textColor="@color/material_blue_grey_800"
         android:textSize="14sp"
@@ -74,7 +72,6 @@
         android:gravity="left"
         android:maxLines="1"
         android:padding="5dp"
-        android:text="GÜN"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
         android:textColor="@color/material_blue_grey_800"
         android:textSize="14sp"
@@ -94,7 +91,7 @@
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/gun_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -107,18 +104,25 @@
             android:id="@+id/widgetyemek_gun"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/imageView3"
-            android:layout_alignLeft="@+id/imageView3"
             android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/imageView3"
-            android:layout_alignStart="@+id/imageView3"
-            android:autoText="false"
             android:padding="12dp"
-            android:text="GÜN"
+            android:text="Yükleniyor..."
             android:textColor="#ffffff"
             android:textColorHighlight="#010101"
             android:textSize="16sp"
             android:textStyle="bold" />
-    </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/sync_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/widgetyemek_gun"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_sync_white_24dp" />
+    </RelativeLayout>
 
 </RelativeLayout>
