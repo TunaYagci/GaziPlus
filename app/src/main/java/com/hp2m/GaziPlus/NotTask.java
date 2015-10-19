@@ -202,6 +202,7 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                     .execute();*/
             Log.i("tuna", "jsoup 3 passed");
             //Log.i("tuna", "doc2.body= " + doc2.body());
+            // test
 
             Elements element1 = doc2.select("tbody tr");
             String whoAreYou = element1.get(1).text().replace(String.valueOf((char) 160), " ").trim();
