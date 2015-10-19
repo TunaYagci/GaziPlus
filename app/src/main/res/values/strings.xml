@@ -76,6 +76,7 @@ Herhangi bir ihtilaf halinde, Ankara’daki yerel yargı yetkisine veya konu ile
 Son Güncelleme: Haziran 2015\n\n</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="title_activity_timetable">TimetableActivity</string>
 
 
 

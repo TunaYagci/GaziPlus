@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_public_white_24dp);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_school_black_24dp);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_cake_black_24dp);
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_arrow_right_white_24dp);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter //implements PagerSlidingTabStrip.IconTabProvider
     {
-        private final int NUM_PAGES = 3;
+        private final int NUM_PAGES = 4;
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -196,8 +197,8 @@ public class MainActivity extends AppCompatActivity {
                     return new Fragment2();
                 case 2:
                     return new Fragment3();
-                //case 3:
-                // return new Fragment4();
+                case 3:
+                return new Fragment4();
                 default:
                     return null;
             }
