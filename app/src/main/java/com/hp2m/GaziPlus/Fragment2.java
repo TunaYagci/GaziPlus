@@ -379,6 +379,7 @@ public class Fragment2 extends Fragment {
             Log.i("tuna", "empty List size is=" + notList.size());
             if (notList.size() > 3) {
                 NotlarDB db = new NotlarDB(this.getActivity());
+                db.deleteAll();
                 for (int i = 0; i < notList.size(); i++) {
                     if (notList.get(i).startsWith("2") && notList.get(i).endsWith("ý")) {
                         current = new NotInformation();

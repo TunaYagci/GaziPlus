@@ -2,7 +2,6 @@ package com.hp2m.GaziPlus;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -66,35 +65,11 @@ public class NotlarDB extends SQLiteOpenHelper {
         super.onDowngrade(db, oldVersion, newVersion);
     }
 
-
-    /*public int updateDuyuru(DuyuruGetSet duyuru, String dersKodu) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.beginTransaction();
-        ContentValues contentValues = new ContentValues();
-        //contentValues.put(COLUMN_TITLE, duyuru.getTitle());
-
-        //contentValues.put(COLUMN_NEWOROLD, duyuru.getNewORold());
-        Log.i("tuna", "updated body is = " + duyuru.getContent());
-        //int i = db.update(TABLE_NOTLAR, contentValues, COLUMN_TITLE + "=?", new String[]{header});
-        Log.i("tuna", "is update succesful? " + i);
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-        return i;
-
-        //db.setTransactionSuccessful();
-        //String query="UPDATE "+TABLE_DUYURU+" SET columnname="+var+ "where columnid="+var2;
-        //db.endTransaction();
-        //db.close();
-    }
-*/
-
-    // Tarihe gore yemek ekle
     public void addorUpdateNot(NotInformation not) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        if (!not.ogrNo.equals(sharedPreferences.getString("currentOgrNo", "0"))) {
-            deleteAll();
-        }
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+
         ContentValues contentValues = new ContentValues();
         Log.i("tuna", "saving dersKodu " + not.dersKodu);
         contentValues.put(COLUMN_DERSKODU, not.dersKodu);
@@ -106,14 +81,16 @@ public class NotlarDB extends SQLiteOpenHelper {
         contentValues.put(COLUMN_KREDI, not.kredi);
         contentValues.put(COLUMN_SINIFORT, not.sinifOrt);
 
-        SQLiteDatabase db = getWritableDatabase();
         db.replace(TABLE_NOTLAR, null, contentValues);
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
         db.close();
     }
 
     public void deleteAll() {
-        SQLiteDatabase db = getWritableDatabase();
-        //db.execSQL("delete from " + TABLE_NOTLAR);
+        SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NOTLAR, null, null);
         db.close();
     }

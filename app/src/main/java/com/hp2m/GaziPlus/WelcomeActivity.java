@@ -42,7 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         sP = getSharedPreferences("user", Context.MODE_PRIVATE);
 
-        if(!(sP.getBoolean("isVersion6UpdateSuccessful",false))){
+        if(!(sP.getBoolean("isVersion7UpdateSuccessful",false))){
 
             SharedPreferences.Editor editor = sP.edit();
             editor.clear();
@@ -691,7 +691,13 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://ttef.gazi.edu.tr/posts?type=news";
                 break;
             case "21":
-                defaultFakulteLink = "http://turizm.gazi.edu.tr/posts?type=news";
+                // gazi besyo
+                defaultFakulteLink = "none"; // gazi besyo
+                defaultBolumLink = "http://besyo.gazi.edu.tr/posts?type=news";
+                bolumAdi = "BESYO";
+                bolumHint = "nofab";
+                bolumImg = R.drawable.besyo;
+                min_item_to_load = 3;
                 break;
             // AKADEMÝK BÝRÝMLER SON
             // Devlet Konservatuvarý
@@ -707,7 +713,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 defaultFakulteLink = "http://egtbil.gazi.edu.tr/posts?type=news";
                 break;
             case "25":
-                defaultFakulteLink = "http://fbe.gazi.edu.tr/posts?type=news";
                 break;
             case "26":
                 defaultFakulteLink = "http://kaza.gazi.edu.tr/posts?type=news";
@@ -937,7 +942,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
                 verCode = pInfo.versionCode;
 
-                editor.putBoolean("isVersion6UpdateSuccessful", true);
+                editor.putBoolean("isVersion7UpdateSuccessful", true);
                 editor.putInt("versionCode", verCode);
 
 
@@ -1025,7 +1030,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         verCode=3;
                     }
 
-                    editor.putBoolean("isVersion6UpdateSuccessful", true);
+                    editor.putBoolean("isVersion7UpdateSuccessful", true);
                     editor.putInt("versionCode", verCode);
 
                     editor.commit();
