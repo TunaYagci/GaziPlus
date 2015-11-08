@@ -6,11 +6,11 @@ android {
     compileOptions.encoding = 'windows-1254'
 
     defaultConfig {
-        applicationId "com.hp2m.GaziPlus"
+        applicationId "com.hp2m.GaziPlus2"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 7
-        versionName "0.44b"
+        versionCode 1
+        versionName "1.0r"
     }
     buildTypes {
         release {
