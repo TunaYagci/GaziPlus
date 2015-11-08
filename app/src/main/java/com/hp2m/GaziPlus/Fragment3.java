@@ -206,13 +206,20 @@ public class Fragment3 extends Fragment {
                     }
                 });
             } else {
-                Snackbar.make(motherLayout, "Sunucuya eriþilemedi", Snackbar.LENGTH_LONG)
-                        .setAction("Tekrar dene", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                yemekGuncelle();
-                            }
-                        });
+                Log.i("tuna", "on Show Snackbar");
+                motherLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Snackbar.make(motherLayout, "Sunucuya eriþilemedi", Snackbar.LENGTH_LONG)
+                                .setAction("Tekrar dene", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        yemekGuncelle();
+                                    }
+                                });
+                    }
+                });
+
             }
         }
 

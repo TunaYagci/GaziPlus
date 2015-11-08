@@ -140,6 +140,18 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         ImageLoader.getInstance().init(config);
 
+        try {
+            Bundle extras = getIntent().getExtras();
+            boolean didWidgetSendYou = false;
+            if (extras != null) {
+                didWidgetSendYou = extras.getBoolean("widgetYemek");
+            }
+            if(didWidgetSendYou){
+                mPager.setCurrentItem(2, true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleUserButtonClick() {

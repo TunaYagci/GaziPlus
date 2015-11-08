@@ -3,6 +3,7 @@ package com.hp2m.GaziPlus;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -22,6 +23,8 @@ import de.greenrobot.event.EventBus;
  */
 public class widget_yemek extends AppWidgetProvider {
     private static final String SYNC_CLICK = "myOnClickTag";
+    private static final String MAIN_CLICK = "onGlick";
+    private static Context context;
     final EventBus bus = EventBus.getDefault();
 
     private static int giveMeTheDay() {
@@ -54,13 +57,25 @@ public class widget_yemek extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-
+        this.context = context;
         if (SYNC_CLICK.equals(intent.getAction())) {
             //your onClick action is here
             if (isNetworkAvailable(context)) {
-                Toast.makeText(context, "Güncelleniyor", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Güncelleniyor...", Toast.LENGTH_SHORT).show();
                 // update here
+                YemekDB db = new YemekDB(context);
+                if (db.getYemekSayisi() != 0) {
+                    // yemek güncelle
+                    this.context = context;
+                    bus.register(this);
+                    new YemekTask(context, true).execute();
+                } else {
+                    Toast.makeText(context, "Ýlk baþta uygulamaya girip yemek listesini yükleyin", Toast.LENGTH_SHORT).show();
+                }
+
+
             } else {
+                Toast.makeText(context, "Ýnternete eriþilemedi", Toast.LENGTH_SHORT).show();
                 String gun, yemek1, yemek2, yemek3, yemek4;
 
                 YemekDB db = new YemekDB(context);
@@ -96,12 +111,74 @@ public class widget_yemek extends AppWidgetProvider {
                 views.setTextViewText(R.id.widgetyemek_3, yemek3);
                 views.setTextViewText(R.id.widgetyemek_4, yemek4);
             }
+        } else if (MAIN_CLICK.equals(intent.getAction())) {
+
+            try {
+                Intent mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra("widgetYemek", true);
+                context.startActivity(mainIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    public void updateFromDB(Context context) {
+        String gun, yemek1, yemek2, yemek3, yemek4;
+        YemekDB db = new YemekDB(context);
+        if (db.getYemekSayisi() != 0) {
+            int day = giveMeTheDay();
+            if (day != 6) { // the value "6" returns the weekends
+                gun = db.fetchMeMyFood(day).get(0);
+                yemek1 = db.fetchMeMyFood(day).get(1);
+                yemek2 = db.fetchMeMyFood(day).get(2);
+                yemek3 = db.fetchMeMyFood(day).get(3);
+                yemek4 = db.fetchMeMyFood(day).get(4);
+            } else {
+                gun = db.fetchMeMyFood(5).get(0);
+                yemek1 = db.fetchMeMyFood(5).get(1);
+                yemek2 = db.fetchMeMyFood(5).get(2);
+                yemek3 = db.fetchMeMyFood(5).get(3);
+                yemek4 = db.fetchMeMyFood(5).get(4);
+            }
+
+        } else {
+            gun = "Yemek listesi bulunamadý";
+            yemek1 = "-";
+            yemek2 = "-";
+            yemek3 = "-";
+            yemek4 = "-";
+        }
+
+        // Construct the RemoteViews object
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_yemek);
+        views.setTextViewText(R.id.widgetyemek_gun, gun);
+        views.setTextViewText(R.id.widgetyemek_1, yemek1);
+        views.setTextViewText(R.id.widgetyemek_2, yemek2);
+        views.setTextViewText(R.id.widgetyemek_3, yemek3);
+        views.setTextViewText(R.id.widgetyemek_4, yemek4);
+
+        ComponentName thisWidget = new ComponentName(context, widget_yemek.class);
+        AppWidgetManager.getInstance(context).updateAppWidget(thisWidget, views);
+
+    }
+
+    public void onEvent(YemekDownloadComplated event) {
+        if (event.message.equals("goodToGo")) {
+            updateFromDB(context);
+            Toast.makeText(context, "Yemek listesi güncel", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Güncelleme baþarýsýz :(", Toast.LENGTH_SHORT).show();
+        }
+        bus.unregister(this);
+
+    }
+
+
     public void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
+        this.context = context;
         String gun, yemek1, yemek2, yemek3, yemek4;
 
         YemekDB db = new YemekDB(context);
@@ -139,6 +216,8 @@ public class widget_yemek extends AppWidgetProvider {
 
         // sync click
         views.setOnClickPendingIntent(R.id.sync_button, getPendingSelfIntent(context, SYNC_CLICK));
+
+        views.setOnClickPendingIntent(R.id.imageView3, getPendingSelfIntent(context, MAIN_CLICK));
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -215,5 +294,6 @@ public class widget_yemek extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
 }
 

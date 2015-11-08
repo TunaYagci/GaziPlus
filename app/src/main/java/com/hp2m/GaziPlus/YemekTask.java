@@ -1,8 +1,8 @@
 package com.hp2m.GaziPlus;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
@@ -22,36 +22,51 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
     final EventBus bus = EventBus.getDefault();
     // url http://mediko.gazi.edu.tr/posts/view/title/yemek-listesi-20412
     // home url http://192.168.1.8/yemek/index.htm
+    // kyk url http://10.62.163.86/yemek/index2.htm
     private final String URL = "http://mediko.gazi.edu.tr/posts/view/title/yemek-listesi-20412";
     Fragment3 fragment;
     ProgressDialog progressDialog;
     boolean isUpdating;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    //private RecyclerView recyclerView;
+    //private RecyclerView.Adapter adapter;
     private ArrayList<String> yemekListFromYemekTask;
     private boolean ioException = false;
+    private Context context;
+    private boolean isThisForWidget = false;
 
+    // for fragment3
     YemekTask(Fragment3 fragment, boolean isUpdating) {
         this.fragment = fragment;
         this.isUpdating = isUpdating;
+    }
+
+    // for widget
+    YemekTask(Context context, boolean isUpdating) {
+        this.context = context;
+        this.isUpdating = isUpdating;
+        isThisForWidget = true;
     }
 
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        try {
-            if (isUpdating) {
-                fragment.swipeLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        fragment.swipeLayout.setRefreshing(true);
+        if (isThisForWidget) {
+            // nothing.
+        } else {
+            try {
+                if (isUpdating) {
+                    fragment.swipeLayout.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragment.swipeLayout.setRefreshing(true);
 
-                    }
-                });
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -83,21 +98,26 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
                     yemekListFromYemekTask.get(12), yemekListFromYemekTask.get(17), yemekListFromYemekTask.get(22));
             YemekGetSet yemekGetSet3 = new YemekGetSet(yemekListFromYemekTask.get(3), yemekListFromYemekTask.get(8),
                     yemekListFromYemekTask.get(13), yemekListFromYemekTask.get(18), yemekListFromYemekTask.get(23));
-            YemekGetSet yemekGetSet4 = new YemekGetSet(yemekListFromYemekTask.get(4), yemekListFromYemekTask.get(8),
+            YemekGetSet yemekGetSet4 = new YemekGetSet(yemekListFromYemekTask.get(4), yemekListFromYemekTask.get(9),
                     yemekListFromYemekTask.get(14), yemekListFromYemekTask.get(19), yemekListFromYemekTask.get(24));
-            YemekGetSet yemekGetSet5 = new YemekGetSet(yemekListFromYemekTask.get(5), yemekListFromYemekTask.get(9),
+            YemekGetSet yemekGetSet5 = new YemekGetSet(yemekListFromYemekTask.get(5), yemekListFromYemekTask.get(10),
                     yemekListFromYemekTask.get(15), yemekListFromYemekTask.get(20), yemekListFromYemekTask.get(25));
-            ;
 
-            YemekDB dbHandler = new YemekDB(fragment.getActivity());
+            YemekDB dbHandler = null;
+            if (isThisForWidget) {
+                dbHandler = new YemekDB(context);
+            } else {
+                dbHandler = new YemekDB(fragment.getActivity());
+            }
+
             Log.i("tuna", "about to add");
             //dbHandler.clearYemekDB();
             //dbHandler = new YemekDB(fragment.getActivity());
-            dbHandler.addHaftalikYemek(yemekGetSet,1, isUpdating);
-            dbHandler.addHaftalikYemek(yemekGetSet2,2, isUpdating);
-            dbHandler.addHaftalikYemek(yemekGetSet3,3, isUpdating);
-            dbHandler.addHaftalikYemek(yemekGetSet4,4, isUpdating);
-            dbHandler.addHaftalikYemek(yemekGetSet5,5, isUpdating);
+            dbHandler.addHaftalikYemek(yemekGetSet, 1, isUpdating);
+            dbHandler.addHaftalikYemek(yemekGetSet2, 2, isUpdating);
+            dbHandler.addHaftalikYemek(yemekGetSet3, 3, isUpdating);
+            dbHandler.addHaftalikYemek(yemekGetSet4, 4, isUpdating);
+            dbHandler.addHaftalikYemek(yemekGetSet5, 5, isUpdating);
 
             /* AYRICA KALORÝYÝ ÇEKMEK ÝÇÝN
             YemekGetSet yemekGetSet = new YemekGetSet(yemekList.get(1), yemekList.get(6),
@@ -131,13 +151,20 @@ public class YemekTask extends AsyncTask<Void, Void, Void> {
             } else {
                 bus.post(new YemekDownloadComplated("goodToGo"));
             }
-                fragment.swipeLayout.setRefreshing(false);
+            if (!isThisForWidget)
+                fragment.swipeLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment.swipeLayout.setRefreshing(false);
+
+                    }
+                });
             /*if(isUpdating){
                 YoYo.with(Techniques.Bounce)
                         .duration(100)
                         .playOn(fragment.motherLayout);
             }*/
-                //lowerBrightness(fragment.motherLayout);
+            //lowerBrightness(fragment.motherLayout);
         } catch (Exception e) {
             Log.i("tuna", "exception in yemektask post execute " + e.toString());
         }

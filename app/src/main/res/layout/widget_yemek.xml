@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@drawable/layout_bg" >
+    android:id="@+id/mainLayout" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layout_bg">
 
     <TextView
         android:id="@+id/widgetyemek_1"
@@ -88,6 +89,7 @@
         android:adjustViewBounds="false"
         android:alpha="0.1"
         android:longClickable="false"
+        android:padding="8dp"
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher" />
 
@@ -120,8 +122,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="8dp"
             android:background="@android:color/transparent"
+            android:padding="8dp"
             android:src="@drawable/ic_sync_white_24dp" />
     </RelativeLayout>
 
