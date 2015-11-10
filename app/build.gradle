@@ -9,8 +9,8 @@ android {
         applicationId "com.hp2m.GaziPlus2"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0r"
+        versionCode 2
+        versionName "0.5b"
     }
     buildTypes {
         release {

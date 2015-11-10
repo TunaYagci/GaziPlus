@@ -67,7 +67,7 @@
                 android:layout_gravity="bottom|right"
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="8dp"
-                app:layout_behavior=".FloatingActionMenuBehavior"
+                app:layout_behavior="com.hp2m.GaziPlus2.FloatingActionMenuBehavior"
                 fab:menu_animationDelayPerItem="15"
                 fab:menu_backgroundColor="@android:color/transparent"
                 fab:menu_buttonSpacing="0dp"
