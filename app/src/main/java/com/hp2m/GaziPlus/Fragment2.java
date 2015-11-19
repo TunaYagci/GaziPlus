@@ -503,14 +503,14 @@ public class Fragment2 extends Fragment {
 
 
     private String[] parseUpcomingNot(String satir) {
-            satir+="  -";
-        Log.i("tuna", "satir= " + satir);
+        satir+="  -";
         String nx2 = satir.replace("                   ", "-    -    -    -    -   ");
         String cc = nx2.replace("                ", "    -    -    -    -   ");
         String nx3 = cc.replace("                ", "    -    -    -    -   ");
         String nx4 = nx3.replace("                 ", "    -    -    -    -   ");
         String cx1 = nx4.replace("              ", "    -    -    -    -    ");
-        String cx2 = cx1.replace("            ", "    -    -    ");
+        String cx6 = cx1.replace("             ","    -    -    -    ");
+        String cx2 = cx6.replace("            ", "    -    -    ");
         String cx3 = cx2.replace("        ", "    -    ");
         String cx4 = cx3.replace("    ", "  ");
         String cx5 = cx4.replace("   ", "  ");

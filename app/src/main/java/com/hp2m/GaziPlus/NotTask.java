@@ -221,6 +221,7 @@ public class NotTask extends AsyncTask<Void, Void, Void> {
                 String b = element1.get(i).text().replace(String.valueOf((char) 160), " ").trim();
                 if (b.startsWith("2")) {
                     if (b.endsWith("ý")) {
+                        Log.i("tuna", "b is " + b);
                         notList.add(b);
                         i++;
                         continue;

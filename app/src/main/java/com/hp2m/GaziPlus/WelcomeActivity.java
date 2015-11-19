@@ -42,7 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         sP = getSharedPreferences("user", Context.MODE_PRIVATE);
 
-        if(!(sP.getBoolean("isVersion1UpdateSuccessful",false))){
+        if(!(sP.getBoolean("isVersion4UpdateSuccessful",false))){
 
             SharedPreferences.Editor editor = sP.edit();
             editor.clear();
@@ -247,6 +247,13 @@ public class WelcomeActivity extends AppCompatActivity {
                 fakulteAdi = "EÐÝTÝM FAKÜLTESÝ";
                 fakulteImg = R.drawable.gef_1_edited;
                 switch (bolumNo) {
+                    case "05":
+                        defaultBolumLink = "http://gef-turkceegitimi.gazi.edu.tr/posts?type=news";
+                        bolumAdi = "Türkçe Öðretmenliði";
+                        bolumHint = "gef_turkce";
+                        bolumImg = R.drawable.edeb_turkdili;
+                        break;
+
                     case "21":
                         defaultBolumLink = "http://gef-guzelsanatlar-muzik.gazi.edu.tr/posts?type=news";
                         bolumAdi = "Müzik Eðitimi Anabilim Dalý";
@@ -942,7 +949,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
                 verCode = pInfo.versionCode;
 
-                editor.putBoolean("isVersion1UpdateSuccessful", true);
+                editor.putBoolean("isVersion4UpdateSuccessful", true);
                 editor.putInt("versionCode", verCode);
 
 
@@ -1030,7 +1037,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         verCode=3;
                     }
 
-                    editor.putBoolean("isVersion1UpdateSuccessful", true);
+                    editor.putBoolean("isVersion4UpdateSuccessful", true);
                     editor.putInt("versionCode", verCode);
 
                     editor.commit();
