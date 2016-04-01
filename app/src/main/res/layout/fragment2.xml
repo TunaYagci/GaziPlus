@@ -1,14 +1,18 @@
+
+
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment2_motherLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hp2m.GaziPlus.Fragment2"
+    android:clickable="false"
 
+    tools:context="com.hp2m.GaziPlus.Fragment2"
     >
 
-    <!-- TODO: Update blank fragment layout -->
+
 
     <RelativeLayout
         android:id="@+id/holder"
@@ -38,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/parola"
             android:layout_alignParentLeft="true"
+            android:enabled="false"
             android:layout_alignParentStart="true"
             android:layout_alignRight="@+id/parola"
             android:layout_below="@+id/topLine"
@@ -67,6 +72,9 @@
         <Button
             android:id="@+id/ogrenciLoginLayout"
             android:layout_width="300sp"
+            android:enabled="false"
+            android:clickable="false"
+            android:visibility="invisible"
             android:layout_height="wrap_content"
             android:layout_below="@+id/checkBox"
             android:layout_centerHorizontal="true"
@@ -202,6 +210,7 @@
             android:hint="Parola"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:enabled="false"
             android:padding="10dp"
             android:textColor="#ff000000"
             android:textColorHint="#D9DADC" />
@@ -223,6 +232,7 @@
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinator2"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -243,4 +253,71 @@
         </android.support.design.widget.CoordinatorLayout>
 
     </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.9"
+        android:id="@+id/overlayLayout"
+        android:clickable="false"
+        android:background="#000">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Gazi Bilgi İşlem Dairesi tarafından aldığımız uyarıdan ötürü kullanıcı girişi ikinci bir değişikliğe kadar devre dışı bırakılmıştır."
+                android:id="@+id/textView"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </FrameLayout>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text=""
+            android:id="@+id/unlockButton1"
+            android:background="@null"
+            android:layout_gravity="left|top" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/unlockButton2"
+            android:background="@null"
+            android:layout_gravity="right|top" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/unlockButton3"
+            android:background="@null"
+
+
+            android:layout_gravity="left|bottom" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/unlockButton4"
+            android:background="@null"
+
+
+            android:layout_gravity="right|bottom" />
+
+    </FrameLayout>
+
+
 </FrameLayout>

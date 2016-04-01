@@ -59,6 +59,12 @@ public class Fragment2 extends Fragment {
     private ImageButton clearParola, clearOgrNo;
     private FloatingActionButton fab;
     private FragmentManager fm;
+    private int counter=0;
+    private boolean button1Unlocked;
+    private boolean button2Unlocked;
+    private boolean button4Unlocked;
+    private boolean button3Unlocked;
+
     public Fragment2() {
         // Required empty public constructor
     }
@@ -253,7 +259,76 @@ public class Fragment2 extends Fragment {
         });
 
 
+
+        Button unlockButton1 = (Button) rootView.findViewById(R.id.unlockButton1);
+        final Button unlockButton2 = (Button) rootView.findViewById(R.id.unlockButton2);
+        final Button unlockButton3 = (Button) rootView.findViewById(R.id.unlockButton3);
+        final Button unlockButton4 = (Button) rootView.findViewById(R.id.unlockButton4);
+
+
+
+        unlockButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("tuna", "unlockButton1");
+                button1Unlocked = true;
+            }
+        });
+
+        unlockButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("tuna", "unlockButton2");
+
+                if(button1Unlocked){
+                    button2Unlocked = true;
+                }
+            }
+        });
+
+        unlockButton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("tuna", "unlockButton4");
+
+                if(button2Unlocked){
+                    button4Unlocked = true;
+                }
+            }
+        });
+
+        unlockButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("tuna", "unlockButton3");
+
+                if(button3Unlocked){
+                    counter++;
+                    if(counter==7){
+                        unlock();
+                    }
+                }
+                else {
+                    if (button4Unlocked) {
+                        button3Unlocked = true;
+                    }
+                }
+            }
+        });
+
         return rootView;
+    }
+
+    private void unlock() {
+        getView().findViewById(R.id.overlayLayout).setVisibility(View.GONE);
+        getView().findViewById(R.id.parola).setEnabled(true);
+        loginButton.setVisibility(View.VISIBLE);
+        loginButton.setEnabled(true);
+        loginButton.setClickable(true);
+        getView().findViewById(R.id.ogrenci_numarasi).setEnabled(true);
+
+
+
     }
 
     public List<NotInformation> getNotData() {
